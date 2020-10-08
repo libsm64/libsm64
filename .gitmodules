@@ -1,0 +1,3 @@
+[submodule "sm64-port"]
+	path = sm64-port
+	url = git@github.com:sm64-port/sm64-port
