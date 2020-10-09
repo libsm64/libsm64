@@ -9,6 +9,6 @@
 3. `make`
 4. Now do something interesting with `libsm64.so`, it's not much use on its own.
 
-### Window
+### Windows
 
 TODO
