@@ -16,9 +16,9 @@
 #include "engine/surface_collision.h"
 #include "engine/graph_node.h"
 #include "engine/geo_layout.h"
-#include "assets/mario_anim_data.h"
 #include "game/rendering_graph_node.h"
-#include "model/geo.inc.h"
+#include "mario/anim_data.h"
+#include "mario/geo.inc.h"
 #include "gfx_adapter.h"
 
 static struct AllocOnlyPool *s_mario_geo_pool;
@@ -86,7 +86,7 @@ void sm64_global_init( SM64DebugPrintFunctionPtr debugPrintFunction )
     s_mario_geo_pool = alloc_only_pool_init();
     s_mario_graph_node = process_geo_layout( s_mario_geo_pool, mario_geo_ptr );
 
-    D_80339D10.animDmaTable = (void*)(&gMarioAnims);
+    D_80339D10.animDmaTable = mario_anims_ptr;
     D_80339D10.currentAnimAddr = NULL;
     D_80339D10.targetAnim = malloc( 0x4000 );
 

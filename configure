@@ -7,6 +7,11 @@ CFLAGS='-Wall -fPIC'
 BIN_FILE='libsm64.so'
 LDFLAGS=''
 
+prepare() {
+    git submodule update --init --recursive
+    ./extract-decomp-source.py
+}
+
 c_to_obj() {
     printf 'build/'
     echo "$1" | sed 's/cp*$/o/;s:/:_:g'
@@ -34,9 +39,14 @@ print_makefile() {
         make_cmd "$f"
     done
 
-    echo '.PHONY: clean run'
+    echo -e "src/mario/anim_data.inc.c: extract-decomp-source.py\n\t ./extract-decomp-source.py"
+    echo -e "src/mario/geo.inc.c: extract-decomp-source.py\n\t ./extract-decomp-source.py"
+    echo -e "src/mario/model.inc.c: extract-decomp-source.py\n\t ./extract-decomp-source.py"
+
+    echo '.PHONY: clean run .FORCE'
     echo -e "clean:\n\t find . -iname '*.o' | xargs rm && rm -f ./$BIN_FILE"
 }
 
+prepare
 mkdir -p build
 print_makefile > Makefile
