@@ -56,6 +56,7 @@ extern SM64DebugPrintFunctionPtr gDebugPrint;
     } \
 } while(0)
 
+extern void hack_load_mario_animation_ex(struct MarioAnimation *a, u32 index);
 extern void hack_load_mario_animation(struct MarioAnimation *a, u32 index);
 extern void *segmented_to_virtual(const void *addr);
 extern void *virtual_to_segmented(u32 segment, const void *addr);

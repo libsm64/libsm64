@@ -91,11 +91,11 @@ void sm64_global_init( uint8_t *rom, SM64DebugPrintFunctionPtr debugPrintFunctio
     s_mario_geo_pool = alloc_only_pool_init();
     s_mario_graph_node = process_geo_layout( s_mario_geo_pool, mario_geo_ptr );
 
-    D_80339D10.animDmaTable = gMarioAnimsPtr; // mario_anims_ptr;
+    D_80339D10.animDmaTable = NULL; // gMarioAnimsPtr; // mario_anims_ptr;
     D_80339D10.currentAnimAddr = NULL;
-    D_80339D10.targetAnim = malloc( 0x4000 );
+    D_80339D10.targetAnim = NULL;
 
-    DEBUG_LOG( "Mario animations loaded from address %lu", (uint64_t)D_80339D10.animDmaTable );
+    //DEBUG_LOG( "Mario animations loaded from address %lu", (uint64_t)D_80339D10.animDmaTable );
 }
 
 void sm64_load_surfaces( uint16_t terrainType, const struct SM64Surface *surfaceArray, size_t numSurfaces )

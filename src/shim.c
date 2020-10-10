@@ -1,5 +1,6 @@
 #include <string.h>
 #include "shim.h"
+#include "load_anim_data.h"
 
 u32 gGlobalTimer = 0;
 u8 gSpecialTripleJump = FALSE;
@@ -22,29 +23,37 @@ struct MarioState gMarioStateVal;
 struct MarioState *gMarioState = &gMarioStateVal;
 SM64DebugPrintFunctionPtr gDebugPrint = NULL;
 
+void hack_load_mario_animation_ex(struct MarioAnimation *a, u32 index)
+{
+    if ((u32)a->currentAnimAddr == 1 + index)
+        return;
+
+    a->currentAnimAddr = (u8*)(1 + index);
+    a->targetAnim = &gLibSm64MarioAnimations[index];
+}
 
 void hack_load_mario_animation(struct MarioAnimation *a, u32 index)
 {
-    struct MarioAnimDmaRelatedThing *sp20 = a->animDmaTable;
-    u8 *addr;
-    u32 size;
-
-    if (index < sp20->count) {
-        addr = sp20->srcAddr + sp20->anim[index].offset;
-        size = sp20->anim[index].size;
-
-        if (a->currentAnimAddr != addr) {
-            u32 a0 = sp20->anim[index].offset;
-            u32 b0 = sp20->anim[index].size;
-
-            memcpy( (u8*)a->targetAnim, (u8*)sp20 + a0, b0 );
-            a->currentAnimAddr = addr;
-
-            struct Animation *targetAnim = a->targetAnim;
-            targetAnim->values =(void*)( (u8 *)targetAnim + (uintptr_t)targetAnim->values );
-            targetAnim->index = (void*)( (u8 *)targetAnim + (uintptr_t)targetAnim->index  );
-        }
-    }
+//    struct MarioAnimDmaRelatedThing *sp20 = a->animDmaTable;
+//    u8 *addr;
+//    u32 size;
+//
+//    if (index < sp20->count) {
+//        addr = sp20->srcAddr + sp20->anim[index].offset;
+//        size = sp20->anim[index].size;
+//
+//        if (a->currentAnimAddr != addr) {
+//            u32 a0 = sp20->anim[index].offset;
+//            u32 b0 = sp20->anim[index].size;
+//
+//            memcpy( (u8*)a->targetAnim, (u8*)sp20 + a0, b0 );
+//            a->currentAnimAddr = addr;
+//
+//            struct Animation *targetAnim = a->targetAnim;
+//            targetAnim->values =(void*)( (u8 *)targetAnim + (uintptr_t)targetAnim->values );
+//            targetAnim->index = (void*)( (u8 *)targetAnim + (uintptr_t)targetAnim->index  );
+//        }
+//    }
 }
 
 void *segmented_to_virtual(const void *addr)

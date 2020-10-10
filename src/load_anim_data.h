@@ -5,6 +5,7 @@
 
 #include "include/types.h"
 
-extern void *gMarioAnimsPtr;
+extern struct Animation *gLibSm64MarioAnimations;
+//extern void *gMarioAnimsPtr;
 
 extern void load_mario_anims_from_rom( uint8_t *rom );
