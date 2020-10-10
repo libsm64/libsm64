@@ -17,9 +17,10 @@
 #include "engine/graph_node.h"
 #include "engine/geo_layout.h"
 #include "game/rendering_graph_node.h"
-#include "mario/anim_data.h"
+//#include "mario/anim_data.h"
 #include "mario/geo.inc.h"
 #include "gfx_adapter.h"
+#include "load_anim_data.h"
 
 static struct AllocOnlyPool *s_mario_geo_pool;
 static struct GraphNode *s_mario_graph_node;
@@ -75,9 +76,13 @@ static struct Area *hack_build_area( void )
     return result;
 }
 
-void sm64_global_init( SM64DebugPrintFunctionPtr debugPrintFunction )
+
+
+void sm64_global_init( uint8_t *rom, SM64DebugPrintFunctionPtr debugPrintFunction )
 {
     gDebugPrint = debugPrintFunction;
+
+    load_mario_anims_from_rom( rom );
 
     gMarioObject = hack_allocate_mario();
     gCurrentArea = hack_build_area();
@@ -86,7 +91,7 @@ void sm64_global_init( SM64DebugPrintFunctionPtr debugPrintFunction )
     s_mario_geo_pool = alloc_only_pool_init();
     s_mario_graph_node = process_geo_layout( s_mario_geo_pool, mario_geo_ptr );
 
-    D_80339D10.animDmaTable = mario_anims_ptr;
+    D_80339D10.animDmaTable = gMarioAnimsPtr; // mario_anims_ptr;
     D_80339D10.currentAnimAddr = NULL;
     D_80339D10.targetAnim = malloc( 0x4000 );
 

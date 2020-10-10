@@ -39,7 +39,6 @@ print_makefile() {
         make_cmd "$f"
     done
 
-    echo -e "src/mario/anim_data.inc.c: extract-decomp-source.py\n\t ./extract-decomp-source.py"
     echo -e "src/mario/geo.inc.c: extract-decomp-source.py\n\t ./extract-decomp-source.py"
     echo -e "src/mario/model.inc.c: extract-decomp-source.py\n\t ./extract-decomp-source.py"
 

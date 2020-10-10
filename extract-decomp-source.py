@@ -93,15 +93,15 @@ def main():
     with open("src/mario/geo.inc.h", "w") as file:
         file.write(geo_inc_h)
 
-    os.chdir("sm64-port")
-    mario_anims_pipe = subprocess.run(["tools/mario_anims_converter.py", "-l"], stdout=subprocess.PIPE)
-    mario_anims_string = mario_anims_pipe.stdout.decode('utf-8')
-    os.chdir("..")
-
-    with open("src/mario/anim_data.c", "w") as file:
-        file.write(mario_anims_string.replace('#include "types.h"', '#include "../include/types.h"\n#include "anim_data.h"') + anim_data_c_footer)
-
-    with open("src/mario/anim_data.h", "w") as file:
-        file.write(anim_data_h)
+#    os.chdir("sm64-port")
+#    mario_anims_pipe = subprocess.run(["tools/mario_anims_converter.py", "-l"], stdout=subprocess.PIPE)
+#    mario_anims_string = mario_anims_pipe.stdout.decode('utf-8')
+#    os.chdir("..")
+#
+#    with open("src/mario/anim_data.c", "w") as file:
+#        file.write(mario_anims_string.replace('#include "types.h"', '#include "../include/types.h"\n#include "anim_data.h"') + anim_data_c_footer)
+#
+#    with open("src/mario/anim_data.h", "w") as file:
+#        file.write(anim_data_h)
 
 main()

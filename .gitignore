@@ -2,3 +2,5 @@
 /libsm64.so
 Makefile
 /src/mario
+*.z64
+/src/anim_datac.h
