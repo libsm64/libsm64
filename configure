@@ -4,13 +4,8 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 
 CC='cc -g'
 CFLAGS='-Wall -fPIC'
-BIN_FILE='libsm64.so'
+BIN_FILE='dist/libsm64.so'
 LDFLAGS=''
-
-prepare() {
-    git submodule update --init --recursive
-    ./extract-decomp-source.py
-}
 
 c_to_obj() {
     printf 'build/'
@@ -32,20 +27,24 @@ print_makefile() {
     for f in $(file_list); do
         all_objs="$all_objs $(c_to_obj $f)"
     done
-    echo "$BIN_FILE: $all_objs"
+    echo "$BIN_FILE: $all_objs dist/include/libsm64.h"
     echo -e "\t$CC -shared -o $BIN_FILE $all_objs $LDFLAGS"
 
     for f in $(file_list); do
         make_cmd "$f"
     done
 
-    echo -e "src/mario/geo.inc.c: extract-decomp-source.py\n\t ./extract-decomp-source.py"
-    echo -e "src/mario/model.inc.c: extract-decomp-source.py\n\t ./extract-decomp-source.py"
+    echo -e "src/mario/geo.inc.c: import-mario-geo.py\n\t ./import-mario-geo.py"
+    echo -e "src/mario/model.inc.c: import-mario-geo.py\n\t ./import-mario-geo.py"
 
-    echo '.PHONY: clean run .FORCE'
-    echo -e "clean:\n\t find . -iname '*.o' | xargs rm && rm -f ./$BIN_FILE"
+    echo -e "dist/include/libsm64.h: src/libsm64.h\n\t cp src/libsm64.h dist/include/libsm64.h"
+
+    echo -e "clean:\n\t rm -rf build && rm -rf dist && mkdir -p build && mkdir -p dist/include"
+
+    echo '.PHONY: clean'
 }
 
-prepare
+./import-mario-geo.py
 mkdir -p build
+mkdir -p dist/include
 print_makefile > Makefile

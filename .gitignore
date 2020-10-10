@@ -1,6 +1,5 @@
-/build/
-/libsm64.so
-Makefile
 /src/mario
+/build/
+/dist/
+Makefile
 *.z64
-/src/anim_datac.h
