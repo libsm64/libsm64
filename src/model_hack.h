@@ -69,11 +69,10 @@ typedef struct {
     Light l[1];
 } Lights1;
 
-
-#define	G_TX_RENDERTILE	0
-#define	G_ON (1)
-#define	G_OFF (0)
-#define	G_TEXTURE_IMAGE_FRAC 2
+#define	G_TX_RENDERTILE	      0
+#define	G_ON                  1
+#define	G_OFF                 0
+#define	G_TEXTURE_IMAGE_FRAC  2
 
 #define gdSPDefLights1(ar,ag,ab,r1,g1,b1,x1,y1,z1) {{{ {ar,ag,ab},0,{ar,ag,ab},0}}, {{{ {r1,g1,b1},0,{r1,g1,b1},0,{x1,y1,z1},0}}} }
 

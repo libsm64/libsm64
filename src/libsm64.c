@@ -24,6 +24,7 @@
 
 static struct AllocOnlyPool *s_mario_geo_pool;
 static struct GraphNode *s_mario_graph_node;
+static uint32_t s_last_colors_hash;
 
 static void update_button( bool on, u16 button )
 {
@@ -78,6 +79,7 @@ static struct Area *hack_build_area( void )
 
 void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugPrintFunctionPtr debugPrintFunction )
 {
+    s_last_colors_hash = 0;
     gDebugPrint = debugPrintFunction;
 
     load_mario_textures_from_rom( rom, outTexture );
@@ -97,7 +99,7 @@ void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugPrintFunction
 
 void sm64_load_surfaces( uint16_t terrainType, const struct SM64Surface *surfaceArray, size_t numSurfaces )
 {
-	surface_load_for_libsm64( surfaceArray, numSurfaces );
+    surface_load_for_libsm64( surfaceArray, numSurfaces );
     gCurrentArea->terrainType = terrainType;
 }
 
@@ -144,10 +146,10 @@ void sm64_mario_tick( const struct SM64MarioInputs *inputs, struct SM64MarioStat
 
     gAreaUpdateCounter++;
 
-	outState->health = gMarioState->health;
-	vec3f_copy( outState->position, gMarioState->pos );
-	vec3f_copy( outState->velocity, gMarioState->vel );
-	outState->faceAngle = (float)gMarioState->faceAngle[1] / 32768.0f * 3.14159f;
+    outState->health = gMarioState->health;
+    vec3f_copy( outState->position, gMarioState->pos );
+    vec3f_copy( outState->velocity, gMarioState->vel );
+    outState->faceAngle = (float)gMarioState->faceAngle[1] / 32768.0f * 3.14159f;
 }
 
 void sm64_global_terminate( void )

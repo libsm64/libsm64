@@ -122,6 +122,8 @@ static void process_display_list( void *dl )
                     *s_uvPtr++ = 1.0f;
                 }
 
+                s_outBuffers->numTrianglesUsed = (uint16_t)((s_trianglePtr - s_outBuffers->position) / 9);
+
                 break;
             }
 
@@ -190,8 +192,6 @@ static void process_display_list( void *dl )
         }
     }
 
-    s_outBuffers->bufferUsedSize = s_trianglePtr - s_outBuffers->position;
-
 break_top:
     {}
 }
@@ -213,5 +213,5 @@ void gfx_adapter_bind_output_buffers( struct SM64MarioGeometryBuffers *outBuffer
     s_colorPtr = s_outBuffers->color;
     s_normalPtr = s_outBuffers->normal;
     s_uvPtr = s_outBuffers->uv;
-    s_outBuffers->bufferUsedSize = 0;
+    s_outBuffers->numTrianglesUsed = 0;
 }

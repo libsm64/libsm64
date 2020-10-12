@@ -29,12 +29,11 @@ struct SM64MarioState
 
 struct SM64MarioGeometryBuffers
 {
-    size_t bufferMaxSize;
-    size_t bufferUsedSize;
     float *position;
     float *normal;
     float *color;
     float *uv;
+    uint16_t numTrianglesUsed;
 };
 
 typedef void (*SM64DebugPrintFunctionPtr)( const char * );
