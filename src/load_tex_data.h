@@ -25,5 +25,10 @@ enum MarioTextures
     mario_texture_eyes_down
 };
 
-extern uint8_t *gLibSm64TextureRgba;
-extern void load_mario_textures_from_rom( uint8_t *rom );
+#define NUM_USED_TEXTURES 11
+
+static int mario_tex_offsets[NUM_USED_TEXTURES] = { 144, 4240, 6288, 8336, 10384, 12432, 14480, 16528, 30864, 32912, 37008 };
+static int mario_tex_widths [NUM_USED_TEXTURES] = { 64, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32 };
+static int mario_tex_heights[NUM_USED_TEXTURES] = { 32, 32, 32, 32, 32, 32, 32, 32, 32, 64, 64 };
+
+extern void load_mario_textures_from_rom( uint8_t *rom, uint8_t *outTexture );

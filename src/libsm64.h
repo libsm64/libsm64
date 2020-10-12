@@ -5,8 +5,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define SM64_GEO_BUFFER_SIZE 9216 // 1024 triangles * 9 floats per triangle
-
 struct SM64Surface
 {
     int16_t type;
@@ -41,8 +39,11 @@ struct SM64MarioGeometryBuffers
 
 typedef void (*SM64DebugPrintFunctionPtr)( const char * );
 
-extern void sm64_global_init( uint8_t *rom, SM64DebugPrintFunctionPtr debugPrintFunction );
-extern uint8_t *sm64_get_texture( void );
+static const size_t SM64_TEXTURE_WIDTH  = 64 * 11;
+static const size_t SM64_TEXTURE_HEIGHT = 64;
+static const size_t SM64_GEO_BUFFER_SIZE = 1024;
+
+extern void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugPrintFunctionPtr debugPrintFunction );
 extern void sm64_load_surfaces( uint16_t terrainType, const struct SM64Surface *surfaceArray, size_t numSurfaces );
 extern void sm64_mario_reset( int16_t marioX, int16_t marioY, int16_t marioZ );
 extern void sm64_mario_tick( const struct SM64MarioInputs *inputs, struct SM64MarioState *outState, struct SM64MarioGeometryBuffers *outBuffers );

@@ -76,13 +76,11 @@ static struct Area *hack_build_area( void )
     return result;
 }
 
-
-
-void sm64_global_init( uint8_t *rom, SM64DebugPrintFunctionPtr debugPrintFunction )
+void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugPrintFunctionPtr debugPrintFunction )
 {
     gDebugPrint = debugPrintFunction;
 
-    load_mario_textures_from_rom( rom );
+    load_mario_textures_from_rom( rom, outTexture );
     load_mario_anims_from_rom( rom );
 
     gMarioObject = hack_allocate_mario();
@@ -92,16 +90,9 @@ void sm64_global_init( uint8_t *rom, SM64DebugPrintFunctionPtr debugPrintFunctio
     s_mario_geo_pool = alloc_only_pool_init();
     s_mario_graph_node = process_geo_layout( s_mario_geo_pool, mario_geo_ptr );
 
-    D_80339D10.animDmaTable = NULL; // gMarioAnimsPtr; // mario_anims_ptr;
+    D_80339D10.animDmaTable = NULL;
     D_80339D10.currentAnimAddr = NULL;
     D_80339D10.targetAnim = NULL;
-
-    //DEBUG_LOG( "Mario animations loaded from address %lu", (uint64_t)D_80339D10.animDmaTable );
-}
-
-uint8_t *sm64_get_texture( void )
-{
-    return gLibSm64TextureRgba;
 }
 
 void sm64_load_surfaces( uint16_t terrainType, const struct SM64Surface *surfaceArray, size_t numSurfaces )
