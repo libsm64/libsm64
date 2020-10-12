@@ -69,11 +69,12 @@ def main():
 
     lines = model_inc_c.splitlines()
 
-    for line in lines:
-        if line.startswith("const "):
-            model_inc_h += "\nextern " + line.replace(" = {", ";")
+    for i in range(len(lines)):
+        lines[i] = lines[i].replace("#include", "//#include")
+        lines[i] = lines[i].replace("ALIGNED8 static const u8 mario", "static const u8 xxx")
+        if lines[i].startswith("const "):
+            model_inc_h += "\nextern " + lines[i].replace(" = {", ";")
 
-    lines = [ x.replace("#include", "//#include") for x in lines ]
     lines.insert(0, "#include \"../model_hack.h\"")
     model_inc_c = "\n".join(lines)
 
@@ -89,4 +90,5 @@ def main():
     with open("src/mario/geo.inc.h", "w") as file:
         file.write(geo_inc_h)
 
-main()
+if __name__ == "__main__":
+    main()

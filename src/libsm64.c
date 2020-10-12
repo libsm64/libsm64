@@ -17,10 +17,10 @@
 #include "engine/graph_node.h"
 #include "engine/geo_layout.h"
 #include "game/rendering_graph_node.h"
-//#include "mario/anim_data.h"
 #include "mario/geo.inc.h"
 #include "gfx_adapter.h"
 #include "load_anim_data.h"
+#include "load_tex_data.h"
 
 static struct AllocOnlyPool *s_mario_geo_pool;
 static struct GraphNode *s_mario_graph_node;
@@ -82,6 +82,7 @@ void sm64_global_init( uint8_t *rom, SM64DebugPrintFunctionPtr debugPrintFunctio
 {
     gDebugPrint = debugPrintFunction;
 
+    load_mario_textures_from_rom( rom );
     load_mario_anims_from_rom( rom );
 
     gMarioObject = hack_allocate_mario();
@@ -96,6 +97,11 @@ void sm64_global_init( uint8_t *rom, SM64DebugPrintFunctionPtr debugPrintFunctio
     D_80339D10.targetAnim = NULL;
 
     //DEBUG_LOG( "Mario animations loaded from address %lu", (uint64_t)D_80339D10.animDmaTable );
+}
+
+uint8_t *sm64_get_texture( void )
+{
+    return gLibSm64TextureRgba;
 }
 
 void sm64_load_surfaces( uint16_t terrainType, const struct SM64Surface *surfaceArray, size_t numSurfaces )

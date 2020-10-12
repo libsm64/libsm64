@@ -9,16 +9,34 @@
 
 static Mat4 s_curMatrix;
 static float s_curColor[3];
+
+static uint16_t s_scaleS, s_scaleT, s_uls, s_ult;
+static int s_textureOn, s_textureIndex;
+static float s_texWidth;
+static float s_texHeight;
+
 static struct SM64MarioGeometryBuffers *s_outBuffers;
+
 static float *s_trianglePtr;
 static float *s_colorPtr;
 static float *s_normalPtr;
+static float *s_uvPtr;
 
 static void mtxf_mul_vec3f(Mat4 mtx, Vec3f b, float w, Vec3f out)
 {
     out[0] = b[0] * mtx[0][0] + b[1] * mtx[1][0] + b[2] * mtx[2][0] + w * mtx[3][0];
     out[1] = b[0] * mtx[0][1] + b[1] * mtx[1][1] + b[2] * mtx[2][1] + w * mtx[3][1];
     out[2] = b[0] * mtx[0][2] + b[1] * mtx[1][2] + b[2] * mtx[2][2] + w * mtx[3][2];
+}
+
+static void convert_uv_to_atlas( float *atlas_uv_out, short tc[] )
+{
+    float u = (float)((tc[0] * s_scaleS >> 16) - 8*s_uls) / 32.0f / s_texWidth;
+    float v = (float)((tc[1] * s_scaleT >> 16) - 8*s_ult) / 32.0f / s_texHeight;
+
+    // TODO define 11 (number of used textures)
+    atlas_uv_out[0] = u * s_texWidth / 64.0f / 11.0f + (float)s_textureIndex / 11.0f;
+    atlas_uv_out[1] = v * s_texHeight / 64.0f;
 }
 
 static void process_display_list( void *dl )
@@ -88,6 +106,22 @@ static void process_display_list( void *dl )
                 *s_colorPtr++ = s_curColor[1];
                 *s_colorPtr++ = s_curColor[2];
 
+                if( s_textureOn )
+                {
+                    convert_uv_to_atlas( s_uvPtr, vdata[v00].v.tc ); s_uvPtr += 2;
+                    convert_uv_to_atlas( s_uvPtr, vdata[v01].v.tc ); s_uvPtr += 2;
+                    convert_uv_to_atlas( s_uvPtr, vdata[v02].v.tc ); s_uvPtr += 2;
+                }
+                else
+                {
+                    *s_uvPtr++ = 1.0f;
+                    *s_uvPtr++ = 1.0f;
+                    *s_uvPtr++ = 1.0f;
+                    *s_uvPtr++ = 1.0f;
+                    *s_uvPtr++ = 1.0f;
+                    *s_uvPtr++ = 1.0f;
+                }
+
                 break;
             }
 
@@ -103,6 +137,43 @@ static void process_display_list( void *dl )
                     s_curColor[1] = (float)data->l.col[1] / 255.0f;
                     s_curColor[2] = (float)data->l.col[2] / 255.0f;
                 }
+                
+                break;
+            }
+
+            case GFXCMD_Texture:
+            {
+                int64_t s = *ptr++;
+                int64_t t = *ptr++;
+                int64_t on = *ptr++;
+
+                s_scaleS = (uint16_t)s;
+                s_scaleT = (uint16_t)t;
+                s_textureOn = (int)on;
+
+                break;
+            }
+
+            case GFXCMD_SetTextureImage:
+            {
+                int64_t i = *ptr++;
+
+                s_textureIndex = (int)i;
+                s_texWidth = 32.0f;
+                s_texHeight = 32.0f;
+
+                break;
+            }
+
+            case GFXCMD_SetTileSize:
+            {
+                int64_t uls = *ptr++;
+                int64_t ult = *ptr++;
+                int64_t lrs = *ptr++;
+                int64_t lrt = *ptr++;
+
+                s_uls = (uint16_t)uls;
+                s_ult = (uint16_t)ult;
                 
                 break;
             }
@@ -141,5 +212,6 @@ void gfx_adapter_bind_output_buffers( struct SM64MarioGeometryBuffers *outBuffer
     s_trianglePtr = s_outBuffers->position;
     s_colorPtr = s_outBuffers->color;
     s_normalPtr = s_outBuffers->normal;
+    s_uvPtr = s_outBuffers->uv;
     s_outBuffers->bufferUsedSize = 0;
 }

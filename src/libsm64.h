@@ -36,11 +36,13 @@ struct SM64MarioGeometryBuffers
     float *position;
     float *normal;
     float *color;
+    float *uv;
 };
 
 typedef void (*SM64DebugPrintFunctionPtr)( const char * );
 
 extern void sm64_global_init( uint8_t *rom, SM64DebugPrintFunctionPtr debugPrintFunction );
+extern uint8_t *sm64_get_texture( void );
 extern void sm64_load_surfaces( uint16_t terrainType, const struct SM64Surface *surfaceArray, size_t numSurfaces );
 extern void sm64_mario_reset( int16_t marioX, int16_t marioY, int16_t marioZ );
 extern void sm64_mario_tick( const struct SM64MarioInputs *inputs, struct SM64MarioState *outState, struct SM64MarioGeometryBuffers *outBuffers );

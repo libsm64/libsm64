@@ -69,7 +69,12 @@ typedef struct {
     Light l[1];
 } Lights1;
 
-//static const Lights1 mario_blue_lights_group = gdSPDefLights1( 0x00, 0x00, 0x7f, 0x00, 0x00, 0xff, 0x28, 0x28, 0x28);
+
+#define	G_TX_RENDERTILE	0
+#define	G_ON (1)
+#define	G_OFF (0)
+#define	G_TEXTURE_IMAGE_FRAC 2
+
 #define gdSPDefLights1(ar,ag,ab,r1,g1,b1,x1,y1,z1) {{{ {ar,ag,ab},0,{ar,ag,ab},0}}, {{{ {r1,g1,b1},0,{r1,g1,b1},0,{x1,y1,z1},0}}} }
 
 #define gsSPVertex(v, n, v0) \
@@ -97,18 +102,27 @@ typedef struct {
     GFXCMD_Light, \
     (int64_t)l, n
 
+#define gsSPTexture(s, t, level, tile, on) \
+    GFXCMD_Texture, \
+    s, t, on
+
+#define gsDPSetTextureImage(f, s, w, i) \
+    GFXCMD_SetTextureImage, \
+    i
+
+#define gsDPSetTileSize(t, uls, ult, lrs, lrt) \
+    GFXCMD_SetTileSize, \
+    uls, ult, lrs, lrt
+
 #define gsDPPipeSync() (GFXCMD_None)
 #define gsDPSetCombineMode(a, b) (GFXCMD_None)
 #define gsSPSetGeometryMode(word) (GFXCMD_None)
 #define gsDPLoadTextureBlock(timg, fmt, siz, width, height, pal, cms, cmt, masks, maskt, shifts, shiftt) (GFXCMD_None)
-#define gsSPTexture(s, t, level, tile, on) (GFXCMD_None)
 #define gsSPClearGeometryMode(word) (GFXCMD_None)
 #define gsDPSetEnvColor(r, g, b, a) (GFXCMD_None)
 #define gsDPSetAlphaCompare(type) (GFXCMD_None)
 #define gsDPTileSync() (GFXCMD_None)
 #define gsDPSetTile(fmt, siz, line, tmem, tile, palette, cmt, maskt, shiftt, cms, masks, shifts) (GFXCMD_None)
-#define gsDPSetTileSize(t, uls, ult, lrs, lrt) (GFXCMD_None)
-#define gsDPSetTextureImage(f, s, w, i) (GFXCMD_None)
 #define gsDPLoadBlock(tile, uls, ult, lrs, dxt) (GFXCMD_None)
 #define gsDPLoadSync() (GFXCMD_None)
 

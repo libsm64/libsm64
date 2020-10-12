@@ -5,7 +5,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 CC='cc -g'
 CFLAGS='-Wall -fPIC'
 BIN_FILE='dist/libsm64.so'
-LDFLAGS=''
+LDFLAGS='-lm'
 
 c_to_obj() {
     printf 'build/'
