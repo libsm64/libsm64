@@ -76,6 +76,7 @@ def main():
             model_inc_h += "\nextern " + lines[i].replace(" = {", ";")
 
     lines.insert(0, "#include \"../model_hack.h\"")
+    lines.insert(0, "#include \"../load_tex_data.h\"")
     model_inc_c = "\n".join(lines)
 
     with open("src/mario/geo.inc.c", "w") as file:
