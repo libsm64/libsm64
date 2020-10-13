@@ -40,7 +40,7 @@ typedef void (*SM64DebugPrintFunctionPtr)( const char * );
 
 static const size_t SM64_TEXTURE_WIDTH  = 64 * 11;
 static const size_t SM64_TEXTURE_HEIGHT = 64;
-static const size_t SM64_GEO_BUFFER_SIZE = 1024;
+static const size_t SM64_GEO_MAX_TRIANGLES = 1024;
 
 extern void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugPrintFunctionPtr debugPrintFunction );
 extern void sm64_load_surfaces( uint16_t terrainType, const struct SM64Surface *surfaceArray, size_t numSurfaces );
