@@ -126,6 +126,21 @@ void sm64_mario_reset( int16_t marioX, int16_t marioY, int16_t marioZ )
     find_floor( marioX, marioY, marioZ, &gMarioState->floor );
 }
 
+static void update_non_terrain_objects( void )
+{
+    bhv_mario_update();
+}
+
+static void update_objects( void )
+{
+    //clear_dynamic_surfaces();
+    //update_terrain_objects();
+    //apply_mario_platform_displacement();
+    //detect_object_collisions();
+    update_non_terrain_objects();
+    //update_mario_platform();
+}
+
 void sm64_mario_tick( const struct SM64MarioInputs *inputs, struct SM64MarioState *outState,  struct SM64MarioGeometryBuffers *outBuffers )
 {
     update_button( inputs->buttonA, A_BUTTON );
@@ -138,7 +153,7 @@ void sm64_mario_tick( const struct SM64MarioInputs *inputs, struct SM64MarioStat
     gController.stickY = 64.0f * inputs->stickY;
     gController.stickMag = sqrtf( gController.stickX*gController.stickX + gController.stickY*gController.stickY );
 
-    bhv_mario_update();
+    update_objects();
 
     gfx_adapter_bind_output_buffers( outBuffers );
 

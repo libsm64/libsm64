@@ -3,3 +3,4 @@
 /dist/
 Makefile
 *.z64
+*.so
