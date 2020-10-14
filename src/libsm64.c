@@ -97,7 +97,7 @@ void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugPrintFunction
     D_80339D10.targetAnim = NULL;
 }
 
-void sm64_load_surfaces( uint16_t terrainType, const struct SM64Surface *surfaceArray, size_t numSurfaces )
+void sm64_load_surfaces( uint16_t terrainType, const struct SM64Surface *surfaceArray, uint32_t numSurfaces )
 {
     surface_load_for_libsm64( surfaceArray, numSurfaces );
     gCurrentArea->terrainType = terrainType;
@@ -141,7 +141,7 @@ static void update_objects( void )
     //update_mario_platform();
 }
 
-void sm64_mario_tick( const struct SM64MarioInputs *inputs, struct SM64MarioState *outState,  struct SM64MarioGeometryBuffers *outBuffers )
+void sm64_mario_tick( const struct SM64MarioInputs *inputs, struct SM64MarioState *outState, struct SM64MarioGeometryBuffers *outBuffers )
 {
     update_button( inputs->buttonA, A_BUTTON );
     update_button( inputs->buttonB, B_BUTTON );
@@ -170,4 +170,16 @@ void sm64_mario_tick( const struct SM64MarioInputs *inputs, struct SM64MarioStat
 void sm64_global_terminate( void )
 {
     // TODO free
+}
+
+uint32_t sm64_load_surface_object( const struct SM64SurfaceObject *surfaceObject )
+{
+}
+
+void sm64_move_object( uint32_t id, const struct SM64ObjectTransform *transform )
+{
+}
+
+void sm64_unload_object( uint32_t id )
+{
 }

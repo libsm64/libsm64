@@ -19,6 +19,19 @@ struct SM64MarioInputs
     uint8_t buttonA, buttonB, buttonZ;
 };
 
+struct SM64ObjectTransform
+{
+    float position[3];
+    float eulerRotation[3];
+};
+
+struct SM64SurfaceObject
+{
+    struct SM64ObjectTransform transform;
+    uint32_t surfaceCount;
+    struct SM64Surface surfaces[];
+};
+
 struct SM64MarioState
 {
     float position[3];
@@ -38,14 +51,18 @@ struct SM64MarioGeometryBuffers
 
 typedef void (*SM64DebugPrintFunctionPtr)( const char * );
 
-static const size_t SM64_TEXTURE_WIDTH  = 64 * 11;
-static const size_t SM64_TEXTURE_HEIGHT = 64;
-static const size_t SM64_GEO_MAX_TRIANGLES = 1024;
+static const uint32_t SM64_TEXTURE_WIDTH  = 64 * 11;
+static const uint32_t SM64_TEXTURE_HEIGHT = 64;
+static const uint32_t SM64_GEO_MAX_TRIANGLES = 1024;
 
 extern void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugPrintFunctionPtr debugPrintFunction );
-extern void sm64_load_surfaces( uint16_t terrainType, const struct SM64Surface *surfaceArray, size_t numSurfaces );
+extern void sm64_load_surfaces( uint16_t terrainType, const struct SM64Surface *surfaceArray, uint32_t numSurfaces );
 extern void sm64_mario_reset( int16_t marioX, int16_t marioY, int16_t marioZ );
 extern void sm64_mario_tick( const struct SM64MarioInputs *inputs, struct SM64MarioState *outState, struct SM64MarioGeometryBuffers *outBuffers );
 extern void sm64_global_terminate( void );
+
+extern uint32_t sm64_load_surface_object( const struct SM64SurfaceObject *surfaceObject );
+extern void sm64_move_object( uint32_t id, const struct SM64ObjectTransform *transform );
+extern void sm64_unload_object( uint32_t id );
 
 #endif//__LIB_SM64_H

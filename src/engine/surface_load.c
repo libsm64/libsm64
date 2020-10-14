@@ -313,7 +313,7 @@ static void load_area_terrain(s16 index, s16 *data, s8 *surfaceRooms, s16 *macro
 // }
 
 
-void surface_load_for_libsm64( const struct SM64Surface *surfaceArray, size_t numSurfaces )
+void surface_load_for_libsm64( const struct SM64Surface *surfaceArray, uint32_t numSurfaces )
 {
     while( s_surface_node_list )
     {
