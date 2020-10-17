@@ -70,8 +70,6 @@ static void read_surface_data( struct Surface *surface, int16_t type, int16_t fo
     ny *= mag;
     nz *= mag;
 
-    surface = malloc(sizeof(struct Surface)); 
-
     surface->vertex1[0] = x1;
     surface->vertex2[0] = x2;
     surface->vertex3[0] = x3;
