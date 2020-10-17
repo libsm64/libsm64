@@ -39,6 +39,4 @@ f32 find_floor(f32 xPos, f32 yPos, f32 zPos, struct Surface **pfloor);
 f32 find_water_level(f32 x, f32 z);
 f32 find_poison_gas_level(f32 x, f32 z);
 
-void hack_load_surface_list(struct SurfaceNode *surfaceNode);
-
 #endif // SURFACE_COLLISION_H

@@ -12,7 +12,6 @@
 #include "shim.h"
 #include "game/mario.h"
 #include "game/object_stuff.h"
-#include "engine/surface_load.h"
 #include "engine/surface_collision.h"
 #include "engine/graph_node.h"
 #include "engine/geo_layout.h"
@@ -174,6 +173,16 @@ void sm64_global_terminate( void )
 
 uint32_t sm64_load_surface_object( const struct SM64SurfaceObject *surfaceObject )
 {
+    DEBUG_LOG(
+        "sm64_load_surface_object : %f %f %f : %f %f %f : %d",
+        surfaceObject->transform.position[0],
+        surfaceObject->transform.position[1],
+        surfaceObject->transform.position[2],
+        surfaceObject->transform.eulerRotation[0],
+        surfaceObject->transform.eulerRotation[1],
+        surfaceObject->transform.eulerRotation[2],
+        surfaceObject->surfaceCount
+    );
 }
 
 void sm64_move_object( uint32_t id, const struct SM64ObjectTransform *transform )

@@ -3,13 +3,12 @@
 #include "../shim.h"
 #include "surface_collision.h"
 #include "../include/surface_terrains.h"
-
-struct SurfaceNode *s_surfaceList;
+#include "../load_surfaces.h"
 
 /**
  * Iterate through the list of ceilings and find the first ceiling over a given point.
  */
-static struct Surface *find_ceil_from_list(struct SurfaceNode *surfaceNode, s32 x, s32 y, s32 z, f32 *pheight) {
+static struct Surface *find_ceil_from_list( s32 x, s32 y, s32 z, f32 *pheight) {
     register struct Surface *surf;
     register s32 x1, z1, x2, z2, x3, z3;
     struct Surface *ceil = NULL;
@@ -17,10 +16,9 @@ static struct Surface *find_ceil_from_list(struct SurfaceNode *surfaceNode, s32 
     ceil = NULL;
 
     // Stay in this loop until out of ceilings.
-    while (surfaceNode != NULL) {
-        surf = surfaceNode->surface;
-        surfaceNode = surfaceNode->next;
-
+    int count = loaded_surface_get_count();
+    for( int i = 0; i < count; ++i ) {
+        surf = loaded_surface_get_at_index(i);
 
         // Do the check normally done in add_surface_to_cell
         if( surf->normal.y >= -0.01f ) continue;
@@ -96,7 +94,7 @@ static struct Surface *find_ceil_from_list(struct SurfaceNode *surfaceNode, s32 
 /**
  * Iterate through the list of floors and find the first floor under a given point.
  */
-static struct Surface *find_floor_from_list(struct SurfaceNode *surfaceNode, s32 x, s32 y, s32 z, f32 *pheight) {
+static struct Surface *find_floor_from_list( s32 x, s32 y, s32 z, f32 *pheight) {
     register struct Surface *surf;
     register s32 x1, z1, x2, z2, x3, z3;
     f32 nx, ny, nz;
@@ -105,9 +103,9 @@ static struct Surface *find_floor_from_list(struct SurfaceNode *surfaceNode, s32
     struct Surface *floor = NULL;
 
     // Iterate through the list of floors until there are no more floors.
-    while (surfaceNode != NULL) {
-        surf = surfaceNode->surface;
-        surfaceNode = surfaceNode->next;
+    int count = loaded_surface_get_count();
+    for( int i = 0; i < count; ++i ) {
+        surf = loaded_surface_get_at_index(i);
 
 
         // Do the check normally done in add_surface_to_cell
@@ -175,8 +173,7 @@ static struct Surface *find_floor_from_list(struct SurfaceNode *surfaceNode, s32
     return floor;
 }
 
-static s32 find_wall_collisions_from_list(struct SurfaceNode *surfaceNode,
-                                          struct WallCollisionData *data) {
+static s32 find_wall_collisions_from_list( struct WallCollisionData *data) {
     register struct Surface *surf;
     register f32 offset;
     register f32 radius = data->radius;
@@ -194,9 +191,9 @@ static s32 find_wall_collisions_from_list(struct SurfaceNode *surfaceNode,
     }
 
     // Stay in this loop until out of walls.
-    while (surfaceNode != NULL) {
-        surf = surfaceNode->surface;
-        surfaceNode = surfaceNode->next;
+    int count = loaded_surface_get_count();
+    for( int i = 0; i < count; ++i ) {
+        surf = loaded_surface_get_at_index(i);
 
 
         // Do the check normally done in add_surface_to_cell
@@ -362,14 +359,14 @@ s32 find_wall_collisions(struct WallCollisionData *colData)
         return numCollisions;
     }
 
-    numCollisions += find_wall_collisions_from_list(s_surfaceList, colData);
+    numCollisions += find_wall_collisions_from_list(colData);
     return numCollisions;
 }
 
 f32 find_ceil(f32 posX, f32 posY, f32 posZ, struct Surface **pceil)
 {
     f32 height = CELL_HEIGHT_LIMIT;
-	*pceil = find_ceil_from_list( s_surfaceList, posX, posY, posZ, &height );
+	*pceil = find_ceil_from_list( posX, posY, posZ, &height );
 	return height;
 }
 
@@ -396,14 +393,14 @@ f32 find_floor_height_and_data(f32 xPos, f32 yPos, f32 zPos, struct FloorGeometr
 f32 find_floor_height(f32 x, f32 y, f32 z)
 {
     f32 height = FLOOR_LOWER_LIMIT;
-	find_floor_from_list( s_surfaceList, x, y, z, &height );
+	find_floor_from_list( x, y, z, &height );
 	return height;
 }
 
 f32 find_floor(f32 xPos, f32 yPos, f32 zPos, struct Surface **pfloor)
 {
     f32 height = FLOOR_LOWER_LIMIT;
-	*pfloor = find_floor_from_list( s_surfaceList, xPos, yPos, zPos, &height );
+	*pfloor = find_floor_from_list( xPos, yPos, zPos, &height );
 	return height;
 }
 
@@ -415,9 +412,4 @@ f32 find_water_level(f32 x, f32 z)
 f32 find_poison_gas_level(f32 x, f32 z)
 {
 	return -10000.0f;
-}
-
-void hack_load_surface_list(struct SurfaceNode *surfaceNode)
-{
-	s_surfaceList = surfaceNode;
 }
