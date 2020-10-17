@@ -2,6 +2,7 @@
 
 #include "include/types.h"
 #include "include/surface_terrains.h"
+#include "shim.h"
 
 
 static struct Surface *s_loaded_static_surface_list = NULL;

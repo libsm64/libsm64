@@ -17,6 +17,7 @@
 #include "engine/geo_layout.h"
 #include "game/rendering_graph_node.h"
 #include "mario/geo.inc.h"
+#include "load_surfaces.h"
 #include "gfx_adapter.h"
 #include "load_anim_data.h"
 #include "load_tex_data.h"
@@ -98,7 +99,7 @@ void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugPrintFunction
 
 void sm64_load_surfaces( uint16_t terrainType, const struct SM64Surface *surfaceArray, uint32_t numSurfaces )
 {
-    surface_load_for_libsm64( surfaceArray, numSurfaces );
+    surfaces_load_static_libsm64( surfaceArray, numSurfaces );
     gCurrentArea->terrainType = terrainType;
 }
 
