@@ -22,6 +22,20 @@
 #define disable_time_stop() ({})
 #define play_cutscene_music(a) ({})
 
+struct SurfaceObjectTransform
+{
+    float aPosX, aPosY, aPosZ;
+    float aVelX, aVelY, aVelZ;
+
+    s16 aFaceAnglePitch;
+    s16 aFaceAngleYaw;
+    s16 aFaceAngleRoll;
+
+    s16 aAngleVelPitch;
+    s16 aAngleVelYaw;
+    s16 aAngleVelRoll;
+};
+
 struct SurfaceNode
 {
     struct SurfaceNode *next;

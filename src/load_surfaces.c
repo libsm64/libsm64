@@ -5,16 +5,59 @@
 
 #include "include/types.h"
 #include "include/surface_terrains.h"
+#include "engine/math_util.h"
 #include "shim.h"
+
+struct LoadedSurfaceObject
+{
+    struct SurfaceObjectTransform transform;
+    uint32_t surfaceCount;
+    struct SM64Surface *surfaces;
+};
 
 static uint32_t s_static_surface_count = 0;
 static struct Surface *s_static_surface_list = NULL;
 
 static uint32_t s_surface_object_count = 0;
-static struct SM64SurfaceObject *s_surface_object_list = NULL;
+static struct LoadedSurfaceObject *s_surface_object_list = NULL;
 
 static uint32_t s_dynamic_surface_count = 0;
 static struct Surface *s_dynamic_surface_list = NULL;
+
+
+static void init_transform( struct SurfaceObjectTransform *out, const struct SM64ObjectTransform *in )
+{
+    out->aVelX = 0.0f;
+    out->aVelY = 0.0f;
+    out->aVelZ = 0.0f;
+    out->aPosX = in->position[0];
+    out->aPosY = in->position[1];
+    out->aPosZ = in->position[2];
+
+    out->aAngleVelPitch = 0.0f;
+    out->aAngleVelYaw   = 0.0f;
+    out->aAngleVelRoll  = 0.0f;
+    out->aFaceAnglePitch = in->eulerRotation[0];
+    out->aFaceAngleYaw   = in->eulerRotation[1];
+    out->aFaceAngleRoll  = in->eulerRotation[2];
+}
+
+static void update_transform( struct SurfaceObjectTransform *out, const struct SM64ObjectTransform *in )
+{
+    out->aVelX = in->position[0] - out->aPosX;
+    out->aVelY = in->position[1] - out->aPosY;
+    out->aVelZ = in->position[2] - out->aPosZ;
+    out->aPosX = in->position[0];
+    out->aPosY = in->position[1];
+    out->aPosZ = in->position[2];
+
+    out->aFaceAnglePitch = in->eulerRotation[0] - out->aFaceAnglePitch;
+    out->aFaceAngleYaw   = in->eulerRotation[1] - out->aFaceAngleYaw;
+    out->aFaceAngleRoll  = in->eulerRotation[2] - out->aFaceAngleRoll;
+    out->aFaceAnglePitch = in->eulerRotation[0];
+    out->aFaceAngleYaw   = in->eulerRotation[1];
+    out->aFaceAngleRoll  = in->eulerRotation[2];
+}
 
 /**
  * Returns whether a surface has exertion/moves Mario
@@ -40,7 +83,7 @@ static s32 surface_has_force(s16 surfaceType) {
     return hasForce;
 }
 
-static void engine_surface_from_lib_surface( struct Surface *surface, const struct SM64Surface *libSurf, const struct SM64ObjectTransform *transform )
+static void engine_surface_from_lib_surface( struct Surface *surface, const struct SM64Surface *libSurf, const struct SurfaceObjectTransform *transform )
 {
     int16_t type = libSurf->type;
     int16_t force = libSurf->force;
@@ -57,6 +100,30 @@ static void engine_surface_from_lib_surface( struct Surface *surface, const stru
     s32 maxY, minY;
     f32 nx, ny, nz;
     f32 mag;
+
+    if( transform != NULL )
+    {
+        Mat4 m;
+        Vec3s rotation = {
+            (short)( -transform->aFaceAnglePitch / 180.0f * 32768.0f ),
+            (short)( -transform->aFaceAngleYaw   / 180.0f * 32768.0f ),
+            (short)( -transform->aFaceAngleRoll  / 180.0f * 32768.0f )
+        };
+        Vec3f position = { transform->aPosX, transform->aPosY, transform->aPosZ };
+        mtxf_rotate_zxy_and_translate(m, position, rotation);
+
+        Vec3f v1 = { x1, y1, z1 };
+        Vec3f v2 = { x2, y2, z2 };
+        Vec3f v3 = { x3, y3, z3 };
+
+        mtxf_mul_vec3f( m, v1 );
+        mtxf_mul_vec3f( m, v2 );
+        mtxf_mul_vec3f( m, v3 );
+
+        x1 = v1[0]; y1 = v1[1]; z1 = v1[2];
+        x2 = v2[0]; y2 = v2[1]; z2 = v2[2];
+        x3 = v3[0]; y3 = v3[1]; z3 = v3[2];
+    }
 
     // (v2 - v1) x (v3 - v2)
     nx = (y2 - y1) * (z3 - z2) - (z2 - z1) * (y3 - y2);
@@ -88,8 +155,6 @@ static void engine_surface_from_lib_surface( struct Surface *surface, const stru
     nx *= mag;
     ny *= mag;
     nz *= mag;
-
-    // TODO apply tranform
 
     surface->vertex1[0] = x1;
     surface->vertex2[0] = x2;
@@ -128,11 +193,9 @@ static void engine_surface_from_lib_surface( struct Surface *surface, const stru
     return surface;
 }
 
-static void update_dynamic_surface_list( void )
+void update_dynamic_surface_list( void )
 {
-    if( s_dynamic_surface_list != NULL )
-        free( s_dynamic_surface_list );
-
+    free( s_dynamic_surface_list );
     s_dynamic_surface_count = 0;
     s_dynamic_surface_list = NULL;
 
@@ -174,15 +237,35 @@ uint32_t surfaces_load_object( const struct SM64SurfaceObject *surfaceObject )
 {
     uint32_t idx = s_surface_object_count;
     s_surface_object_count++;
-    s_surface_object_list = realloc( s_surface_object_list, s_surface_object_count * sizeof( struct SM64SurfaceObject ));
+    s_surface_object_list = realloc( s_surface_object_list, s_surface_object_count * sizeof( struct LoadedSurfaceObject ));
 
-    struct SM64SurfaceObject *obj = &s_surface_object_list[idx];
-    obj->transform = surfaceObject->transform;
+    struct LoadedSurfaceObject *obj = &s_surface_object_list[idx];
+    init_transform( &obj->transform, &surfaceObject->transform );
     obj->surfaceCount = surfaceObject->surfaceCount;
     obj->surfaces = malloc( obj->surfaceCount * sizeof( struct SM64Surface ));
     memcpy( obj->surfaces, surfaceObject->surfaces, obj->surfaceCount * sizeof( struct SM64Surface ));
 
-    update_dynamic_surface_list();
-
     return idx;
+}
+
+void surface_object_update_transform( uint32_t objId, const struct SM64ObjectTransform *newTransform )
+{
+    update_transform( &s_surface_object_list[objId].transform, newTransform );
+}
+
+void surfaces_unload_all( void )
+{
+    free( s_static_surface_list );
+    s_static_surface_count = 0;
+    s_static_surface_list = NULL;
+
+    for( int i = 0; i < s_surface_object_count; ++i )
+        free( s_surface_object_list[i].surfaces );
+    free( s_surface_object_list );
+    s_surface_object_count = 0;
+    s_surface_object_list = NULL;
+
+    free( s_dynamic_surface_list );
+    s_dynamic_surface_count = 0;
+    s_dynamic_surface_list = NULL;
 }

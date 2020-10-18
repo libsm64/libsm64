@@ -21,6 +21,7 @@
 #include "gfx_adapter.h"
 #include "load_anim_data.h"
 #include "load_tex_data.h"
+#include "game/platform_displacement.h"
 
 static struct AllocOnlyPool *s_mario_geo_pool;
 static struct GraphNode *s_mario_graph_node;
@@ -126,6 +127,11 @@ void sm64_mario_reset( int16_t marioX, int16_t marioY, int16_t marioZ )
     find_floor( marioX, marioY, marioZ, &gMarioState->floor );
 }
 
+static void update_terrain_objects( void )
+{
+    update_dynamic_surface_list(); 
+}
+
 static void update_non_terrain_objects( void )
 {
     bhv_mario_update();
@@ -134,11 +140,11 @@ static void update_non_terrain_objects( void )
 static void update_objects( void )
 {
     //clear_dynamic_surfaces();
-    //update_terrain_objects();
-    //apply_mario_platform_displacement();
+    update_terrain_objects();
+    apply_mario_platform_displacement();
     //detect_object_collisions();
     update_non_terrain_objects();
-    //update_mario_platform();
+    update_mario_platform();
 }
 
 void sm64_mario_tick( const struct SM64MarioInputs *inputs, struct SM64MarioState *outState, struct SM64MarioGeometryBuffers *outBuffers )
@@ -169,7 +175,9 @@ void sm64_mario_tick( const struct SM64MarioInputs *inputs, struct SM64MarioStat
 
 void sm64_global_terminate( void )
 {
-    // TODO free
+    // TODO free other things
+
+    surfaces_unload_all();
 }
 
 uint32_t sm64_load_surface_object( const struct SM64SurfaceObject *surfaceObject )

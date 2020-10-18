@@ -23,7 +23,7 @@ static float *s_colorPtr;
 static float *s_normalPtr;
 static float *s_uvPtr;
 
-static void mtxf_mul_vec3f(Mat4 mtx, Vec3f b, float w, Vec3f out)
+static void mtxf_mul_vec3f_x(Mat4 mtx, Vec3f b, float w, Vec3f out)
 {
     out[0] = b[0] * mtx[0][0] + b[1] * mtx[1][0] + b[2] * mtx[2][0] + w * mtx[3][0];
     out[1] = b[0] * mtx[0][1] + b[1] * mtx[1][1] + b[2] * mtx[2][1] + w * mtx[3][1];
@@ -78,21 +78,21 @@ static void process_display_list( void *dl )
                 Vec3f n1 = { ((float)nx1) / 128.0f, ((float)ny1) / 128.0f, ((float)nz1) / 128.0f };
                 Vec3f n2 = { ((float)nx2) / 128.0f, ((float)ny2) / 128.0f, ((float)nz2) / 128.0f };
 
-                mtxf_mul_vec3f( s_curMatrix, p0, 1.0f, s_trianglePtr );
+                mtxf_mul_vec3f_x( s_curMatrix, p0, 1.0f, s_trianglePtr );
                 s_trianglePtr += 3;
-                mtxf_mul_vec3f( s_curMatrix, p1, 1.0f, s_trianglePtr );
+                mtxf_mul_vec3f_x( s_curMatrix, p1, 1.0f, s_trianglePtr );
                 s_trianglePtr += 3;
-                mtxf_mul_vec3f( s_curMatrix, p2, 1.0f, s_trianglePtr );
+                mtxf_mul_vec3f_x( s_curMatrix, p2, 1.0f, s_trianglePtr );
                 s_trianglePtr += 3;
 
-                // TODO normals arent correct under non-uniform scale. multiple by inverse/transpose
-                mtxf_mul_vec3f( s_curMatrix, n0, 0.0f, s_normalPtr );
+                // TODO normals arent correct under non-uniform scale. multiply by inverse/transpose
+                mtxf_mul_vec3f_x( s_curMatrix, n0, 0.0f, s_normalPtr );
                 vec3f_normalize( s_normalPtr );
                 s_normalPtr += 3;
-                mtxf_mul_vec3f( s_curMatrix, n1, 0.0f, s_normalPtr );
+                mtxf_mul_vec3f_x( s_curMatrix, n1, 0.0f, s_normalPtr );
                 vec3f_normalize( s_normalPtr );
                 s_normalPtr += 3;
-                mtxf_mul_vec3f( s_curMatrix, n2, 0.0f, s_normalPtr );
+                mtxf_mul_vec3f_x( s_curMatrix, n2, 0.0f, s_normalPtr );
                 vec3f_normalize( s_normalPtr );
                 s_normalPtr += 3;
 
