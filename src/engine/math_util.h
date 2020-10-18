@@ -73,4 +73,10 @@ void spline_get_weights(Vec4f result, f32 t, UNUSED s32 c);
 void anim_spline_init(Vec4s *keyFrames);
 s32 anim_spline_poll(Vec3f result);
 
+
+// From object_helpers.c
+void linear_mtxf_mul_vec3f(Mat4 m, Vec3f dst, Vec3f v);
+void linear_mtxf_transpose_mul_vec3f(Mat4 m, Vec3f dst, Vec3f v);
+
+
 #endif // MATH_UTIL_H

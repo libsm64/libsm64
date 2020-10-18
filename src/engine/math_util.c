@@ -2313,3 +2313,37 @@ s32 anim_spline_poll(Vec3f result) {
 
     return hasEnded;
 }
+
+
+
+// From object_helpers.c
+
+/**
+ * Multiply a vector by a matrix of the form
+ * | ? ? ? 0 |
+ * | ? ? ? 0 |
+ * | ? ? ? 0 |
+ * | 0 0 0 1 |
+ * i.e. a matrix representing a linear transformation over 3 space.
+ */
+void linear_mtxf_mul_vec3f(Mat4 m, Vec3f dst, Vec3f v) {
+    s32 i;
+    for (i = 0; i < 3; i++) {
+        dst[i] = m[0][i] * v[0] + m[1][i] * v[1] + m[2][i] * v[2];
+    }
+}
+
+/**
+ * Multiply a vector by the transpose of a matrix of the form
+ * | ? ? ? 0 |
+ * | ? ? ? 0 |
+ * | ? ? ? 0 |
+ * | 0 0 0 1 |
+ * i.e. a matrix representing a linear transformation over 3 space.
+ */
+void linear_mtxf_transpose_mul_vec3f(Mat4 m, Vec3f dst, Vec3f v) {
+    s32 i;
+    for (i = 0; i < 3; i++) {
+        dst[i] = m[i][0] * v[0] + m[i][1] * v[1] + m[i][2] * v[2];
+    }
+}

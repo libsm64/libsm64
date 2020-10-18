@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include "../engine/math_util.h"
 #include "../engine/surface_collision.h"
 #include "level_update.h"
