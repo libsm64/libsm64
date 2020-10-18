@@ -10,6 +10,8 @@
 
 struct SurfaceObjectTransform *gMarioPlatform = NULL;
 
+#define absfx( x ) ( (x) < 0.0f ? -(x) : (x) )
+
 /**
  * Determine if Mario is standing on a platform object, meaning that he is
  * within 4 units of the floor. Set his referenced platform object accordingly.
@@ -37,7 +39,7 @@ void update_mario_platform(void) {
     marioZ = gMarioObject->oPosZ;
     floorHeight = find_floor(marioX, marioY, marioZ, &floor);
 
-    if (absf(marioY - floorHeight) < 4.0f) {
+    if (absfx(marioY - floorHeight) < 4.0f) {
         awayFromFloor = 0;
     } else {
         awayFromFloor = 1;
