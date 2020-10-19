@@ -38,6 +38,7 @@ const GeoLayout mario_geo_libsm64[] = {
 };
 
 void *mario_geo_ptr = (void*)mario_geo_libsm64;
+
 """
 
 geo_inc_h = """
@@ -55,10 +56,6 @@ model_inc_h = """
 
 def main():
     global model_inc_h
-
-    if os.path.exists("src/mario/geo.inc.c") and os.path.exists("src/mario/model.inc.c") \
-    and os.path.exists("src/mario/geo.inc.h") and os.path.exists("src/mario/model.inc.h"):
-        return;
 
     shutil.rmtree("src/mario", ignore_errors=True)
     os.makedirs("src/mario", exist_ok=True)
@@ -84,6 +81,7 @@ def main():
     lines.insert(0, "#include \"../gfx_macros.h\"")
     lines.insert(0, "#include \"../load_tex_data.h\"")
     model_inc_c = "\n".join(lines)
+
 
     with open("src/mario/geo.inc.c", "w") as file:
         file.write(geo_inc_c_header + geo_inc_c + geo_inc_c_footer)
