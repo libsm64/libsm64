@@ -1,6 +1,5 @@
 /src/mario
 /build/
 /dist/
-Makefile
 *.z64
 *.so

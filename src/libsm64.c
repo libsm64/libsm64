@@ -187,6 +187,7 @@ uint32_t sm64_load_surface_object( const struct SM64SurfaceObject *surfaceObject
 
 void sm64_move_object( uint32_t id, const struct SM64ObjectTransform *transform )
 {
+    surface_object_update_transform( id, transform );
 }
 
 void sm64_unload_object( uint32_t id )

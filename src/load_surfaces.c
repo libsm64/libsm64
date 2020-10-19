@@ -24,6 +24,7 @@ static struct LoadedSurfaceObject *s_surface_object_list = NULL;
 static uint32_t s_dynamic_surface_count = 0;
 static struct Surface *s_dynamic_surface_list = NULL;
 
+#define CONVERT_ANGLE( x ) ((s16)( -(x) / 180.0f * 32768.0f ))
 
 static void init_transform( struct SurfaceObjectTransform *out, const struct SM64ObjectTransform *in )
 {
@@ -37,9 +38,9 @@ static void init_transform( struct SurfaceObjectTransform *out, const struct SM6
     out->aAngleVelPitch = 0.0f;
     out->aAngleVelYaw   = 0.0f;
     out->aAngleVelRoll  = 0.0f;
-    out->aFaceAnglePitch = in->eulerRotation[0];
-    out->aFaceAngleYaw   = in->eulerRotation[1];
-    out->aFaceAngleRoll  = in->eulerRotation[2];
+    out->aFaceAnglePitch = CONVERT_ANGLE(in->eulerRotation[0]);
+    out->aFaceAngleYaw   = CONVERT_ANGLE(in->eulerRotation[1]);
+    out->aFaceAngleRoll  = CONVERT_ANGLE(in->eulerRotation[2]);
 }
 
 static void update_transform( struct SurfaceObjectTransform *out, const struct SM64ObjectTransform *in )
@@ -51,12 +52,16 @@ static void update_transform( struct SurfaceObjectTransform *out, const struct S
     out->aPosY = in->position[1];
     out->aPosZ = in->position[2];
 
-    out->aFaceAnglePitch = in->eulerRotation[0] - out->aFaceAnglePitch;
-    out->aFaceAngleYaw   = in->eulerRotation[1] - out->aFaceAngleYaw;
-    out->aFaceAngleRoll  = in->eulerRotation[2] - out->aFaceAngleRoll;
-    out->aFaceAnglePitch = in->eulerRotation[0];
-    out->aFaceAngleYaw   = in->eulerRotation[1];
-    out->aFaceAngleRoll  = in->eulerRotation[2];
+    s16 inX = CONVERT_ANGLE(in->eulerRotation[0]);
+    s16 inY = CONVERT_ANGLE(in->eulerRotation[1]);
+    s16 inZ = CONVERT_ANGLE(in->eulerRotation[2]);
+
+    out->aAngleVelPitch = inX - out->aFaceAnglePitch;
+    out->aAngleVelYaw   = inY - out->aFaceAngleYaw;
+    out->aAngleVelRoll  = inZ - out->aFaceAngleRoll;
+    out->aFaceAnglePitch = inX;
+    out->aFaceAngleYaw   = inY;
+    out->aFaceAngleRoll  = inZ;
 }
 
 /**
@@ -104,11 +109,7 @@ static void engine_surface_from_lib_surface( struct Surface *surface, const stru
     if( transform != NULL )
     {
         Mat4 m;
-        Vec3s rotation = {
-            (short)( -transform->aFaceAnglePitch / 180.0f * 32768.0f ),
-            (short)( -transform->aFaceAngleYaw   / 180.0f * 32768.0f ),
-            (short)( -transform->aFaceAngleRoll  / 180.0f * 32768.0f )
-        };
+        Vec3s rotation = { transform->aFaceAnglePitch, transform->aFaceAngleYaw, transform->aFaceAngleRoll };
         Vec3f position = { transform->aPosX, transform->aPosY, transform->aPosZ };
         mtxf_rotate_zxy_and_translate(m, position, rotation);
 
@@ -123,6 +124,8 @@ static void engine_surface_from_lib_surface( struct Surface *surface, const stru
         x1 = v1[0]; y1 = v1[1]; z1 = v1[2];
         x2 = v2[0]; y2 = v2[1]; z2 = v2[2];
         x3 = v3[0]; y3 = v3[1]; z3 = v3[2];
+
+        surface->object = (struct Object *)(transform);
     }
 
     // (v2 - v1) x (v3 - v2)
@@ -189,8 +192,6 @@ static void engine_surface_from_lib_surface( struct Surface *surface, const stru
     } else {
         surface->force = 0;
     }
-
-    return surface;
 }
 
 void update_dynamic_surface_list( void )

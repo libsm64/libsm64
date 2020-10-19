@@ -69,13 +69,24 @@ def main():
 
     lines = model_inc_c.splitlines()
 
+    skip = 0
     for i in range(len(lines)):
+        if skip > 0:
+            skip = skip - 1
+            lines[i] = "//" + lines[i]
+            continue
+
+        if lines[i].startswith("ALIGNED8 static const u8 mario_"):
+            skip = 2
+            lines[i] = "//" + lines[i]
+            continue
+
         lines[i] = lines[i].replace("#include", "//#include")
         lines[i] = lines[i].replace("ALIGNED8 static const u8 mario", "static const u8 xxx")
         if lines[i].startswith("const "):
             model_inc_h += "\nextern " + lines[i].replace(" = {", ";")
 
-    lines.insert(0, "#include \"../model_hack.h\"")
+    lines.insert(0, "#include \"../gfx_macros.h\"")
     lines.insert(0, "#include \"../load_tex_data.h\"")
     model_inc_c = "\n".join(lines)
 
