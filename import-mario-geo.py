@@ -48,6 +48,7 @@ extern void *mario_geo_ptr;
 
 model_inc_h = """
 #pragma once
+
 #include "../include/types.h"
 #include "../include/PR/gbi.h"
 """
@@ -74,16 +75,10 @@ def main():
         if skip > 0:
             skip = skip - 1
             lines[i] = "//" + lines[i]
-            continue
-
-        if lines[i].startswith("ALIGNED8 static const u8 mario_"):
+        elif lines[i].startswith("ALIGNED8 static const u8 mario_"):
             skip = 2
             lines[i] = "//" + lines[i]
-            continue
-
-        lines[i] = lines[i].replace("#include", "//#include")
-        lines[i] = lines[i].replace("ALIGNED8 static const u8 mario", "static const u8 xxx")
-        if lines[i].startswith("const "):
+        elif lines[i].startswith("const "):
             model_inc_h += "\nextern " + lines[i].replace(" = {", ";")
 
     lines.insert(0, "#include \"../gfx_macros.h\"")

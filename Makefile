@@ -31,7 +31,7 @@ $(BUILD_DIR)/%.o: %.c
 $(BIN_FILE): $(O_FILES)
 	$(CC) $(LDFLAGS) -o $@ $^
 
-dist/include/libsm64.h: src/libsm64.h
+$(LIB_H_FILE): src/libsm64.h
 	cp -f $< $@
 
 all: $(BIN_FILE) $(LIB_H_FILE)
