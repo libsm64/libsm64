@@ -9,7 +9,7 @@ which makes use of this library must ask the user to provide a ROM for asset ext
 
 ## Building
 
-Currently only linux is supported. Window support coming soon. Requires python3 to build the library,
+Currently only linux is supported. Windows support coming soon. Requires python3 to build the library,
 and SDL2 + GLEW for the test program.
 
 - `make lib`: Build the `dist` directory, containing the shared object and public-facing header.
