@@ -239,7 +239,7 @@ struct Object *hack_allocate_mario(void)
  */
 void bhv_mario_update(void) {
     u32 particleFlags = 0;
-    s32 i;
+//  s32 i;
 
 	gCurrentObject = gMarioObject;
     particleFlags = execute_mario_action(gCurrentObject);

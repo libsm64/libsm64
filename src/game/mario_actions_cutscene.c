@@ -60,22 +60,22 @@ enum SaveOption { SAVE_OPT_SAVE_AND_CONTINUE = 1, SAVE_OPT_SAVE_AND_QUIT, SAVE_O
 
 static struct Object *sIntroWarpPipeObj;
 static struct Object *sEndPeachObj;
-static struct Object *sEndRightToadObj;
-static struct Object *sEndLeftToadObj;
+//static struct Object *sEndRightToadObj;
+//static struct Object *sEndLeftToadObj;
 static struct Object *sEndJumboStarObj;
 static UNUSED s32 sUnused;
 static s16 sEndPeachAnimation;
-static s16 sEndToadAnims[2];
+//static s16 sEndToadAnims[2];
 
 static Vp sEndCutsceneVp = { { { 640, 480, 511, 0 }, { 640, 480, 511, 0 } } };
-static struct CreditsEntry *sDispCreditsEntry = NULL;
+//static struct CreditsEntry *sDispCreditsEntry = NULL;
 
 // related to peach gfx?
 static s8 D_8032CBE4 = 0;
-static s8 D_8032CBE8 = 0;
-static s8 D_8032CBEC[7] = { 2, 3, 2, 1, 2, 3, 2 };
+//static s8 D_8032CBE8 = 0;
+//static s8 D_8032CBEC[7] = { 2, 3, 2, 1, 2, 3, 2 };
 
-static u8 sStarsNeededForDialog[] = { 1, 3, 8, 30, 50, 70 };
+//static u8 sStarsNeededForDialog[] = { 1, 3, 8, 30, 50, 70 };
 
 /**
  * Data for the jumbo star cutscene. It specifies the flight path after triple
@@ -239,15 +239,15 @@ s32 geo_switch_peach_eyes(s32 run, struct GraphNode *node, UNUSED s32 a2) {
 //      }
 //  }
 
-//  return 0;
+    return 0;
 }
 
 // unused
-static void stub_is_textbox_active(u16 *a0) {
+//static void stub_is_textbox_active(u16 *a0) {
 //  if (get_dialog_id() == -1) {
 //      *a0 = 0;
 //  }
-}
+//}
 
 /**
  * get_star_collection_dialog: Determine what dialog should show when Mario
@@ -271,6 +271,7 @@ s32 get_star_collection_dialog(struct MarioState *m) {
 
 //  m->prevNumStarsForDialog = m->numStars;
 //  return dialogID;
+    return 0;
 }
 
 // save menu handler
@@ -318,6 +319,7 @@ struct Object *spawn_obj_at_mario_rel_yaw(struct MarioState *m, s32 model, const
 //  o->oPosZ = m->pos[2];
 
 //  return o;
+    return NULL;
 }
 
 /**
@@ -519,7 +521,7 @@ s32 act_reading_automatic_dialog(struct MarioState *m) {
 //    }
 //    // apply head turn
 //    vec3s_set(m->marioBodyState->headAngle, m->actionTimer, 0, 0);
-//    return FALSE;
+      return FALSE;
 }
 
 s32 act_reading_sign(struct MarioState *m) {
@@ -559,7 +561,7 @@ s32 act_reading_sign(struct MarioState *m) {
 //
 //    vec3f_copy(marioObj->header.gfx.pos, m->pos);
 //    vec3s_set(marioObj->header.gfx.angle, 0, m->faceAngle[1], 0);
-//    return FALSE;
+      return FALSE;
 }
 
 s32 act_debug_free_move(struct MarioState *m) {
@@ -842,7 +844,7 @@ s32 act_unlocking_key_door(struct MarioState *m) {
 //  }
 
 //  m->actionTimer++;
-//  return FALSE;
+    return FALSE;
 }
 
 s32 act_unlocking_star_door(struct MarioState *m) {
@@ -883,7 +885,7 @@ s32 act_unlocking_star_door(struct MarioState *m) {
 //  update_mario_pos_for_anim(m);
 //  stop_and_set_height_to_floor(m);
 
-//  return FALSE;
+    return FALSE;
 }
 
 s32 act_entering_star_door(struct MarioState *m) {
@@ -1181,7 +1183,7 @@ s32 act_exit_land_save_dialog(struct MarioState *m) {
 //  }
 
 //  m->marioObj->header.gfx.angle[1] += 0x8000;
-//  return FALSE;
+    return FALSE;
 }
 
 s32 act_death_exit(struct MarioState *m) {
@@ -2011,21 +2013,21 @@ void generate_yellow_sparkles(s16 x, s16 y, s16 z, f32 radius) {
 
 // not sure what this does, returns the height of the floor.
 // (animation related?)
-static f32 end_obj_set_visual_pos(struct Object *o) {
-    struct Surface *surf;
-    Vec3s sp24;
-    f32 sp20;
-    f32 sp1C;
-    f32 sp18;
-
-    find_mario_anim_flags_and_translation(o, o->header.gfx.angle[1], sp24);
-
-    sp20 = o->header.gfx.pos[0] + sp24[0];
-    sp1C = o->header.gfx.pos[1] + 10.0f;
-    sp18 = o->header.gfx.pos[2] + sp24[2];
-
-    return find_floor(sp20, sp1C, sp18, &surf);
-}
+// static f32 end_obj_set_visual_pos(struct Object *o) {
+//     struct Surface *surf;
+//     Vec3s sp24;
+//     f32 sp20;
+//     f32 sp1C;
+//     f32 sp18;
+// 
+//     find_mario_anim_flags_and_translation(o, o->header.gfx.angle[1], sp24);
+// 
+//     sp20 = o->header.gfx.pos[0] + sp24[0];
+//     sp1C = o->header.gfx.pos[1] + 10.0f;
+//     sp18 = o->header.gfx.pos[2] + sp24[2];
+// 
+//     return find_floor(sp20, sp1C, sp18, &surf);
+// }
 
 // make Mario fall and soften wing cap gravity
 static void end_peach_cutscene_mario_falling(struct MarioState *m) {
@@ -2308,13 +2310,13 @@ static void end_peach_cutscene_dialog_2(struct MarioState *m) {
 #undef TIMER_PEACH_KISS
 
 // blink twice then have half-shut eyes (see end_peach_cutscene_kiss_from_peach)
-static u8 sMarioBlinkOverride[20] = {
-    MARIO_EYES_HALF_CLOSED, MARIO_EYES_HALF_CLOSED, MARIO_EYES_CLOSED, MARIO_EYES_CLOSED,
-    MARIO_EYES_HALF_CLOSED, MARIO_EYES_HALF_CLOSED, MARIO_EYES_OPEN,   MARIO_EYES_OPEN,
-    MARIO_EYES_HALF_CLOSED, MARIO_EYES_HALF_CLOSED, MARIO_EYES_CLOSED, MARIO_EYES_CLOSED,
-    MARIO_EYES_HALF_CLOSED, MARIO_EYES_HALF_CLOSED, MARIO_EYES_OPEN,   MARIO_EYES_OPEN,
-    MARIO_EYES_HALF_CLOSED, MARIO_EYES_HALF_CLOSED, MARIO_EYES_CLOSED, MARIO_EYES_CLOSED,
-};
+// static u8 sMarioBlinkOverride[20] = {
+//     MARIO_EYES_HALF_CLOSED, MARIO_EYES_HALF_CLOSED, MARIO_EYES_CLOSED, MARIO_EYES_CLOSED,
+//     MARIO_EYES_HALF_CLOSED, MARIO_EYES_HALF_CLOSED, MARIO_EYES_OPEN,   MARIO_EYES_OPEN,
+//     MARIO_EYES_HALF_CLOSED, MARIO_EYES_HALF_CLOSED, MARIO_EYES_CLOSED, MARIO_EYES_CLOSED,
+//     MARIO_EYES_HALF_CLOSED, MARIO_EYES_HALF_CLOSED, MARIO_EYES_OPEN,   MARIO_EYES_OPEN,
+//     MARIO_EYES_HALF_CLOSED, MARIO_EYES_HALF_CLOSED, MARIO_EYES_CLOSED, MARIO_EYES_CLOSED,
+// };
 
 static void end_peach_cutscene_kiss_from_peach(struct MarioState *m) {
 //    sEndPeachAnimation = 10;
@@ -2610,7 +2612,7 @@ static s32 act_credits_cutscene(struct MarioState *m) {
 //
 //    m->marioObj->header.gfx.angle[1] += (gCurrCreditsEntry->unk02 & 0xC0) << 8;
 //
-//    return FALSE;
+      return FALSE;
 }
 
 static s32 act_end_waving_cutscene(struct MarioState *m) {
@@ -2648,7 +2650,7 @@ static s32 act_end_waving_cutscene(struct MarioState *m) {
 //      level_trigger_warp(m, WARP_OP_CREDITS_END);
 //  }
 
-//  return FALSE;
+    return FALSE;
 }
 
 static s32 check_for_instant_quicksand(struct MarioState *m) {

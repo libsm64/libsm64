@@ -1,5 +1,7 @@
 /src/mario
 /build/
 /dist/
+/test/level.c
+/test/level.h
 *.z64
 *.so

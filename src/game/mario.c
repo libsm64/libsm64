@@ -1669,7 +1669,7 @@ void mario_update_hitbox_and_cap_model(struct MarioState *m) {
  * An unused and possibly a debug function. Z + another button input
  * sets Mario with a different cap.
  */
-static void debug_update_mario_cap(u16 button, s32 flags, u16 capTimer, u16 capMusic) {
+//static void debug_update_mario_cap(u16 button, s32 flags, u16 capTimer, u16 capMusic) {
 //  // This checks for Z_TRIG instead of Z_DOWN flag
 //  // (which is also what other debug functions do),
 //  // so likely debug behavior rather than unused behavior.
@@ -1683,7 +1683,7 @@ static void debug_update_mario_cap(u16 button, s32 flags, u16 capTimer, u16 capM
 
 //      play_cap_music(capMusic);
 //  }
-}
+//}
 
 #ifdef VERSION_SH
 void func_sh_8025574C(void) {
@@ -1793,8 +1793,8 @@ s32 execute_mario_action(UNUSED struct Object *o) {
  **************************************************/
 
 void init_mario(void) {
-    Vec3s capPos;
-    struct Object *capObject;
+    //Vec3s capPos;
+    //struct Object *capObject;
 
     unused80339F10 = 0;
 

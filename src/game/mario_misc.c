@@ -223,7 +223,7 @@ void bhv_toad_message_init(void) {
 //    }
 }
 
-static void star_door_unlock_spawn_particles(s16 angleOffset) {
+//static void star_door_unlock_spawn_particles(s16 angleOffset) {
 //    struct Object *sparkleParticle = spawn_object(gCurrentObject, 0, bhvSparkleSpawn);
 //
 //    sparkleParticle->oPosX +=
@@ -232,7 +232,7 @@ static void star_door_unlock_spawn_particles(s16 angleOffset) {
 //        100.0f * coss((gCurrentObject->oUnlockDoorStarTimer * 0x2800) + angleOffset);
 //    // Particles are spawned lower each frame
 //    sparkleParticle->oPosY -= gCurrentObject->oUnlockDoorStarTimer * 10.0f;
-}
+//}
 
 void bhv_unlock_door_star_init(void) {
 //    gCurrentObject->oUnlockDoorStarState = UNLOCK_DOOR_STAR_RISING;
@@ -410,7 +410,7 @@ Gfx *geo_mario_tilt_torso(s32 callContext, struct GraphNode *node, UNUSED Mat4 *
 Gfx *geo_mario_head_rotation(s32 callContext, struct GraphNode *node, UNUSED Mat4 *c) {
     struct GraphNodeGenerated *asGenerated = (struct GraphNodeGenerated *) node;
     struct MarioBodyState *bodyState = &gBodyStates[asGenerated->parameter];
-    s32 action = bodyState->action;
+    // s32 action = bodyState->action;
 
     if (callContext == GEO_CONTEXT_RENDER) {
         struct GraphNodeRotation *rotNode = (struct GraphNodeRotation *) node->next;
@@ -653,4 +653,5 @@ Gfx *geo_mirror_mario_backface_culling(s32 callContext, struct GraphNode *node, 
 //      asGenerated->fnNode.node.flags = (asGenerated->fnNode.node.flags & 0xFF) | (LAYER_OPAQUE << 8);
 //  }
 //  return gfx;
+    return NULL;
 }
