@@ -15,3 +15,5 @@ and SDL2 + GLEW for the test program.
 - `make lib`: Build the `dist` directory, containing the shared object and public-facing header.
 - `make test`: (Default) Builds the library `dist` directory as well as the test program.
 - `make run`: Build and run the SDL+OpenGL test program.
+
+To run the test program you'll need a SM64 US ROM in the root of the repository with the name `baserom.us.z64`.
