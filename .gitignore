@@ -3,5 +3,6 @@
 /dist/
 /test/level.c
 /test/level.h
+run-test
 *.z64
 *.so
