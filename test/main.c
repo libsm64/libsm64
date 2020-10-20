@@ -383,6 +383,13 @@ int main( void )
     size_t romSize;
 
     uint8_t *rom = utils_read_file_alloc( "baserom.us.z64", &romSize );
+
+    if( rom == NULL )
+    {
+        printf("\nFailed to read ROM file \"baserom.us.z64\"\n\n");
+        return 1;
+    }
+
     uint8_t *texture = malloc( 4 * SM64_TEXTURE_WIDTH * SM64_TEXTURE_HEIGHT );
 
     sm64_global_init( rom, texture, NULL );
