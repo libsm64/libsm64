@@ -51,9 +51,12 @@ struct SM64MarioGeometryBuffers
 
 typedef void (*SM64DebugPrintFunctionPtr)( const char * );
 
-static const uint32_t SM64_TEXTURE_WIDTH  = 64 * 11;
-static const uint32_t SM64_TEXTURE_HEIGHT = 64;
-static const uint32_t SM64_GEO_MAX_TRIANGLES = 1024;
+enum
+{
+    SM64_TEXTURE_WIDTH = 64 * 11,
+    SM64_TEXTURE_HEIGHT = 64,
+    SM64_GEO_MAX_TRIANGLES = 1024,
+};
 
 extern void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugPrintFunctionPtr debugPrintFunction );
 extern void sm64_load_surfaces( uint16_t terrainType, const struct SM64Surface *surfaceArray, uint32_t numSurfaces );
