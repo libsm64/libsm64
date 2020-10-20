@@ -3,7 +3,7 @@ import os
 import shutil
 import requests
 
-BOB_COLLISION_URL = "https://raw.githubusercontent.com/n64decomp/sm64/master/levels/bob/areas/1/collision.inc.c"
+BOB_COLLISION_URL = "https://raw.githubusercontent.com/n64decomp/sm64/06ec56df7f951f88da05f468cdcacecba496145a/levels/bob/areas/1/collision.inc.c"
 
 LEVEL_H = """#pragma once
 
