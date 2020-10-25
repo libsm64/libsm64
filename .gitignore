@@ -6,3 +6,6 @@
 run-test
 *.z64
 *.so
+/windows/.vs
+/windows/x64
+/windows/*.vcxproj.user

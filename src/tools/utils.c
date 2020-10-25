@@ -1,4 +1,4 @@
-#include <dirent.h>
+//#include <dirent.h>
 #include <fcntl.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -105,6 +105,7 @@ long filesize(const char *filename)
    return -1;
 }
 
+/*
 void touch_file(const char *filename)
 {
    int fd;
@@ -274,3 +275,4 @@ int str_ends_with(const char *str, const char *suffix)
    }
    return (0 == strncmp(str + len_str - len_suffix, suffix, len_suffix));
 }
+*/

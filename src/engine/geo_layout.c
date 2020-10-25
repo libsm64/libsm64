@@ -790,6 +790,7 @@ struct GraphNode *process_geo_layout(struct AllocOnlyPool *pool, void *segptr) {
     gGeoLayoutStack[1] = 0;
 
     while (gGeoLayoutCommand != NULL) {
+        DEBUG_LOG("RUNNING GEO COMMAND");
         GeoLayoutJumpTable[gGeoLayoutCommand[0x00]]();
     }
 

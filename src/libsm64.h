@@ -58,16 +58,22 @@ enum
     SM64_GEO_MAX_TRIANGLES = 1024,
 };
 
-extern void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugPrintFunctionPtr debugPrintFunction );
-extern void sm64_load_surfaces( uint16_t terrainType, const struct SM64Surface *surfaceArray, uint32_t numSurfaces );
+#ifdef _WIN32
+    #define SM64_EXPORT __declspec(dllexport)
+#else
+    #define SM64_EXPORT
+#endif
 
-extern void sm64_mario_reset( int16_t marioX, int16_t marioY, int16_t marioZ );
-extern void sm64_mario_tick( const struct SM64MarioInputs *inputs, struct SM64MarioState *outState, struct SM64MarioGeometryBuffers *outBuffers );
-extern void sm64_global_terminate( void );
+extern SM64_EXPORT void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugPrintFunctionPtr debugPrintFunction );
+extern SM64_EXPORT void sm64_load_surfaces( uint16_t terrainType, const struct SM64Surface *surfaceArray, uint32_t numSurfaces );
 
-extern uint32_t sm64_load_surface_object( const struct SM64SurfaceObject *surfaceObject );
-extern void sm64_move_object( uint32_t id, const struct SM64ObjectTransform *transform );
-extern void sm64_unload_object( uint32_t id );
+extern SM64_EXPORT void sm64_mario_reset( int16_t marioX, int16_t marioY, int16_t marioZ );
+extern SM64_EXPORT void sm64_mario_tick( const struct SM64MarioInputs *inputs, struct SM64MarioState *outState, struct SM64MarioGeometryBuffers *outBuffers );
+extern SM64_EXPORT void sm64_global_terminate( void );
+
+extern SM64_EXPORT uint32_t sm64_load_surface_object( const struct SM64SurfaceObject *surfaceObject );
+extern SM64_EXPORT void sm64_move_object( uint32_t id, const struct SM64ObjectTransform *transform );
+extern SM64_EXPORT void sm64_unload_object( uint32_t id );
 
 /*
 

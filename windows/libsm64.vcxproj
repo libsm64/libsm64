@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{43742CFB-BBD5-4132-B3AD-AB68BCF368B3}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>libsm64</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <TargetName>sm64</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>sm64</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;WINDOWS_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;WINDOWS_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;WINDOWS_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;WINDOWS_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.c" />
+    <ClCompile Include="../src/engine/geo_layout.c" />
+    <ClCompile Include="../src/engine/graph_node.c" />
+    <ClCompile Include="../src/engine/graph_node_manager.c" />
+    <ClCompile Include="../src/engine/math_util.c" />
+    <ClCompile Include="../src/engine/surface_collision.c" />
+    <ClCompile Include="../src/game/behavior_actions.c" />
+    <ClCompile Include="../src/game/interaction.c" />
+    <ClCompile Include="../src/game/mario.c" />
+    <ClCompile Include="../src/game/mario_actions_airborne.c" />
+    <ClCompile Include="../src/game/mario_actions_automatic.c" />
+    <ClCompile Include="../src/game/mario_actions_cutscene.c" />
+    <ClCompile Include="../src/game/mario_actions_moving.c" />
+    <ClCompile Include="../src/game/mario_actions_object.c" />
+    <ClCompile Include="../src/game/mario_actions_stationary.c" />
+    <ClCompile Include="../src/game/mario_actions_submerged.c" />
+    <ClCompile Include="../src/game/mario_misc.c" />
+    <ClCompile Include="../src/game/mario_step.c" />
+    <ClCompile Include="../src/game/object_stuff.c" />
+    <ClCompile Include="../src/game/platform_displacement.c" />
+    <ClCompile Include="../src/game/rendering_graph_node.c" />
+    <ClCompile Include="../src/gfx_adapter.c" />
+    <ClCompile Include="../src/guMtxF2L.c" />
+    <ClCompile Include="../src/libsm64.c" />
+    <ClCompile Include="../src/load_anim_data.c" />
+    <ClCompile Include="../src/load_surfaces.c" />
+    <ClCompile Include="../src/load_tex_data.c" />
+    <ClCompile Include="../src/mario/geo.inc.c" />
+    <ClCompile Include="../src/mario/model.inc.c" />
+    <ClCompile Include="../src/memory.c" />
+    <ClCompile Include="../src/shim.c" />
+    <ClCompile Include="../src/tools/libmio0.c" />
+    <ClCompile Include="../src/tools/n64graphics.c" />
+    <ClCompile Include="../src/tools/utils.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="../src/engine/geo_layout.h" />
+    <ClInclude Include="../src/engine/graph_node.h" />
+    <ClInclude Include="../src/engine/math_util.h" />
+    <ClInclude Include="../src/engine/surface_collision.h" />
+    <ClInclude Include="../src/game/area.h" />
+    <ClInclude Include="../src/game/behavior_actions.h" />
+    <ClInclude Include="../src/game/camera.h" />
+    <ClInclude Include="../src/game/interaction.h" />
+    <ClInclude Include="../src/game/level_update.h" />
+    <ClInclude Include="../src/game/mario.h" />
+    <ClInclude Include="../src/game/mario_actions_airborne.h" />
+    <ClInclude Include="../src/game/mario_actions_automatic.h" />
+    <ClInclude Include="../src/game/mario_actions_cutscene.h" />
+    <ClInclude Include="../src/game/mario_actions_moving.h" />
+    <ClInclude Include="../src/game/mario_actions_object.h" />
+    <ClInclude Include="../src/game/mario_actions_stationary.h" />
+    <ClInclude Include="../src/game/mario_actions_submerged.h" />
+    <ClInclude Include="../src/game/mario_misc.h" />
+    <ClInclude Include="../src/game/mario_step.h" />
+    <ClInclude Include="../src/game/object_stuff.h" />
+    <ClInclude Include="../src/game/platform_displacement.h" />
+    <ClInclude Include="../src/game/rendering_graph_node.h" />
+    <ClInclude Include="../src/game/save_file.h" />
+    <ClInclude Include="../src/gfx_adapter.h" />
+    <ClInclude Include="../src/gfx_adapter_commands.h" />
+    <ClInclude Include="../src/gfx_macros.h" />
+    <ClInclude Include="../src/guMtxF2L.h" />
+    <ClInclude Include="../src/include/audio_defines.h" />
+    <ClInclude Include="../src/include/command_macros_base.h" />
+    <ClInclude Include="../src/include/geo_commands.h" />
+    <ClInclude Include="../src/include/level_misc_macros.h" />
+    <ClInclude Include="../src/include/macros.h" />
+    <ClInclude Include="../src/include/mario_animation_ids.h" />
+    <ClInclude Include="../src/include/mario_geo_switch_case_ids.h" />
+    <ClInclude Include="../src/include/object_fields.h" />
+    <ClInclude Include="../src/include/platform_info.h" />
+    <ClInclude Include="../src/include/PR/gbi.h" />
+    <ClInclude Include="../src/include/PR/os_cont.h" />
+    <ClInclude Include="../src/include/PR/ultratypes.h" />
+    <ClInclude Include="../src/include/seq_ids.h" />
+    <ClInclude Include="../src/include/sm64.h" />
+    <ClInclude Include="../src/include/special_preset_names.h" />
+    <ClInclude Include="../src/include/surface_terrains.h" />
+    <ClInclude Include="../src/include/types.h" />
+    <ClInclude Include="../src/libsm64.h" />
+    <ClInclude Include="../src/load_anim_data.h" />
+    <ClInclude Include="../src/load_surfaces.h" />
+    <ClInclude Include="../src/load_tex_data.h" />
+    <ClInclude Include="../src/mario/geo.inc.h" />
+    <ClInclude Include="../src/mario/model.inc.h" />
+    <ClInclude Include="../src/memory.h" />
+    <ClInclude Include="../src/shim.h" />
+    <ClInclude Include="../src/tools/libmio0.h" />
+    <ClInclude Include="../src/tools/n64graphics.h" />
+    <ClInclude Include="../src/tools/stb/stb_image.h" />
+    <ClInclude Include="../src/tools/stb/stb_image_write.h" />
+    <ClInclude Include="../src/tools/utils.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

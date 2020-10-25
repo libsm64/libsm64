@@ -1,8 +1,10 @@
 #include "load_tex_data.h"
 
+#include <stdlib.h>
 #include <stddef.h>
 #include <string.h>
 #include "libsm64.h"
+#include "shim.h"
 
 #include "tools/libmio0.h"
 #include "tools/n64graphics.h"

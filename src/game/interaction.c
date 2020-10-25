@@ -60,7 +60,7 @@ struct InteractionHandler {
     u32 (*handler)(struct MarioState *, u32, struct Object *);
 };
 
-static struct InteractionHandler sInteractionHandlers[] = { };
+//static struct InteractionHandler sInteractionHandlers[] = { };
 
 static u32 sForwardKnockbackActions[][3] = {
     { ACT_SOFT_FORWARD_GROUND_KB, ACT_FORWARD_GROUND_KB, ACT_HARD_FORWARD_GROUND_KB },
@@ -816,23 +816,23 @@ void mario_process_interactions(struct MarioState *m) {
     sDelayInvincTimer = FALSE;
     sInvulnerable = (m->action & ACT_FLAG_INVULNERABLE) || m->invincTimer != 0;
 
-    if (!(m->action & ACT_FLAG_INTANGIBLE) && m->collidedObjInteractTypes != 0) {
-        s32 i;
-        for (i = 0; i < 31; i++) {
-            u32 interactType = sInteractionHandlers[i].interactType;
-            if (m->collidedObjInteractTypes & interactType) {
-                struct Object *object = mario_get_collided_object(m, interactType);
+//  if (!(m->action & ACT_FLAG_INTANGIBLE) && m->collidedObjInteractTypes != 0) {
+//      s32 i;
+//      for (i = 0; i < 31; i++) {
+//          u32 interactType = sInteractionHandlers[i].interactType;
+//          if (m->collidedObjInteractTypes & interactType) {
+//              struct Object *object = mario_get_collided_object(m, interactType);
 
-                m->collidedObjInteractTypes &= ~interactType;
+//              m->collidedObjInteractTypes &= ~interactType;
 
-                if (!(object->oInteractStatus & INT_STATUS_INTERACTED)) {
-                    if (sInteractionHandlers[i].handler(m, interactType, object)) {
-                        break;
-                    }
-                }
-            }
-        }
-    }
+//              if (!(object->oInteractStatus & INT_STATUS_INTERACTED)) {
+//                  if (sInteractionHandlers[i].handler(m, interactType, object)) {
+//                      break;
+//                  }
+//              }
+//          }
+//      }
+//  }
 
     if (m->invincTimer > 0 && !sDelayInvincTimer) {
         m->invincTimer -= 1;

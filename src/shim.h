@@ -17,10 +17,10 @@
 // From graph_node.h, trying not to pull that in yet
 #define GRAPH_RENDER_INVISIBLE (1 << 4)
 
-#define play_sound(a,b) ({})
-#define enable_time_stop() ({})
-#define disable_time_stop() ({})
-#define play_cutscene_music(a) ({})
+#define play_sound(a,b) {}
+#define enable_time_stop() {}
+#define disable_time_stop() {}
+#define play_cutscene_music(a) {}
 
 struct SurfaceObjectTransform
 {
