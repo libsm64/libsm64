@@ -127,6 +127,10 @@ static void engine_surface_from_lib_surface( struct Surface *surface, const stru
 
         surface->object = (struct Object *)(transform);
     }
+    else
+    {
+        surface->object = NULL;
+    }
 
     // (v2 - v1) x (v3 - v2)
     nx = (y2 - y1) * (z3 - z2) - (z2 - z1) * (y3 - y2);
