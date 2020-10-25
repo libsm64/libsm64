@@ -192,4 +192,5 @@ SM64_LIB_FN void sm64_move_object( uint32_t id, const struct SM64ObjectTransform
 
 SM64_LIB_FN void sm64_unload_object( uint32_t id )
 {
+    surfaces_unload_object( id );
 }

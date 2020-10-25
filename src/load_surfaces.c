@@ -253,6 +253,11 @@ uint32_t surfaces_load_object( const struct SM64SurfaceObject *surfaceObject )
     return idx;
 }
 
+void surfaces_unload_object( uint32_t objId )
+{
+    // TODO implement
+}
+
 void surface_object_update_transform( uint32_t objId, const struct SM64ObjectTransform *newTransform )
 {
     update_transform( &s_surface_object_list[objId].transform, newTransform );
