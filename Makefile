@@ -1,4 +1,4 @@
-default: test
+default: lib
 
 CC      := cc
 CFLAGS  := -g -Wall -fPIC
@@ -24,6 +24,10 @@ DEP_FILES := $(O_FILES:.o=.d)
 TEST_SRCS := test/main.c test/context.c test/level.c
 TEST_OBJS := $(foreach file,$(TEST_SRCS),$(BUILD_DIR)/$(file:.c=.o))
 
+ifeq ($(OS),Windows_NT)
+  LIB_FILE := $(DIST_DIR)/sm64.dll
+  CFLAGS   := $(CFLAGS) -DBUILDING_SM64_DLL
+endif
 
 DUMMY != mkdir -p $(ALL_DIRS) build/test src/mario $(DIST_DIR)/include 
 

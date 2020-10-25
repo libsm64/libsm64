@@ -7,13 +7,19 @@ This project produces a shared library file containing mostly code from the deco
 and loads an official SM64 ROM at runtime to get Mario's texture and animation data, so any project
 which makes use of this library must ask the user to provide a ROM for asset extraction.
 
-## Building
+## Building on Linux
 
-Currently only linux is supported. Windows support coming soon. Requires python3 to build the library,
-and SDL2 + GLEW for the test program.
+- Ensure python3 is installed.
+- Ensure the SDL2 and GLEW libraries are installed if you're building the test program (on Ubuntu: libsdl2-dev, libglew-dev)
+- Run `make` to build
+- To run the test program you'll need a SM64 US ROM in the root of the repository with the name `baserom.us.z64`.
 
-- `make lib`: Build the `dist` directory, containing the shared object and public-facing header.
-- `make test`: (Default) Builds the library `dist` directory as well as the test program.
+## Building on Windows (test program not supported)
+- [Follow steps 1-4 for setting up MSYS2 MinGW 64 here](https://github.com/sm64-port/sm64-port#windows), but replace the repository URL with `https://github.com/libsm64/libsm64.git`
+- Run `make` to build
+
+## Make targets (all platforms)
+
+- `make lib`: (Default) Build the `dist` directory, containing the shared object or DLL and public-facing header.
+- `make test`: Builds the library `dist` directory as well as the test program.
 - `make run`: Build and run the SDL+OpenGL test program.
-
-To run the test program you'll need a SM64 US ROM in the root of the repository with the name `baserom.us.z64`.

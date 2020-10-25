@@ -78,7 +78,7 @@ static struct Area *hack_build_area( void )
     return result;
 }
 
-void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugPrintFunctionPtr debugPrintFunction )
+SM64_LIB_FN void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugPrintFunctionPtr debugPrintFunction )
 {
     s_last_colors_hash = 0;
     gDebugPrint = debugPrintFunction;
@@ -98,13 +98,13 @@ void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugPrintFunction
     D_80339D10.targetAnim = NULL;
 }
 
-void sm64_load_surfaces( uint16_t terrainType, const struct SM64Surface *surfaceArray, uint32_t numSurfaces )
+SM64_LIB_FN void sm64_load_surfaces( uint16_t terrainType, const struct SM64Surface *surfaceArray, uint32_t numSurfaces )
 {
     surfaces_load_static_libsm64( surfaceArray, numSurfaces );
     gCurrentArea->terrainType = terrainType;
 }
 
-void sm64_mario_reset( int16_t marioX, int16_t marioY, int16_t marioZ )
+SM64_LIB_FN void sm64_mario_reset( int16_t marioX, int16_t marioY, int16_t marioZ )
 {
     gMarioSpawnInfoVal.startPos[0] = marioX;
     gMarioSpawnInfoVal.startPos[1] = marioY;
@@ -147,7 +147,7 @@ static void update_objects( void )
     update_mario_platform();
 }
 
-void sm64_mario_tick( const struct SM64MarioInputs *inputs, struct SM64MarioState *outState, struct SM64MarioGeometryBuffers *outBuffers )
+SM64_LIB_FN void sm64_mario_tick( const struct SM64MarioInputs *inputs, struct SM64MarioState *outState, struct SM64MarioGeometryBuffers *outBuffers )
 {
     update_button( inputs->buttonA, A_BUTTON );
     update_button( inputs->buttonB, B_BUTTON );
@@ -173,23 +173,23 @@ void sm64_mario_tick( const struct SM64MarioInputs *inputs, struct SM64MarioStat
     outState->faceAngle = (float)gMarioState->faceAngle[1] / 32768.0f * 3.14159f;
 }
 
-void sm64_global_terminate( void )
+SM64_LIB_FN void sm64_global_terminate( void )
 {
     // TODO free other things
 
     surfaces_unload_all();
 }
 
-uint32_t sm64_load_surface_object( const struct SM64SurfaceObject *surfaceObject )
+SM64_LIB_FN uint32_t sm64_load_surface_object( const struct SM64SurfaceObject *surfaceObject )
 {
     return surfaces_load_object( surfaceObject );
 }
 
-void sm64_move_object( uint32_t id, const struct SM64ObjectTransform *transform )
+SM64_LIB_FN void sm64_move_object( uint32_t id, const struct SM64ObjectTransform *transform )
 {
     surface_object_update_transform( id, transform );
 }
 
-void sm64_unload_object( uint32_t id )
+SM64_LIB_FN void sm64_unload_object( uint32_t id )
 {
 }

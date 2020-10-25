@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import os
 import shutil
-import requests
+import urllib.request
 
 GEO_URL = "https://raw.githubusercontent.com/n64decomp/sm64/06ec56df7f951f88da05f468cdcacecba496145a/actors/mario/geo.inc.c"
 MODEL_URL = "https://raw.githubusercontent.com/n64decomp/sm64/06ec56df7f951f88da05f468cdcacecba496145a/actors/mario/model.inc.c"
@@ -61,9 +61,9 @@ def main():
     os.makedirs("src/mario", exist_ok=True)
 
     print("Downloading " + GEO_URL)
-    geo_inc_c = requests.get(GEO_URL).text
+    geo_inc_c = urllib.request.urlopen(GEO_URL).read().decode('utf8')
     print("Downloading " + MODEL_URL)
-    model_inc_c = requests.get(MODEL_URL).text
+    model_inc_c = urllib.request.urlopen(MODEL_URL).read().decode('utf8')
 
     lines = model_inc_c.splitlines()
 

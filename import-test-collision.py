@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import os
 import shutil
-import requests
+import urllib.request
 
 BOB_COLLISION_URL = "https://raw.githubusercontent.com/n64decomp/sm64/06ec56df7f951f88da05f468cdcacecba496145a/levels/bob/areas/1/collision.inc.c"
 
@@ -15,7 +15,7 @@ extern const size_t surfaces_count;
 
 def main():
     print("Downloading " + BOB_COLLISION_URL)
-    in_lines = requests.get(BOB_COLLISION_URL).text.splitlines()
+    in_lines = urllib.request.urlopen(BOB_COLLISION_URL).read().decode('utf8').splitlines()
 
     verts = []
     tris = []
@@ -29,9 +29,9 @@ def main():
 
         if tokens[0] == "COL_VERTEX":
             verts.append([ int(tokens[1]), int(tokens[2]), int(tokens[3]) ])
-        elif tokens[0] == "COL_TRI_INIT": 
+        elif tokens[0] == "COL_TRI_INIT":
             mode = tokens[1]
-        elif tokens[0] == "COL_TRI": 
+        elif tokens[0] == "COL_TRI":
             tris.append([ int(tokens[1]), int(tokens[2]), int(tokens[3]), mode ])
 
     out_lines = []
