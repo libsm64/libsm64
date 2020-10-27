@@ -1515,10 +1515,10 @@ void update_mario_health(struct MarioState *m) {
 }
 
 /**
- * Updates some basic info for camera usage.
+ * Updates some basic info for camera usage. Also update body state action.
  */
 void update_mario_info_for_cam(struct MarioState *m) {
-//  m->marioBodyState->action = m->action;
+    m->marioBodyState->action = m->action;
 //  m->statusForCamera->action = m->action;
 
 //  vec3s_copy(m->statusForCamera->faceAngle, m->faceAngle);
