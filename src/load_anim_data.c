@@ -76,7 +76,7 @@ void load_mario_anims_from_rom( uint8_t *rom )
         }
     }
 
-    #undef GET_OFFSETg_libsm64_mario_animations
+    #undef GET_OFFSET
     #undef GET_SIZE
 }
 
