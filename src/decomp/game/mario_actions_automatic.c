@@ -524,18 +524,18 @@ void climb_up_ledge(struct MarioState *m) {
 }
 
 void update_ledge_climb_camera(struct MarioState *m) {
-    f32 sp4;
+//  f32 sp4;
 
-    if (m->actionTimer < 14) {
-        sp4 = m->actionTimer;
-    } else {
-        sp4 = 14.0f;
-    }
-    m->statusForCamera->pos[0] = m->pos[0] + sp4 * sins(m->faceAngle[1]);
-    m->statusForCamera->pos[2] = m->pos[2] + sp4 * coss(m->faceAngle[1]);
-    m->statusForCamera->pos[1] = m->pos[1];
-    m->actionTimer++;
-    m->flags |= MARIO_UNKNOWN_25;
+//  if (m->actionTimer < 14) {
+//      sp4 = m->actionTimer;
+//  } else {
+//      sp4 = 14.0f;
+//  }
+//  m->statusForCamera->pos[0] = m->pos[0] + sp4 * sins(m->faceAngle[1]);
+//  m->statusForCamera->pos[2] = m->pos[2] + sp4 * coss(m->faceAngle[1]);
+//  m->statusForCamera->pos[1] = m->pos[1];
+//  m->actionTimer++;
+//  m->flags |= MARIO_UNKNOWN_25;
 }
 
 void update_ledge_climb(struct MarioState *m, s32 animation, u32 endAction) {
@@ -692,8 +692,8 @@ s32 act_in_cannon(struct MarioState *m) {
             m->marioObj->header.gfx.node.flags &= ~GRAPH_RENDER_ACTIVE;
             m->usedObj->oInteractStatus = INT_STATUS_INTERACTED;
 
-            m->statusForCamera->cameraEvent = CAM_EVENT_CANNON;
-            m->statusForCamera->usedObj = m->usedObj;
+//          m->statusForCamera->cameraEvent = CAM_EVENT_CANNON;
+//          m->statusForCamera->usedObj = m->usedObj;
 
             vec3f_set(m->vel, 0.0f, 0.0f, 0.0f);
 

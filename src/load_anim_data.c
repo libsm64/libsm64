@@ -1,5 +1,4 @@
 #include "load_anim_data.h"
-#include "include/types.h"
 
 #include <stdlib.h>
 

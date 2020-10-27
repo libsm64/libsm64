@@ -57,8 +57,8 @@ model_inc_h = """
 def main():
     global model_inc_h
 
-    shutil.rmtree("src/mario", ignore_errors=True)
-    os.makedirs("src/mario", exist_ok=True)
+    shutil.rmtree("src/decomp/mario", ignore_errors=True)
+    os.makedirs("src/decomp/mario", exist_ok=True)
 
     print("Downloading " + GEO_URL)
     geo_inc_c = urllib.request.urlopen(GEO_URL).read().decode('utf8')
@@ -78,21 +78,21 @@ def main():
         elif lines[i].startswith("const "):
             model_inc_h += "\nextern " + lines[i].replace(" = {", ";")
 
-    lines.insert(0, "#include \"../gfx_macros.h\"")
-    lines.insert(0, "#include \"../load_tex_data.h\"")
+    lines.insert(0, "#include \"../../gfx_macros.h\"")
+    lines.insert(0, "#include \"../../load_tex_data.h\"")
     model_inc_c = "\n".join(lines)
 
 
-    with open("src/mario/geo.inc.c", "w") as file:
+    with open("src/decomp/mario/geo.inc.c", "w") as file:
         file.write(geo_inc_c_header + geo_inc_c + geo_inc_c_footer)
 
-    with open("src/mario/model.inc.c", "w") as file:
+    with open("src/decomp/mario/model.inc.c", "w") as file:
         file.write(model_inc_c)
 
-    with open("src/mario/model.inc.h", "w") as file:
+    with open("src/decomp/mario/model.inc.h", "w") as file:
         file.write(model_inc_h)
 
-    with open("src/mario/geo.inc.h", "w") as file:
+    with open("src/decomp/mario/geo.inc.h", "w") as file:
         file.write(geo_inc_h)
 
 if __name__ == "__main__":

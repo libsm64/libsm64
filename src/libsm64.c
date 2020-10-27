@@ -6,22 +6,23 @@
 #include <string.h>
 #include <math.h>
 
-#include "include/PR/os_cont.h"
-#include "engine/math_util.h"
-#include "include/sm64.h"
-#include "shim.h"
-#include "game/mario.h"
-#include "game/object_stuff.h"
-#include "engine/surface_collision.h"
-#include "engine/graph_node.h"
-#include "engine/geo_layout.h"
-#include "game/rendering_graph_node.h"
-#include "mario/geo.inc.h"
+#include "decomp/include/PR/os_cont.h"
+#include "decomp/engine/math_util.h"
+#include "decomp/include/sm64.h"
+#include "decomp/shim.h"
+#include "decomp/game/mario.h"
+#include "decomp/game/object_stuff.h"
+#include "decomp/engine/surface_collision.h"
+#include "decomp/engine/graph_node.h"
+#include "decomp/engine/geo_layout.h"
+#include "decomp/game/rendering_graph_node.h"
+#include "decomp/mario/geo.inc.h"
+#include "decomp/game/platform_displacement.h"
+
 #include "load_surfaces.h"
 #include "gfx_adapter.h"
 #include "load_anim_data.h"
 #include "load_tex_data.h"
-#include "game/platform_displacement.h"
 
 static struct AllocOnlyPool *s_mario_geo_pool;
 static struct GraphNode *s_mario_graph_node;

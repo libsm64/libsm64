@@ -1663,9 +1663,9 @@ s32 act_jump_kick(struct MarioState *m) {
 }
 
 s32 act_shot_from_cannon(struct MarioState *m) {
-    if (m->area->camera->mode != CAMERA_MODE_BEHIND_MARIO) {
-        m->statusForCamera->cameraEvent = CAM_EVENT_SHOT_FROM_CANNON;
-    }
+//  if (m->area->camera->mode != CAMERA_MODE_BEHIND_MARIO) {
+//      m->statusForCamera->cameraEvent = CAM_EVENT_SHOT_FROM_CANNON;
+//  }
 
     mario_set_forward_vel(m, m->forwardVel);
 

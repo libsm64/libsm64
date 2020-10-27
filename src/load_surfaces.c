@@ -3,10 +3,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "include/types.h"
-#include "include/surface_terrains.h"
-#include "engine/math_util.h"
-#include "shim.h"
+#include "decomp/include/types.h"
+#include "decomp/include/surface_terrains.h"
+#include "decomp/engine/math_util.h"
+#include "decomp/shim.h"
 
 struct LoadedSurfaceObject
 {

@@ -1693,10 +1693,10 @@ static void advance_cutscene_step(struct MarioState *m) {
 }
 
 static void intro_cutscene_hide_hud_and_mario(struct MarioState *m) {
-    gHudDisplay.flags = HUD_DISPLAY_NONE;
-    m->statusForCamera->cameraEvent = CAM_EVENT_START_INTRO;
-    m->marioObj->header.gfx.node.flags &= ~GRAPH_RENDER_ACTIVE;
-    advance_cutscene_step(m);
+//  gHudDisplay.flags = HUD_DISPLAY_NONE;
+//  m->statusForCamera->cameraEvent = CAM_EVENT_START_INTRO;
+//  m->marioObj->header.gfx.node.flags &= ~GRAPH_RENDER_ACTIVE;
+//  advance_cutscene_step(m);
 }
 
 #ifdef VERSION_EU
@@ -1842,29 +1842,29 @@ static s32 act_intro_cutscene(struct MarioState *m) {
 
 // jumbo star cutscene: Mario lands after grabbing the jumbo star
 static void jumbo_star_cutscene_falling(struct MarioState *m) {
-    if (m->actionState == 0) {
-        m->input |= INPUT_A_DOWN;
-        m->flags |= (MARIO_WING_CAP | MARIO_CAP_ON_HEAD);
+//  if (m->actionState == 0) {
+//      m->input |= INPUT_A_DOWN;
+//      m->flags |= (MARIO_WING_CAP | MARIO_CAP_ON_HEAD);
 
-        m->faceAngle[1] = -0x8000;
-        m->pos[0] = 0.0f;
-        m->pos[2] = 0.0f;
+//      m->faceAngle[1] = -0x8000;
+//      m->pos[0] = 0.0f;
+//      m->pos[2] = 0.0f;
 
-        mario_set_forward_vel(m, 0.0f);
-        set_mario_animation(m, MARIO_ANIM_GENERAL_FALL);
+//      mario_set_forward_vel(m, 0.0f);
+//      set_mario_animation(m, MARIO_ANIM_GENERAL_FALL);
 
-        if (perform_air_step(m, 1) == AIR_STEP_LANDED) {
-            play_cutscene_music(SEQUENCE_ARGS(15, SEQ_EVENT_CUTSCENE_VICTORY));
-            play_mario_landing_sound(m, SOUND_ACTION_TERRAIN_LANDING);
-            m->actionState++;
-        }
-    } else {
-        set_mario_animation(m, MARIO_ANIM_GENERAL_LAND);
-        if (is_anim_at_end(m)) {
-            m->statusForCamera->cameraEvent = CAM_EVENT_START_GRAND_STAR;
-            advance_cutscene_step(m);
-        }
-    }
+//      if (perform_air_step(m, 1) == AIR_STEP_LANDED) {
+//          play_cutscene_music(SEQUENCE_ARGS(15, SEQ_EVENT_CUTSCENE_VICTORY));
+//          play_mario_landing_sound(m, SOUND_ACTION_TERRAIN_LANDING);
+//          m->actionState++;
+//      }
+//  } else {
+//      set_mario_animation(m, MARIO_ANIM_GENERAL_LAND);
+//      if (is_anim_at_end(m)) {
+//          m->statusForCamera->cameraEvent = CAM_EVENT_START_GRAND_STAR;
+//          advance_cutscene_step(m);
+//      }
+//  }
 }
 
 // jumbo star cutscene: Mario takes off
@@ -2031,20 +2031,20 @@ void generate_yellow_sparkles(s16 x, s16 y, s16 z, f32 radius) {
 
 // make Mario fall and soften wing cap gravity
 static void end_peach_cutscene_mario_falling(struct MarioState *m) {
-    if (m->actionTimer == 1) {
-        m->statusForCamera->cameraEvent = CAM_EVENT_START_ENDING;
-    }
+//  if (m->actionTimer == 1) {
+//      m->statusForCamera->cameraEvent = CAM_EVENT_START_ENDING;
+//  }
 
-    m->input |= INPUT_A_DOWN;
-    m->flags |= (MARIO_WING_CAP | MARIO_CAP_ON_HEAD);
+//  m->input |= INPUT_A_DOWN;
+//  m->flags |= (MARIO_WING_CAP | MARIO_CAP_ON_HEAD);
 
-    set_mario_animation(m, MARIO_ANIM_GENERAL_FALL);
-    mario_set_forward_vel(m, 0.0f);
+//  set_mario_animation(m, MARIO_ANIM_GENERAL_FALL);
+//  mario_set_forward_vel(m, 0.0f);
 
-    if (perform_air_step(m, 0) == AIR_STEP_LANDED) {
-        play_mario_landing_sound(m, SOUND_ACTION_TERRAIN_LANDING);
-        advance_cutscene_step(m);
-    }
+//  if (perform_air_step(m, 0) == AIR_STEP_LANDED) {
+//      play_mario_landing_sound(m, SOUND_ACTION_TERRAIN_LANDING);
+//      advance_cutscene_step(m);
+//  }
 }
 
 // set Mario on the ground, wait and spawn the jumbo star outside the castle.

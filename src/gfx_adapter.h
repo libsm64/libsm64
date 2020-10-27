@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/graph_node.h"
+#include "decomp/engine/graph_node.h"
 #include "libsm64.h"
 
 // Commented out in gbi.h - Replaced here 

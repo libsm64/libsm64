@@ -871,11 +871,11 @@ void check_lava_boost(struct MarioState *m) {
 }
 
 void pss_begin_slide(UNUSED struct MarioState *m) {
-    if (!(gHudDisplay.flags & HUD_DISPLAY_FLAG_TIMER)) {
-        level_control_timer(TIMER_CONTROL_SHOW);
-        level_control_timer(TIMER_CONTROL_START);
-        sPssSlideStarted = TRUE;
-    }
+//  if (!(gHudDisplay.flags & HUD_DISPLAY_FLAG_TIMER)) {
+//      level_control_timer(TIMER_CONTROL_SHOW);
+//      level_control_timer(TIMER_CONTROL_START);
+//      sPssSlideStarted = TRUE;
+//  }
 }
 
 void pss_end_slide(struct MarioState *m) {

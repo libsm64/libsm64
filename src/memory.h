@@ -1,6 +1,6 @@
 #pragma once
 
-#include "include/types.h"
+#include "decomp/include/types.h"
 
 struct AllocOnlyPool;
 

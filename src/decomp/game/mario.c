@@ -39,9 +39,6 @@
 // #include "thread6.h"
 
 
-u32 unused80339F10;
-s8 filler80339F1C[20];
-
 /**************************************************
  *                    ANIMATIONS                  *
  **************************************************/
@@ -1521,14 +1518,14 @@ void update_mario_health(struct MarioState *m) {
  * Updates some basic info for camera usage.
  */
 void update_mario_info_for_cam(struct MarioState *m) {
-    m->marioBodyState->action = m->action;
-    m->statusForCamera->action = m->action;
+//  m->marioBodyState->action = m->action;
+//  m->statusForCamera->action = m->action;
 
-    vec3s_copy(m->statusForCamera->faceAngle, m->faceAngle);
+//  vec3s_copy(m->statusForCamera->faceAngle, m->faceAngle);
 
-    if (!(m->flags & MARIO_UNKNOWN_25)) {
-        vec3f_copy(m->statusForCamera->pos, m->pos);
-    }
+//  if (!(m->flags & MARIO_UNKNOWN_25)) {
+//      vec3f_copy(m->statusForCamera->pos, m->pos);
+//  }
 }
 
 /**
@@ -1796,8 +1793,6 @@ void init_mario(void) {
     //Vec3s capPos;
     //struct Object *capObject;
 
-    unused80339F10 = 0;
-
     gMarioState->actionTimer = 0;
     gMarioState->framesSinceA = 0xFF;
     gMarioState->framesSinceB = 0xFF;
@@ -1882,7 +1877,7 @@ void init_mario_from_save_file(void) {
     gMarioState->flags = 0;
     gMarioState->action = 0;
     gMarioState->spawnInfo = gMarioSpawnInfo;
-    gMarioState->statusForCamera = &gPlayerCameraState; // PATCH
+//  gMarioState->statusForCamera = &gPlayerCameraState;
     gMarioState->marioBodyState = &gBodyStates[0];
     gMarioState->controller = &gController;
     gMarioState->animation = &D_80339D10;
@@ -1898,6 +1893,6 @@ void init_mario_from_save_file(void) {
     gMarioState->prevNumStarsForDialog = gMarioState->numStars;
     gMarioState->unkB0 = 0xBD;
 
-    gHudDisplay.coins = 0;
-    gHudDisplay.wedges = 8;
+//  gHudDisplay.coins = 0;
+//  gHudDisplay.wedges = 8;
 }

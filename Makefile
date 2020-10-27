@@ -4,7 +4,7 @@ CC      := cc
 CFLAGS  := -g -Wall -fPIC
 LDFLAGS := -lm -shared
 
-SRC_DIRS  := src src/engine src/game src/mario src/tools
+SRC_DIRS  := src src/decomp src/decomp/engine src/decomp/game src/decomp/mario src/decomp/tools
 BUILD_DIR := build
 DIST_DIR  := dist
 ALL_DIRS  := $(addprefix $(BUILD_DIR)/,$(SRC_DIRS))
@@ -13,7 +13,7 @@ LIB_FILE   := $(DIST_DIR)/libsm64.so
 LIB_H_FILE := $(DIST_DIR)/include/libsm64.h
 TEST_FILE  := run-test
 
-C_IMPORTED := src/mario/geo.inc.c src/mario/model.inc.c
+C_IMPORTED := src/decomp/mario/geo.inc.c src/decomp/mario/model.inc.c
 H_IMPORTED := $(C_IMPORTED:.c=.h)
 IMPORTED   := $(C_IMPORTED) $(H_IMPORTED)
 
@@ -29,11 +29,11 @@ ifeq ($(OS),Windows_NT)
   CFLAGS   := $(CFLAGS) -DBUILDING_SM64_DLL
 endif
 
-DUMMY != mkdir -p $(ALL_DIRS) build/test src/mario $(DIST_DIR)/include 
+DUMMY != mkdir -p $(ALL_DIRS) build/test src/decomp/mario $(DIST_DIR)/include 
 
 
-$(filter-out src/mario/geo.inc.c,$(IMPORTED)): src/mario/geo.inc.c
-src/mario/geo.inc.c: ./import-mario-geo.py
+$(filter-out src/decomp/mario/geo.inc.c,$(IMPORTED)): src/decomp/mario/geo.inc.c
+src/decomp/mario/geo.inc.c: ./import-mario-geo.py
 	./import-mario-geo.py
 
 $(BUILD_DIR)/%.o: %.c $(IMPORTED)
@@ -68,6 +68,6 @@ run: test
 	./$(TEST_FILE)
 
 clean:
-	rm -rf $(BUILD_DIR) $(DIST_DIR) src/mario test/level.? $(TEST_FILE)
+	rm -rf $(BUILD_DIR) $(DIST_DIR) src/decomp/mario test/level.? $(TEST_FILE)
 
 -include $(DEP_FILES)

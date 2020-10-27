@@ -14,7 +14,7 @@
 //#include "shadow.h"
 #include "../include/sm64.h"
 #include "../shim.h"
-#include "../gfx_adapter.h"
+#include "../../gfx_adapter.h"
 
 
 

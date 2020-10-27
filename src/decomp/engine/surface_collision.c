@@ -3,7 +3,7 @@
 #include "../shim.h"
 #include "surface_collision.h"
 #include "../include/surface_terrains.h"
-#include "../load_surfaces.h"
+#include "../../load_surfaces.h"
 
 /**
  * Iterate through the list of ceilings and find the first ceiling over a given point.

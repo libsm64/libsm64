@@ -1,10 +1,9 @@
 #include <string.h>
 #include "shim.h"
-#include "load_anim_data.h"
+#include "../load_anim_data.h"
 
 u32 gGlobalTimer = 0;
 u8 gSpecialTripleJump = FALSE;
-struct HudDisplay gHudDisplay;
 s16 gCurrLevelNum = 0;
 s16 gCameraMovementFlags = 0;
 u32 gAudioRandom = 0;

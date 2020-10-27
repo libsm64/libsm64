@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <stddef.h>
 
-#include "include/types.h"
+#include "decomp/include/types.h"
 
 extern struct Animation *gLibSm64MarioAnimations;
 

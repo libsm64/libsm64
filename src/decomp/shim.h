@@ -3,7 +3,7 @@
 #include "include/types.h"
 #include "game/area.h"
 #include "game/level_update.h"
-#include "libsm64.h"
+#include "../libsm64.h"
 
 #define COURSE_MIN  0
 #define COURSE_MAX 14
@@ -44,7 +44,6 @@ struct SurfaceNode
 
 extern u32 gGlobalTimer;
 extern u8 gSpecialTripleJump;
-extern struct HudDisplay gHudDisplay;
 extern s16 gCurrLevelNum;
 extern s16 gCameraMovementFlags;
 extern u32 gAudioRandom;

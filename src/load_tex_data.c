@@ -4,8 +4,8 @@
 #include <string.h>
 #include "libsm64.h"
 
-#include "tools/libmio0.h"
-#include "tools/n64graphics.h"
+#include "decomp/tools/libmio0.h"
+#include "decomp/tools/n64graphics.h"
 
 #define MARIO_TEX_ROM_OFFSET 1132368
 #define ATLAS_WIDTH (NUM_USED_TEXTURES * 64)
