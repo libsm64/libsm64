@@ -5,6 +5,7 @@
 
 #include "decomp/include/types.h"
 
-extern struct Animation *gLibSm64MarioAnimations;
+extern struct Animation *g_libsm64_mario_animations;
 
 extern void load_mario_anims_from_rom( uint8_t *rom );
+extern void unload_mario_anims( void );

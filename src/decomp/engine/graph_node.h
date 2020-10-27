@@ -5,7 +5,7 @@
 #include "../include/PR/gbi.h"
 
 #include "../include/types.h"
-#include "../../memory.h"
+#include "../memory.h"
 
 #define GRAPH_RENDER_ACTIVE         (1 << 0)
 #define GRAPH_RENDER_CHILDREN_FIRST (1 << 1)

@@ -2,8 +2,7 @@
 
 #include <stdlib.h>
 
-struct Animation *gLibSm64MarioAnimations;
-static struct Animation *s_marioAnimations;
+struct Animation *g_libsm64_mario_animations;
 
 #define ANIM_DATA_ADDRESS 0x004EC000
 
@@ -37,18 +36,19 @@ void load_mario_anims_from_rom( uint8_t *rom )
     uint8_t *read_ptr = rom + ANIM_DATA_ADDRESS;
     uint32_t num_entries = read_u32_be( read_ptr );
 
-    s_marioAnimations = malloc( num_entries * sizeof( struct Animation ));
+    g_libsm64_mario_animations = malloc( num_entries * sizeof( struct Animation ));
+    struct Animation *anims = g_libsm64_mario_animations;
 
     for( int i = 0; i < num_entries; ++i )
     {
         read_ptr = rom + ANIM_DATA_ADDRESS + GET_OFFSET(i);
 
-        s_marioAnimations[i].flags             = read_s16_be( read_ptr ); read_ptr += 2;
-        s_marioAnimations[i].animYTransDivisor = read_s16_be( read_ptr ); read_ptr += 2;
-        s_marioAnimations[i].startFrame        = read_s16_be( read_ptr ); read_ptr += 2;
-        s_marioAnimations[i].loopStart         = read_s16_be( read_ptr ); read_ptr += 2;
-        s_marioAnimations[i].loopEnd           = read_s16_be( read_ptr ); read_ptr += 2;
-        s_marioAnimations[i].unusedBoneCount   = read_s16_be( read_ptr ); read_ptr += 2;
+        anims[i].flags             = read_s16_be( read_ptr ); read_ptr += 2;
+        anims[i].animYTransDivisor = read_s16_be( read_ptr ); read_ptr += 2;
+        anims[i].startFrame        = read_s16_be( read_ptr ); read_ptr += 2;
+        anims[i].loopStart         = read_s16_be( read_ptr ); read_ptr += 2;
+        anims[i].loopEnd           = read_s16_be( read_ptr ); read_ptr += 2;
+        anims[i].unusedBoneCount   = read_s16_be( read_ptr ); read_ptr += 2;
         uint32_t values_offset = read_u32_be( read_ptr ); read_ptr += 4;
         uint32_t index_offset  = read_u32_be( read_ptr ); read_ptr += 4;
         uint32_t end_offset    = read_u32_be( read_ptr );
@@ -57,26 +57,31 @@ void load_mario_anims_from_rom( uint8_t *rom )
         uint8_t *values_ptr = rom + ANIM_DATA_ADDRESS + GET_OFFSET(i) + values_offset;
         uint8_t *end_ptr    = rom + ANIM_DATA_ADDRESS + GET_OFFSET(i) + end_offset;
 
-        s_marioAnimations[i].index = malloc( values_offset - index_offset );
-        s_marioAnimations[i].values = malloc( end_offset - values_offset );
+        anims[i].index = malloc( values_offset - index_offset );
+        anims[i].values = malloc( end_offset - values_offset );
 
         int j = 0;
         while( read_ptr < values_ptr )
         {
-            s_marioAnimations[i].index[j++] = read_u16_be( read_ptr );
+            anims[i].index[j++] = read_u16_be( read_ptr );
             read_ptr += 2;
         }
 
         j = 0;
         while( read_ptr < end_ptr )
         {
-            s_marioAnimations[i].values[j++] = read_u16_be( read_ptr );
+            anims[i].values[j++] = read_u16_be( read_ptr );
             read_ptr += 2;
         }
     }
 
-    gLibSm64MarioAnimations = s_marioAnimations;
-
-    #undef GET_OFFSET
+    #undef GET_OFFSETg_libsm64_mario_animations
     #undef GET_SIZE
+}
+
+void unload_mario_anims( void )
+{
+    // TODO free index and values arrays
+    free( g_libsm64_mario_animations );
+    g_libsm64_mario_animations = NULL;
 }

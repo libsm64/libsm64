@@ -1125,6 +1125,8 @@ void geo_process_root_hack_single_node(struct GraphNode *node)
 {
     gDisplayListHead = NULL; // Currently unused, but referenced
 
+    display_list_pool_reset();
+
     Mtx *initialMatrix;
 
     gDisplayListHeap = alloc_only_pool_init();
@@ -1162,5 +1164,5 @@ void geo_process_root_hack_single_node(struct GraphNode *node)
 
     gMarioObject->header.gfx.throwMatrix = NULL;
 
-    main_pool_free(gDisplayListHeap);
+    alloc_only_pool_free(gDisplayListHeap);
 }

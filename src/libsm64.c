@@ -10,6 +10,7 @@
 #include "decomp/engine/math_util.h"
 #include "decomp/include/sm64.h"
 #include "decomp/shim.h"
+#include "decomp/memory.h"
 #include "decomp/game/mario.h"
 #include "decomp/game/object_stuff.h"
 #include "decomp/engine/surface_collision.h"
@@ -86,6 +87,8 @@ SM64_LIB_FN void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugP
 
     load_mario_textures_from_rom( rom, outTexture );
     load_mario_anims_from_rom( rom );
+
+    memory_init();
 
     gMarioObject = hack_allocate_mario();
     gCurrentArea = hack_build_area();
@@ -176,9 +179,9 @@ SM64_LIB_FN void sm64_mario_tick( const struct SM64MarioInputs *inputs, struct S
 
 SM64_LIB_FN void sm64_global_terminate( void )
 {
-    // TODO free other things
-
     surfaces_unload_all();
+    unload_mario_anims();
+    memory_terminate();
 }
 
 SM64_LIB_FN uint32_t sm64_load_surface_object( const struct SM64SurfaceObject *surfaceObject )
