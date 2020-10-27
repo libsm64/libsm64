@@ -3,7 +3,7 @@
 
 #include "libsm64.h"
 #include "decomp/engine/math_util.h"
-#include "guMtxF2L.h"
+#include "decomp/engine/guMtxF2L.h"
 #include "gfx_adapter.h"
 #include "gfx_adapter_commands.h"
 #include "load_tex_data.h"

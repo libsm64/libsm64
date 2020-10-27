@@ -3,7 +3,7 @@
 #include <math.h>
 #include "../shim.h"
 
-#include "../../guMtxF2L.h"
+#include "guMtxF2L.h"
 #include "../include/sm64.h"
 #include "graph_node.h"
 #include "surface_collision.h"

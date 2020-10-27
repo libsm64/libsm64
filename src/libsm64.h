@@ -1,5 +1,5 @@
-#ifndef __LIB_SM64_H
-#define __LIB_SM64_H
+#ifndef LIB_SM64_H
+#define LIB_SM64_H
 
 #include <stddef.h>
 #include <stdint.h>
@@ -98,4 +98,4 @@ extern void sm64_delete_mario( uint32_t marioId );
 
 */
 
-#endif//__LIB_SM64_H
+#endif//LIB_SM64_H
