@@ -6,7 +6,7 @@
 #include <stdbool.h>
 
 #ifdef _WIN32
-    #ifdef BUILDING_SM64_DLL
+    #ifdef SM64_LIB_EXPORT
         #define SM64_LIB_FN __declspec(dllexport)
     #else
         #define SM64_LIB_FN __declspec(dllimport)

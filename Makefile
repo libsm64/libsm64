@@ -1,7 +1,7 @@
 default: lib
 
 CC      := cc
-CFLAGS  := -g -Wall -fPIC
+CFLAGS  := -g -Wall -fPIC -DSM64_LIB_EXPORT
 LDFLAGS := -lm -shared
 
 SRC_DIRS  := src src/decomp src/decomp/engine src/decomp/game src/decomp/mario src/decomp/tools
@@ -26,7 +26,6 @@ TEST_OBJS := $(foreach file,$(TEST_SRCS),$(BUILD_DIR)/$(file:.c=.o))
 
 ifeq ($(OS),Windows_NT)
   LIB_FILE := $(DIST_DIR)/sm64.dll
-  CFLAGS   := $(CFLAGS) -DBUILDING_SM64_DLL
 endif
 
 DUMMY != mkdir -p $(ALL_DIRS) build/test src/decomp/mario $(DIST_DIR)/include 

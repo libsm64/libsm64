@@ -61,44 +61,11 @@ static Vec3f gVec3fZero = { 0.0f, 0.0f, 0.0f };
 static Vec3s gVec3sZero = { 0, 0, 0 };
 static Vec3f gVec3fOne = { 1.0f, 1.0f, 1.0f };
 
-static struct GraphNodeObject *init_graph_node_object( Vec3f pos, Vec3s angle, Vec3f scale) {
-    struct GraphNodeObject *graphNode = malloc(sizeof(struct GraphNodeObject));
-
-    //init_scene_graph_node_links(&graphNode->node, GRAPH_NODE_TYPE_OBJECT);
-
-    graphNode->node.type = GRAPH_NODE_TYPE_OBJECT;
-    graphNode->node.flags = GRAPH_RENDER_ACTIVE;
-    graphNode->node.prev = &graphNode->node;
-    graphNode->node.next = &graphNode->node;
-    graphNode->node.parent = NULL;
-    graphNode->node.children = NULL;
-
-    vec3f_copy(graphNode->pos, pos);
-    vec3f_copy(graphNode->scale, scale);
-    vec3s_copy(graphNode->angle, angle);
-    vec3f_copy(graphNode->cameraToObject, gVec3fZero);
-
-    graphNode->sharedChild = NULL;
-    graphNode->throwMatrix = NULL;
-    graphNode->animInfo.animID = 0;
-    graphNode->animInfo.curAnim = NULL;
-    graphNode->animInfo.animFrame = 0;
-    graphNode->animInfo.animFrameAccelAssist = 0;
-    graphNode->animInfo.animAccel = 0x10000;
-    graphNode->animInfo.animTimer = 0;
-    graphNode->node.flags |= GRAPH_RENDER_HAS_ANIMATION;
-
-    return graphNode;
-}
-
 static struct Object *try_allocate_object(void) {
     struct ObjectNode *nextObj;
     nextObj = (struct ObjectNode *) malloc(sizeof(struct Object));
     nextObj->prev = NULL;
     nextObj->next = NULL;
-
-    init_graph_node_object(gVec3fZero, gVec3sZero, gVec3fOne);
-
     return (struct Object *) nextObj;
 }
 
@@ -191,7 +158,6 @@ static struct Object *spawn_object_at_origin(void) {
     obj->parentObj = NULL;
     obj->header.gfx.areaIndex = 0;
     obj->header.gfx.activeAreaIndex = 0;
-//  geo_obj_init((struct GraphNodeObject *) &obj->header.gfx, gLoadedGraphNodes[model], gVec3fZero, gVec3sZero);
     geo_obj_init((struct GraphNodeObject *) &obj->header.gfx, NULL, gVec3fZero, gVec3sZero);
 
     return obj;

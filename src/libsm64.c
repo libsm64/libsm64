@@ -1,7 +1,7 @@
-#include <stdio.h>
-
+#define SM64_LIB_EXPORT
 #include "libsm64.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -50,38 +50,22 @@ static void update_button( bool on, u16 button )
     }
 }
 
-static struct Camera *hack_build_camera( void )
+static struct Area *allocate_area( void )
 {
-    struct Camera *result = malloc( sizeof( struct Camera ));
-    memset( result, 0, sizeof( struct Camera ));
+    struct Area *result = malloc( sizeof( struct Area ));
+    memset( result, 0, sizeof( struct Area ));
+
+    result->flags = 1;
+    result->camera = malloc( sizeof( struct Camera ));
+    memset( result->camera, 0, sizeof( struct Camera ));
+
     return result;
 }
 
-static struct Area *hack_build_area( void )
+static void free_area( struct Area *area )
 {
-    struct Area *result = malloc( sizeof( struct Area ));
-
-    result->index = 0;
-    result->flags = 1;
-    result->terrainType = TERRAIN_GRASS;
-    result->unk04 = NULL;
-    result->terrainData = NULL;
-    result->surfaceRooms = NULL;
-    result->macroObjects = NULL;
-    result->warpNodes = NULL;
-    result->paintingWarpNodes = NULL;
-    result->instantWarps = NULL;
-    result->objectSpawnInfos = NULL;
-    result->camera = hack_build_camera();
-    result->unused28 = NULL;
-    result->whirlpools[0] = NULL;
-    result->whirlpools[1] = NULL;
-    result->dialog[0] = 0;
-    result->dialog[1] = 0;
-    result->musicParam = 0;
-    result->musicParam2 = 0;
-
-    return result;
+    free( area->camera );
+    free( area );
 }
 
 SM64_LIB_FN void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugPrintFunctionPtr debugPrintFunction )
@@ -98,7 +82,7 @@ SM64_LIB_FN void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugP
 
     gCurrSaveFileNum = 1;
     gMarioObject = hack_allocate_mario();
-    gCurrentArea = hack_build_area();
+    gCurrentArea = allocate_area();
     gCurrentObject = gMarioObject;
 
     s_mario_geo_pool = alloc_only_pool_init();
@@ -186,8 +170,8 @@ SM64_LIB_FN void sm64_mario_tick( const struct SM64MarioInputs *inputs, struct S
 
 SM64_LIB_FN void sm64_global_terminate( void )
 {
-    //deallocate area,
-    //deallocate mario object and graph node
+    free( gMarioObject );
+    free_area( gCurrentArea );
 
     global_state_bind( NULL );
     global_state_destroy( s_global_state );
