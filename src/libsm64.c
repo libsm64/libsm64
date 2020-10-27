@@ -11,6 +11,7 @@
 #include "decomp/include/sm64.h"
 #include "decomp/shim.h"
 #include "decomp/memory.h"
+#include "decomp/global_state.h"
 #include "decomp/game/mario.h"
 #include "decomp/game/object_stuff.h"
 #include "decomp/engine/surface_collision.h"
@@ -20,6 +21,7 @@
 #include "decomp/mario/geo.inc.h"
 #include "decomp/game/platform_displacement.h"
 
+#include "debug_print.h"
 #include "load_surfaces.h"
 #include "gfx_adapter.h"
 #include "load_anim_data.h"
@@ -28,6 +30,8 @@
 static struct AllocOnlyPool *s_mario_geo_pool;
 static struct GraphNode *s_mario_graph_node;
 static uint32_t s_last_colors_hash;
+
+static struct GlobalState *s_global_state;
 
 static void update_button( bool on, u16 button )
 {
@@ -83,13 +87,16 @@ static struct Area *hack_build_area( void )
 SM64_LIB_FN void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugPrintFunctionPtr debugPrintFunction )
 {
     s_last_colors_hash = 0;
-    gDebugPrint = debugPrintFunction;
+    g_debug_print_func = debugPrintFunction;
 
     load_mario_textures_from_rom( rom, outTexture );
     load_mario_anims_from_rom( rom );
 
     memory_init();
+    s_global_state = global_state_create();
+    global_state_bind( s_global_state );
 
+    gCurrSaveFileNum = 1;
     gMarioObject = hack_allocate_mario();
     gCurrentArea = hack_build_area();
     gCurrentObject = gMarioObject;
@@ -179,6 +186,13 @@ SM64_LIB_FN void sm64_mario_tick( const struct SM64MarioInputs *inputs, struct S
 
 SM64_LIB_FN void sm64_global_terminate( void )
 {
+    //deallocate area,
+    //deallocate mario object and graph node
+
+    global_state_bind( NULL );
+    global_state_destroy( s_global_state );
+    s_global_state = NULL;
+
     surfaces_unload_all();
     unload_mario_anims();
     memory_terminate();

@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 static uint32_t s_num_entries = 0;
-struct Animation *g_libsm64_mario_animations = NULL;
+static struct Animation *s_libsm64_mario_animations = NULL;
 
 #define ANIM_DATA_ADDRESS 0x004EC000
 
@@ -37,8 +37,8 @@ void load_mario_anims_from_rom( uint8_t *rom )
     uint8_t *read_ptr = rom + ANIM_DATA_ADDRESS;
     s_num_entries = read_u32_be( read_ptr );
 
-    g_libsm64_mario_animations = malloc( s_num_entries * sizeof( struct Animation ));
-    struct Animation *anims = g_libsm64_mario_animations;
+    s_libsm64_mario_animations = malloc( s_num_entries * sizeof( struct Animation ));
+    struct Animation *anims = s_libsm64_mario_animations;
 
     for( int i = 0; i < s_num_entries; ++i )
     {
@@ -80,15 +80,23 @@ void load_mario_anims_from_rom( uint8_t *rom )
     #undef GET_SIZE
 }
 
+void load_mario_animation(struct MarioAnimation *a, u32 index)
+{
+    if ((u32)a->currentAnimAddr != 1 + index) {
+        a->currentAnimAddr = (u8*)(1 + index);
+        a->targetAnim = &s_libsm64_mario_animations[index];
+    }
+}
+
 void unload_mario_anims( void )
 {
     for( int i = 0; i < s_num_entries; ++i )
     {
-        free( g_libsm64_mario_animations[i].index );
-        free( g_libsm64_mario_animations[i].values );
+        free( s_libsm64_mario_animations[i].index );
+        free( s_libsm64_mario_animations[i].values );
     }
 
-    free( g_libsm64_mario_animations );
-    g_libsm64_mario_animations = NULL;
+    free( s_libsm64_mario_animations );
+    s_libsm64_mario_animations = NULL;
     s_num_entries = 0;
 }

@@ -7,8 +7,8 @@
 #include "object_stuff.h"
 #include "platform_displacement.h"
 #include "../shim.h"
-
-struct SurfaceObjectTransform *gMarioPlatform = NULL;
+#include "../global_state.h"
+#include "../../load_surfaces.h"
 
 #define absfx( x ) ( (x) < 0.0f ? -(x) : (x) )
 
@@ -47,16 +47,16 @@ void update_mario_platform(void) {
 
     switch (awayFromFloor) {
         case 1:
-            gMarioPlatform = NULL;
+            g_state->mgMarioPlatform = NULL;
             gMarioObject->platform = NULL;
             break;
 
         case 0:
             if (floor != NULL && floor->object != NULL) {
-                gMarioPlatform = (struct SurfaceObjectTransform *)floor->object;
+                g_state->mgMarioPlatform = floor->object;
                 gMarioObject->platform = floor->object;
             } else {
-                gMarioPlatform = NULL;
+                g_state->mgMarioPlatform = NULL;
                 gMarioObject->platform = NULL;
             }
             break;
@@ -166,7 +166,7 @@ void apply_platform_displacement(u32 isMario, struct SurfaceObjectTransform *pla
  * If Mario's platform is not null, apply platform displacement.
  */
 void apply_mario_platform_displacement(void) {
-    struct SurfaceObjectTransform *platform = gMarioPlatform;
+    struct SurfaceObjectTransform *platform = g_state->mgMarioPlatform;
 
     if (gMarioObject != NULL && platform != NULL) {
         apply_platform_displacement(TRUE, platform);
@@ -177,5 +177,5 @@ void apply_mario_platform_displacement(void) {
  * Set Mario's platform to NULL.
  */
 void clear_mario_platform(void) {
-    gMarioPlatform = NULL;
+    g_state->mgMarioPlatform = NULL;
 }

@@ -260,10 +260,6 @@ void bhv_mario_update(void) {
 //  }
 }
 
-
-
-
-
 void create_transformation_from_matrices(Mat4 a0, Mat4 a1, Mat4 a2) {
     f32 spC, sp8, sp4;
 

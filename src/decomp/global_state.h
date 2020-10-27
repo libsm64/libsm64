@@ -5,44 +5,50 @@
 
 struct GlobalState
 {
+// Not yet implemented:
+
     // interaction.c
-    u8 sDelayInvincTimer;
-    s16 sInvulnerable;
+    u8 msDelayInvincTimer;
+    s16 msInvulnerable;
 
     // mario_actions_moving.c
-    Mat4 sFloorAlignMatrix;
+    Mat4 msFloorAlignMatrix;
 
     // mario_actions_submerged.c
-    s16 sWasAtSurface;
-    s16 sSwimStrength;
-    s16 D_80339FD0;
-    s16 D_80339FD2;
-    f32 D_80339FD4;
+    s16 msWasAtSurface;
+    s16 msSwimStrength;
+    s16 mD_80339FD0;
+    s16 mD_80339FD2;
+    f32 mD_80339FD4;
 
     // mario_misc.c
-    struct MarioBodyState gBodyStates[2];
+    struct MarioBodyState mgBodyStates[2];
+
+// Implemented and in use:
 
     // platform_displacement.c
-    void *gMarioPlatform;
+    void *mgMarioPlatform;
 
     // misc
-    u32 gGlobalTimer;
-    u8 gSpecialTripleJump;
-    s16 gCurrLevelNum;
-    s16 gCameraMovementFlags;
-    u32 gAudioRandom;
-    s8 gShowDebugText;
-    s8 gDebugLevelSelect;
-    s16 gCurrSaveFileNum;
-    struct Controller gController;
-    struct SpawnInfo gMarioSpawnInfoVal;
-    struct SpawnInfo *gMarioSpawnInfo;
-    struct Area *gCurrentArea;
-    struct Object *gCurrentObject;
-    struct Object *gMarioObject;
-    struct MarioAnimation D_80339D10;
-    struct MarioState gMarioStateVal;
-    struct MarioState *gMarioState;
+    u32 mgGlobalTimer;
+    u8 mgSpecialTripleJump;
+    s16 mgCurrLevelNum;
+    s16 mgCameraMovementFlags;
+    u32 mgAudioRandom;
+    s8 mgShowDebugText;
+    s8 mgDebugLevelSelect;
+    s16 mgCurrSaveFileNum;
+    struct Controller mgController;
+    struct SpawnInfo mgMarioSpawnInfoVal;
+    struct Area *mgCurrentArea;
+    struct Object *mgCurrentObject;
+    struct Object *mgMarioObject;
+    struct MarioAnimation mD_80339D10;
+    struct MarioState mgMarioStateVal;
 };
 
-extern struct GlobalState *gState;
+extern struct GlobalState *g_state;
+
+extern struct GlobalState *global_state_create(void);
+extern void global_state_bind(struct GlobalState *state);
+extern void global_state_destroy(struct GlobalState *state);

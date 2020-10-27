@@ -8,6 +8,8 @@
 #include "decomp/engine/math_util.h"
 #include "decomp/shim.h"
 
+#include "debug_print.h"
+
 struct LoadedSurfaceObject
 {
     struct SurfaceObjectTransform transform;
@@ -156,7 +158,7 @@ static void engine_surface_from_lib_surface( struct Surface *surface, const stru
     }
 
     if (mag < 0.0001)
-        DEBUG_LOG("ERROR: normal magnitude is very close to zero");
+        DEBUG_PRINT("ERROR: normal magnitude is very close to zero");
 
     mag = (f32)(1.0 / mag);
     nx *= mag;

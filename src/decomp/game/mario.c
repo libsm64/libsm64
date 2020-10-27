@@ -37,6 +37,7 @@
 #include "save_file.h"
 // #include "sound_init.h"
 // #include "thread6.h"
+#include "../../load_anim_data.h"
 
 
 /**************************************************
@@ -67,7 +68,7 @@ s32 is_anim_past_end(struct MarioState *m) {
 s16 set_mario_animation(struct MarioState *m, s32 targetAnimID) {
     struct Object *o = m->marioObj;
 
-    shim_load_mario_animation(m->animation, targetAnimID);
+    load_mario_animation(m->animation, targetAnimID);
     struct Animation *targetAnim = m->animation->targetAnim;
     //if (load_patchable_table(m->animation, targetAnimID)) {
     //    targetAnim->values = (void *) VIRTUAL_TO_PHYSICAL((u8 *) targetAnim + (uintptr_t) targetAnim->values);
@@ -101,7 +102,7 @@ s16 set_mario_animation(struct MarioState *m, s32 targetAnimID) {
 s16 set_mario_anim_with_accel(struct MarioState *m, s32 targetAnimID, s32 accel) {
     struct Object *o = m->marioObj;
 
-    shim_load_mario_animation(m->animation, targetAnimID);
+    load_mario_animation(m->animation, targetAnimID);
     struct Animation *targetAnim = m->animation->targetAnim;
     //if (load_patchable_table(m->animation, targetAnimID)) {
     //    targetAnim->values = (void *) VIRTUAL_TO_PHYSICAL((u8 *) targetAnim + (uintptr_t) targetAnim->values);

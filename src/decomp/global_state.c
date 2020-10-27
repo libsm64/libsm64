@@ -1,3 +1,23 @@
 #include "global_state.h"
 
-struct GlobalState *gState = 0;
+#include <stdlib.h>
+#include <string.h>
+
+struct GlobalState *g_state = 0;
+
+struct GlobalState *global_state_create(void)
+{
+	struct GlobalState *state = malloc( sizeof( struct GlobalState ));
+	memset( state, 0, sizeof( struct GlobalState ));
+	return state;
+}
+
+void global_state_bind(struct GlobalState *state)
+{
+	g_state = state;
+}
+
+void global_state_destroy(struct GlobalState *state)
+{
+	free( state );
+}
