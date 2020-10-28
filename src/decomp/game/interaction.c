@@ -52,8 +52,11 @@
 #define INT_ATTACK_NOT_WEAK_FROM_ABOVE                                                \
     (INT_GROUND_POUND_OR_TWIRL | INT_PUNCH | INT_KICK | INT_TRIP | INT_HIT_FROM_BELOW)
 
-u8 sDelayInvincTimer;
-s16 sInvulnerable;
+
+#define sDelayInvincTimer (g_state->msDelayInvincTimer)
+#define sInvulnerable     (g_state->msInvulnerable)
+// u8 sDelayInvincTimer;
+// s16 sInvulnerable;
 
 struct InteractionHandler {
     u32 interactType;

@@ -5,8 +5,6 @@
 
 struct GlobalState
 {
-// Not yet implemented:
-
     // interaction.c
     u8 msDelayInvincTimer;
     s16 msInvulnerable;
@@ -26,8 +24,6 @@ struct GlobalState
 
     // rendering_graph_node.c
     u16 mgAreaUpdateCounter;
-
-// Implemented and in use:
 
     // platform_displacement.c
     void *mgMarioPlatform;
@@ -49,6 +45,9 @@ struct GlobalState
     struct MarioAnimation mD_80339D10;
     struct MarioState mgMarioStateVal;
 };
+
+// From mario_actions_submerged.c, needed to initialize global state
+#define MIN_SWIM_STRENGTH 160
 
 extern struct GlobalState *g_state;
 

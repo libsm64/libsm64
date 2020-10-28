@@ -9,6 +9,7 @@ struct GlobalState *global_state_create(void)
 {
 	struct GlobalState *state = malloc( sizeof( struct GlobalState ));
 	memset( state, 0, sizeof( struct GlobalState ));
+	state->msSwimStrength = MIN_SWIM_STRENGTH;
 	return state;
 }
 

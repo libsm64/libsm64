@@ -23,17 +23,23 @@
 #include "../include/object_fields.h"
 #include "../include/mario_geo_switch_case_ids.h"
 
-#define MIN_SWIM_STRENGTH 160
 #define MIN_SWIM_SPEED 16.0f
 
-static s16 sWasAtSurface = FALSE;
-static s16 sSwimStrength = MIN_SWIM_STRENGTH;
+
+#define sWasAtSurface (g_state->msWasAtSurface)
+#define sSwimStrength (g_state->msSwimStrength)
+#define D_80339FD0    (g_state->mD_80339FD0)
+#define D_80339FD2    (g_state->mD_80339FD2)
+#define D_80339FD4    (g_state->mD_80339FD4)
+
+//static s16 sWasAtSurface = FALSE;
+//static s16 sSwimStrength = MIN_SWIM_STRENGTH;
 static s16 sWaterCurrentSpeeds[] = { 28, 12, 8, 4 };
+//static s16 D_80339FD0;
+//static s16 D_80339FD2;
+//static f32 D_80339FD4;
 
-static s16 D_80339FD0;
-static s16 D_80339FD2;
-static f32 D_80339FD4;
-
+  
 static void set_swimming_at_surface_particles(struct MarioState *m, u32 particleFlag) {
     s16 atSurface = m->pos[1] >= m->waterLevel - 130;
 

@@ -65,8 +65,6 @@ struct LandingAction sBackflipLandAction = {
     4, 0, ACT_FREEFALL, ACT_BACKFLIP_LAND_STOP, ACT_BACKFLIP, ACT_FREEFALL, ACT_BEGIN_SLIDING,
 };
 
-Mat4 sFloorAlignMatrix[2];
-
 s16 tilt_body_running(struct MarioState *m) {
     s16 pitch = find_floor_slope(m, 0);
     pitch = pitch * m->forwardVel / 40.0f;
@@ -93,8 +91,8 @@ void play_step_sound(struct MarioState *m, s16 frame1, s16 frame2) {
 
 void align_with_floor(struct MarioState *m) {
     m->pos[1] = m->floorHeight;
-    mtxf_align_terrain_triangle(sFloorAlignMatrix[m->unk00], m->pos, m->faceAngle[1], 40.0f);
-    m->marioObj->header.gfx.throwMatrix = &sFloorAlignMatrix[m->unk00];
+    mtxf_align_terrain_triangle(g_state->msFloorAlignMatrix, m->pos, m->faceAngle[1], 40.0f);
+    m->marioObj->header.gfx.throwMatrix = g_state->msFloorAlignMatrix;
 }
 
 s32 begin_walking_action(struct MarioState *m, f32 forwardVel, u32 action, u32 actionArg) {
