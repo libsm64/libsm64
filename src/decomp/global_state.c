@@ -18,7 +18,7 @@ void global_state_bind(struct GlobalState *state)
 	g_state = state;
 }
 
-void global_state_destroy(struct GlobalState *state)
+void global_state_delete(struct GlobalState *state)
 {
 	free( state );
 }

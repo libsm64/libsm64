@@ -53,4 +53,4 @@ extern struct GlobalState *g_state;
 
 extern struct GlobalState *global_state_create(void);
 extern void global_state_bind(struct GlobalState *state);
-extern void global_state_destroy(struct GlobalState *state);
+extern void global_state_delete(struct GlobalState *state);

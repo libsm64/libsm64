@@ -27,12 +27,19 @@
 #include "gfx_adapter.h"
 #include "load_anim_data.h"
 #include "load_tex_data.h"
+#include "obj_pool.h"
 
-static struct AllocOnlyPool *s_mario_geo_pool;
-static struct GraphNode *s_mario_graph_node;
-static uint32_t s_last_colors_hash;
-static bool s_is_init = false;
-static struct GlobalState *s_global_state;
+static struct AllocOnlyPool *s_mario_geo_pool = NULL;
+static struct GraphNode *s_mario_graph_node = NULL;
+
+static bool s_init_global = false;
+static bool s_init_one_mario = false;
+
+struct MarioInstance
+{
+    struct GlobalState *globalState;
+};
+struct ObjPool s_mario_instance_pool = { 0, 0 };
 
 static void update_button( bool on, u16 button )
 {
@@ -92,48 +99,37 @@ static void update_objects( void )
 
 SM64_LIB_FN void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugPrintFunctionPtr debugPrintFunction )
 {
-    if( s_is_init )
+    if( s_init_global )
         sm64_global_terminate();
 
-    s_is_init = true;
-
-    s_last_colors_hash = 0;
+    s_init_global = true;
     g_debug_print_func = debugPrintFunction;
 
     load_mario_textures_from_rom( rom, outTexture );
     load_mario_anims_from_rom( rom );
 
     memory_init();
-    s_global_state = global_state_create();
-    global_state_bind( s_global_state );
-
-    gCurrSaveFileNum = 1;
-    gMarioObject = hack_allocate_mario();
-    gCurrentArea = allocate_area();
-    gCurrentObject = gMarioObject;
-
-    s_mario_geo_pool = alloc_only_pool_init();
-    s_mario_graph_node = process_geo_layout( s_mario_geo_pool, mario_geo_ptr );
-
-    D_80339D10.animDmaTable = NULL;
-    D_80339D10.currentAnimAddr = NULL;
-    D_80339D10.targetAnim = NULL;
 }
 
 SM64_LIB_FN void sm64_global_terminate( void )
 {
-    if( !s_is_init )
-        return;
-
-    s_is_init = false;
-       
-    free( gMarioObject );
-    free_area( gCurrentArea );
+    if( !s_init_global ) return;
 
     global_state_bind( NULL );
-    global_state_destroy( s_global_state );
-    s_global_state = NULL;
+    
+    if( s_init_one_mario )
+    {
+        for( int i = 0; i < s_mario_instance_pool.size; ++i )
+            if( s_mario_instance_pool.objects[i] != NULL )
+                global_state_delete( ((struct MarioInstance *)s_mario_instance_pool.objects[ i ])->globalState );
 
+        obj_pool_free_all( &s_mario_instance_pool );
+    }
+
+    s_init_global = false;
+    s_init_one_mario = false;
+       
+    alloc_only_pool_free( s_mario_geo_pool );
     surfaces_unload_all();
     unload_mario_anims();
     memory_terminate();
@@ -146,6 +142,24 @@ SM64_LIB_FN void sm64_static_surfaces_load( const struct SM64Surface *surfaceArr
 
 SM64_LIB_FN uint32_t sm64_mario_create( int16_t x, int16_t y, int16_t z )
 {
+    uint32_t marioIndex = obj_pool_alloc_index( &s_mario_instance_pool, sizeof( struct MarioInstance ));
+    struct MarioInstance *newInstance = s_mario_instance_pool.objects[marioIndex];
+
+    newInstance->globalState = global_state_create();
+    global_state_bind( newInstance->globalState );
+
+    if( !s_init_one_mario )
+    {
+        s_init_one_mario = true;
+        s_mario_geo_pool = alloc_only_pool_init();
+        s_mario_graph_node = process_geo_layout( s_mario_geo_pool, mario_geo_ptr );
+    }
+
+    gCurrSaveFileNum = 1;
+    gMarioObject = hack_allocate_mario();
+    gCurrentArea = allocate_area();
+    gCurrentObject = gMarioObject;
+
     gMarioSpawnInfoVal.startPos[0] = x;
     gMarioSpawnInfoVal.startPos[1] = y;
     gMarioSpawnInfoVal.startPos[2] = z;
@@ -166,11 +180,13 @@ SM64_LIB_FN uint32_t sm64_mario_create( int16_t x, int16_t y, int16_t z )
     set_mario_action( gMarioState, ACT_SPAWN_SPIN_AIRBORNE, 0);
     find_floor( x, y, z, &gMarioState->floor );
 
-    return 1;
+    return marioIndex;
 }
 
 SM64_LIB_FN void sm64_mario_tick( uint32_t marioId, const struct SM64MarioInputs *inputs, struct SM64MarioState *outState, struct SM64MarioGeometryBuffers *outBuffers )
 {
+    global_state_bind( ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState );
+
     update_button( inputs->buttonA, A_BUTTON );
     update_button( inputs->buttonB, B_BUTTON );
     update_button( inputs->buttonZ, Z_TRIG );
@@ -197,7 +213,14 @@ SM64_LIB_FN void sm64_mario_tick( uint32_t marioId, const struct SM64MarioInputs
 
 SM64_LIB_FN void sm64_mario_delete( uint32_t marioId )
 {
-    // TODO
+    struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState;
+    global_state_bind( globalState );
+
+    free( gMarioObject );
+    free_area( gCurrentArea );
+
+    global_state_delete( globalState );
+    obj_pool_free_index( &s_mario_instance_pool, marioId );
 }
 
 SM64_LIB_FN uint32_t sm64_surface_object_create( const struct SM64SurfaceObject *surfaceObject )
