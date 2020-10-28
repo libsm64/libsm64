@@ -185,6 +185,12 @@ SM64_LIB_FN uint32_t sm64_mario_create( int16_t x, int16_t y, int16_t z )
 
 SM64_LIB_FN void sm64_mario_tick( uint32_t marioId, const struct SM64MarioInputs *inputs, struct SM64MarioState *outState, struct SM64MarioGeometryBuffers *outBuffers )
 {
+    if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
+    {
+        DEBUG_PRINT("Tried to tick non-existant Mario with ID: %u", marioId);
+        return;
+    }
+
     global_state_bind( ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState );
 
     update_button( inputs->buttonA, A_BUTTON );
@@ -213,6 +219,12 @@ SM64_LIB_FN void sm64_mario_tick( uint32_t marioId, const struct SM64MarioInputs
 
 SM64_LIB_FN void sm64_mario_delete( uint32_t marioId )
 {
+    if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
+    {
+        DEBUG_PRINT("Tried to delete non-existant Mario with ID: %u", marioId);
+        return;
+    }
+
     struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState;
     global_state_bind( globalState );
 
