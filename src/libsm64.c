@@ -69,6 +69,27 @@ static void free_area( struct Area *area )
     free( area );
 }
 
+static void update_terrain_objects( void )
+{
+    update_dynamic_surface_list(); 
+}
+
+static void update_non_terrain_objects( void )
+{
+    bhv_mario_update();
+}
+
+static void update_objects( void )
+{
+    update_mario_platform();
+
+    //clear_dynamic_surfaces();
+    update_terrain_objects();
+    apply_mario_platform_displacement();
+    //detect_object_collisions();
+    update_non_terrain_objects();
+}
+
 SM64_LIB_FN void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugPrintFunctionPtr debugPrintFunction )
 {
     if( s_is_init )
@@ -99,16 +120,35 @@ SM64_LIB_FN void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugP
     D_80339D10.targetAnim = NULL;
 }
 
-SM64_LIB_FN void sm64_load_surfaces( const struct SM64Surface *surfaceArray, uint32_t numSurfaces )
+SM64_LIB_FN void sm64_global_terminate( void )
+{
+    if( !s_is_init )
+        return;
+
+    s_is_init = false;
+       
+    free( gMarioObject );
+    free_area( gCurrentArea );
+
+    global_state_bind( NULL );
+    global_state_destroy( s_global_state );
+    s_global_state = NULL;
+
+    surfaces_unload_all();
+    unload_mario_anims();
+    memory_terminate();
+}
+
+SM64_LIB_FN void sm64_static_surfaces_load( const struct SM64Surface *surfaceArray, uint32_t numSurfaces )
 {
     surfaces_load_static_libsm64( surfaceArray, numSurfaces );
 }
 
-SM64_LIB_FN void sm64_mario_reset( int16_t marioX, int16_t marioY, int16_t marioZ )
+SM64_LIB_FN uint32_t sm64_mario_create( int16_t x, int16_t y, int16_t z )
 {
-    gMarioSpawnInfoVal.startPos[0] = marioX;
-    gMarioSpawnInfoVal.startPos[1] = marioY;
-    gMarioSpawnInfoVal.startPos[2] = marioZ;
+    gMarioSpawnInfoVal.startPos[0] = x;
+    gMarioSpawnInfoVal.startPos[1] = y;
+    gMarioSpawnInfoVal.startPos[2] = z;
 
     gMarioSpawnInfoVal.startAngle[0] = 0;
     gMarioSpawnInfoVal.startAngle[1] = 0;
@@ -124,31 +164,12 @@ SM64_LIB_FN void sm64_mario_reset( int16_t marioX, int16_t marioY, int16_t mario
     init_mario_from_save_file();
     init_mario();
     set_mario_action( gMarioState, ACT_SPAWN_SPIN_AIRBORNE, 0);
-    find_floor( marioX, marioY, marioZ, &gMarioState->floor );
+    find_floor( x, y, z, &gMarioState->floor );
+
+    return 1;
 }
 
-static void update_terrain_objects( void )
-{
-    update_dynamic_surface_list(); 
-}
-
-static void update_non_terrain_objects( void )
-{
-    bhv_mario_update();
-}
-
-static void update_objects( void )
-{
-    update_mario_platform();
-
-    //clear_dynamic_surfaces();
-    update_terrain_objects();
-    apply_mario_platform_displacement();
-    //detect_object_collisions();
-    update_non_terrain_objects();
-}
-
-SM64_LIB_FN void sm64_mario_tick( const struct SM64MarioInputs *inputs, struct SM64MarioState *outState, struct SM64MarioGeometryBuffers *outBuffers )
+SM64_LIB_FN void sm64_mario_tick( uint32_t marioId, const struct SM64MarioInputs *inputs, struct SM64MarioState *outState, struct SM64MarioGeometryBuffers *outBuffers )
 {
     update_button( inputs->buttonA, A_BUTTON );
     update_button( inputs->buttonB, B_BUTTON );
@@ -174,36 +195,22 @@ SM64_LIB_FN void sm64_mario_tick( const struct SM64MarioInputs *inputs, struct S
     outState->faceAngle = (float)gMarioState->faceAngle[1] / 32768.0f * 3.14159f;
 }
 
-SM64_LIB_FN void sm64_global_terminate( void )
+SM64_LIB_FN void sm64_mario_delete( uint32_t marioId )
 {
-    if( !s_is_init )
-        return;
-
-    s_is_init = false;
-       
-    free( gMarioObject );
-    free_area( gCurrentArea );
-
-    global_state_bind( NULL );
-    global_state_destroy( s_global_state );
-    s_global_state = NULL;
-
-    surfaces_unload_all();
-    unload_mario_anims();
-    memory_terminate();
+    // TODO
 }
 
-SM64_LIB_FN uint32_t sm64_load_surface_object( const struct SM64SurfaceObject *surfaceObject )
+SM64_LIB_FN uint32_t sm64_surface_object_create( const struct SM64SurfaceObject *surfaceObject )
 {
     return surfaces_load_object( surfaceObject );
 }
 
-SM64_LIB_FN void sm64_move_object( uint32_t id, const struct SM64ObjectTransform *transform )
+SM64_LIB_FN void sm64_surface_object_move( uint32_t objectId, const struct SM64ObjectTransform *transform )
 {
-    surface_object_update_transform( id, transform );
+    surface_object_update_transform( objectId, transform );
 }
 
-SM64_LIB_FN void sm64_unload_object( uint32_t id )
+SM64_LIB_FN void sm64_surface_object_delete( uint32_t objectId )
 {
-    surfaces_unload_object( id );
+    surfaces_unload_object( objectId );
 }

@@ -394,8 +394,8 @@ int main( void )
 
     sm64_global_terminate();
     sm64_global_init( rom, texture, NULL );
-    sm64_load_surfaces( surfaces, surfaces_count );
-    sm64_mario_reset( 0, 1000, 0 );
+    sm64_static_surfaces_load( surfaces, surfaces_count );
+    uint32_t marioId = sm64_mario_create( 0, 1000, 0 );
 
     free( rom );
 
@@ -442,7 +442,7 @@ int main( void )
         marioInputs.stickX = x_axis;
         marioInputs.stickY = y_axis;
 
-        sm64_mario_tick( &marioInputs, &marioState, &marioGeometry );
+        sm64_mario_tick( marioId, &marioInputs, &marioState, &marioGeometry );
 
         render_draw( &renderState, cameraPos, &marioState, &marioGeometry );
 

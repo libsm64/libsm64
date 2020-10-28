@@ -70,32 +70,16 @@ enum
 };
 
 extern SM64_LIB_FN void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugPrintFunctionPtr debugPrintFunction );
-extern SM64_LIB_FN void sm64_load_surfaces( const struct SM64Surface *surfaceArray, uint32_t numSurfaces );
-
-extern SM64_LIB_FN void sm64_mario_reset( int16_t marioX, int16_t marioY, int16_t marioZ );
-extern SM64_LIB_FN void sm64_mario_tick( const struct SM64MarioInputs *inputs, struct SM64MarioState *outState, struct SM64MarioGeometryBuffers *outBuffers );
 extern SM64_LIB_FN void sm64_global_terminate( void );
 
-extern SM64_LIB_FN uint32_t sm64_load_surface_object( const struct SM64SurfaceObject *surfaceObject );
-extern SM64_LIB_FN void sm64_move_object( uint32_t id, const struct SM64ObjectTransform *transform );
-extern SM64_LIB_FN void sm64_unload_object( uint32_t id );
+extern SM64_LIB_FN void sm64_static_surfaces_load( const struct SM64Surface *surfaceArray, uint32_t numSurfaces );
 
-/*
+extern SM64_LIB_FN uint32_t sm64_mario_create( int16_t x, int16_t y, int16_t z );
+extern SM64_LIB_FN void sm64_mario_tick( uint32_t marioId, const struct SM64MarioInputs *inputs, struct SM64MarioState *outState, struct SM64MarioGeometryBuffers *outBuffers );
+extern SM64_LIB_FN void sm64_mario_delete( uint32_t marioId );
 
-extern void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugPrintFunctionPtr debugPrintFunction );
-extern uint8_t sm64_global_is_init( void );
-extern void sm64_global_terminate( void );
-
-extern void sm64_load_static_surfaces( const struct SM64Surface *surfaceArray, uint32_t numSurfaces );
-
-extern uint32_t sm64_create_surface_object( const struct SM64SurfaceObject *surfaceObject );
-extern void sm64_move_surface_object( uint32_t objectId, const struct SM64ObjectTransform *transform );
-extern void sm64_delete_surface_object( uint32_t objectId );
-
-extern uint32_t sm64_create_mario( int16_t x, int16_t y, int16_t z );
-extern void sm64_mario_tick( const struct SM64MarioInputs *inputs, struct SM64MarioState *outState, struct SM64MarioGeometryBuffers *outBuffers );
-extern void sm64_delete_mario( uint32_t marioId );
-
-*/
+extern SM64_LIB_FN uint32_t sm64_surface_object_create( const struct SM64SurfaceObject *surfaceObject );
+extern SM64_LIB_FN void sm64_surface_object_move( uint32_t objectId, const struct SM64ObjectTransform *transform );
+extern SM64_LIB_FN void sm64_surface_object_delete( uint32_t objectId );
 
 #endif//LIB_SM64_H
