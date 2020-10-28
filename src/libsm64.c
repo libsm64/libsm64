@@ -78,6 +78,7 @@ static void free_area( struct Area *area )
 
 static void update_terrain_objects( void )
 {
+    // TODO, this is way more expensive than it needs to be.
     update_dynamic_surface_list(); 
 }
 
