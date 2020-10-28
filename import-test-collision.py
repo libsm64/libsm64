@@ -37,7 +37,7 @@ def main():
     out_lines = []
 
     for tri in tris:
-        out_lines.append("{%s,0,{{%s,%s,%s},{%s,%s,%s},{%s,%s,%s}}}"%(tri[3], \
+        out_lines.append("{%s,0,TERRAIN_SNOW,{{%s,%s,%s},{%s,%s,%s},{%s,%s,%s}}}"%(tri[3], \
             verts[tri[0]][0], verts[tri[0]][1], verts[tri[0]][2], \
             verts[tri[1]][0], verts[tri[1]][1], verts[tri[1]][2], \
             verts[tri[2]][0], verts[tri[2]][1], verts[tri[2]][2]))
@@ -45,7 +45,7 @@ def main():
     out_str = ",\n".join(out_lines)
     out_str = "const struct SM64Surface surfaces[] = {\n" + out_str + "};\n\n"
     out_str += "const size_t surfaces_count = sizeof( surfaces ) / sizeof( surfaces[0] );"
-    out_str = '#include "../src/include/surface_terrains.h"\n' + out_str
+    out_str = '#include "../src/decomp/include/surface_terrains.h"\n' + out_str
     out_str = '#include "level.h"\n' + out_str
 
     with open("test/level.c", "w") as file:

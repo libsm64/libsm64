@@ -192,6 +192,7 @@ static void engine_surface_from_lib_surface( struct Surface *surface, const stru
     surface->room = 0;
     surface->type = type;
     surface->flags = (s8) flags;
+    surface->terrain = libSurf->terrain;
 
     if (hasForce) {
         surface->force = force;

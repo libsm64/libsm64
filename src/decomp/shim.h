@@ -59,3 +59,4 @@
 #define gMarioObject         (g_state->mgMarioObject)
 #define D_80339D10           (g_state->mD_80339D10)
 #define gMarioState          (&g_state->mgMarioStateVal)
+#define gAreaUpdateCounter   (g_state->mgAreaUpdateCounter)

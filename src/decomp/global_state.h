@@ -24,6 +24,9 @@ struct GlobalState
     // mario_misc.c
     struct MarioBodyState mgBodyStates[2];
 
+    // rendering_graph_node.c
+    u16 mgAreaUpdateCounter;
+
 // Implemented and in use:
 
     // platform_displacement.c

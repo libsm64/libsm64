@@ -141,7 +141,6 @@ struct GraphNodePerspective *gCurGraphNodeCamFrustum = NULL;
 struct GraphNodeCamera *gCurGraphNodeCamera = NULL;
 struct GraphNodeObject *gCurGraphNodeObject = NULL;
 struct GraphNodeHeldObject *gCurGraphNodeHeldObject = NULL;
-u16 gAreaUpdateCounter = 0;
 
 #ifdef F3DEX_GBI_2
 LookAt lookAt;

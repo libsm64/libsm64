@@ -78,7 +78,8 @@ static s8 gMarioAttackScaleAnimation[3 * 6] = {
     10, 12, 16, 24, 10, 10, 10, 14, 20, 30, 10, 10, 10, 16, 20, 26, 26, 20,
 };
 
-struct MarioBodyState gBodyStates[2]; // 2nd is never accessed in practice, most likely Luigi related
+#define gBodyStates (g_state->mgBodyStates)
+//struct MarioBodyState gBodyStates[2]; // 2nd is never accessed in practice, most likely Luigi related
 //struct GraphNodeObject gMirrorMario;  // copy of Mario's geo node for drawing mirror Mario
 
 // This whole file is weirdly organized. It has to be the same file due

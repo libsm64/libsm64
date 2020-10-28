@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include <math.h>
 
@@ -30,7 +31,7 @@
 static struct AllocOnlyPool *s_mario_geo_pool;
 static struct GraphNode *s_mario_graph_node;
 static uint32_t s_last_colors_hash;
-
+static bool s_is_init = false;
 static struct GlobalState *s_global_state;
 
 static void update_button( bool on, u16 button )
@@ -70,6 +71,11 @@ static void free_area( struct Area *area )
 
 SM64_LIB_FN void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugPrintFunctionPtr debugPrintFunction )
 {
+    if( s_is_init )
+        sm64_global_terminate();
+
+    s_is_init = true;
+
     s_last_colors_hash = 0;
     g_debug_print_func = debugPrintFunction;
 
@@ -93,10 +99,9 @@ SM64_LIB_FN void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugP
     D_80339D10.targetAnim = NULL;
 }
 
-SM64_LIB_FN void sm64_load_surfaces( uint16_t terrainType, const struct SM64Surface *surfaceArray, uint32_t numSurfaces )
+SM64_LIB_FN void sm64_load_surfaces( const struct SM64Surface *surfaceArray, uint32_t numSurfaces )
 {
     surfaces_load_static_libsm64( surfaceArray, numSurfaces );
-    gCurrentArea->terrainType = terrainType;
 }
 
 SM64_LIB_FN void sm64_mario_reset( int16_t marioX, int16_t marioY, int16_t marioZ )
@@ -134,12 +139,13 @@ static void update_non_terrain_objects( void )
 
 static void update_objects( void )
 {
+    update_mario_platform();
+
     //clear_dynamic_surfaces();
     update_terrain_objects();
     apply_mario_platform_displacement();
     //detect_object_collisions();
     update_non_terrain_objects();
-    update_mario_platform();
 }
 
 SM64_LIB_FN void sm64_mario_tick( const struct SM64MarioInputs *inputs, struct SM64MarioState *outState, struct SM64MarioGeometryBuffers *outBuffers )
@@ -170,6 +176,11 @@ SM64_LIB_FN void sm64_mario_tick( const struct SM64MarioInputs *inputs, struct S
 
 SM64_LIB_FN void sm64_global_terminate( void )
 {
+    if( !s_is_init )
+        return;
+
+    s_is_init = false;
+       
     free( gMarioObject );
     free_area( gCurrentArea );
 

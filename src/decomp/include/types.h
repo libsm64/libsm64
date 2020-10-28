@@ -242,6 +242,8 @@ struct Surface
     } normal;
     /*0x28*/ f32 originOffset;
     /*0x2C*/ struct Object *object;
+
+    u16 terrain;
 };
 
 struct MarioBodyState
@@ -343,6 +345,8 @@ struct MarioState
     /*0xBC*/ f32 peakHeight;
     /*0xC0*/ f32 quicksandDepth;
     /*0xC4*/ f32 unkC4;
+
+    u16 curTerrain;
 };
 
 #endif // TYPES_H

@@ -350,7 +350,6 @@ extern struct GraphNodeMasterList *gCurGraphNodeMasterList;
 extern struct GraphNodePerspective *gCurGraphNodeCamFrustum;
 extern struct GraphNodeCamera *gCurGraphNodeCamera;
 extern struct GraphNodeHeldObject *gCurGraphNodeHeldObject;
-extern u16 gAreaUpdateCounter;
 
 extern struct GraphNode *gCurRootGraphNode;
 extern struct GraphNode *gCurGraphNodeList[];

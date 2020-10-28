@@ -392,8 +392,9 @@ int main( void )
 
     uint8_t *texture = malloc( 4 * SM64_TEXTURE_WIDTH * SM64_TEXTURE_HEIGHT );
 
+    sm64_global_terminate();
     sm64_global_init( rom, texture, NULL );
-    sm64_load_surfaces( 0, surfaces, surfaces_count );
+    sm64_load_surfaces( surfaces, surfaces_count );
     sm64_mario_reset( 0, 1000, 0 );
 
     free( rom );

@@ -396,7 +396,7 @@ s32 mario_get_floor_class(struct MarioState *m) {
     // The slide terrain type defaults to slide slipperiness.
     // This doesn't matter too much since normally the slide terrain
     // is checked for anyways.
-    if ((m->area->terrainType & TERRAIN_MASK) == TERRAIN_SLIDE) {
+    if (m->curTerrain == TERRAIN_SLIDE) {
         floorClass = SURFACE_CLASS_VERY_SLIPPERY;
     } else {
         floorClass = SURFACE_CLASS_DEFAULT;
@@ -464,12 +464,12 @@ s8 sTerrainSounds[7][6] = {
  */
 u32 mario_get_terrain_sound_addend(struct MarioState *m) {
     s16 floorSoundType;
-    s16 terrainType = m->area->terrainType & TERRAIN_MASK;
     s32 ret = SOUND_TERRAIN_DEFAULT << 16;
     s32 floorType;
 
     if (m->floor != NULL) {
         floorType = m->floor->type;
+        s16 terrainType = m->curTerrain;
 
         if ((gCurrLevelNum != LEVEL_LLL) && (m->floorHeight < (m->waterLevel - 10))) {
             // Water terrain sound, excluding LLL since it uses water in the volcano.
@@ -579,7 +579,7 @@ s32 mario_facing_downhill(struct MarioState *m, s32 turnYaw) {
 u32 mario_floor_is_slippery(struct MarioState *m) {
     f32 normY;
 
-    if ((m->area->terrainType & TERRAIN_MASK) == TERRAIN_SLIDE
+    if (m->curTerrain == TERRAIN_SLIDE
         && m->floor->normal.y < 0.9998477f //~cos(1 deg)
     ) {
         return TRUE;
@@ -612,7 +612,7 @@ u32 mario_floor_is_slippery(struct MarioState *m) {
 s32 mario_floor_is_slope(struct MarioState *m) {
     f32 normY;
 
-    if ((m->area->terrainType & TERRAIN_MASK) == TERRAIN_SLIDE
+    if (m->curTerrain == TERRAIN_SLIDE
         && m->floor->normal.y < 0.9998477f) { // ~cos(1 deg)
         return TRUE;
     }
@@ -1326,6 +1326,8 @@ void update_mario_geometry_inputs(struct MarioState *m) {
 
     m->floorHeight = find_floor(m->pos[0], m->pos[1], m->pos[2], &m->floor);
 
+    m->curTerrain = m->floor->terrain;
+
     // If Mario is OOB, move his position to his graphical position (which was not updated)
     // and check for the floor there.
     // This can cause errant behavior when combined with astral projection,
@@ -1468,7 +1470,7 @@ void update_mario_health(struct MarioState *m) {
                 }
             } else {
                 if ((m->action & ACT_FLAG_SWIMMING) && !(m->action & ACT_FLAG_INTANGIBLE)) {
-                    terrainIsSnow = (m->area->terrainType & TERRAIN_MASK) == TERRAIN_SNOW;
+                    terrainIsSnow = m->floor != NULL && m->curTerrain == TERRAIN_SNOW;
 
                     // When Mario is near the water surface, recover health (unless in snow),
                     // when in snow terrains lose 3 health.
@@ -1834,6 +1836,8 @@ void init_mario(void) {
     gMarioState->floorHeight =
         find_floor(gMarioState->pos[0], gMarioState->pos[1], gMarioState->pos[2], &gMarioState->floor);
 
+    gMarioState->curTerrain = gMarioState->floor->terrain;
+
     if (gMarioState->pos[1] < gMarioState->floorHeight) {
         gMarioState->pos[1] = gMarioState->floorHeight;
     }
@@ -1879,7 +1883,7 @@ void init_mario_from_save_file(void) {
     gMarioState->action = 0;
     gMarioState->spawnInfo = gMarioSpawnInfo;
 //  gMarioState->statusForCamera = &gPlayerCameraState;
-    gMarioState->marioBodyState = &gBodyStates[0];
+    gMarioState->marioBodyState = &g_state->mgBodyStates[0];
     gMarioState->controller = &gController;
     gMarioState->animation = &D_80339D10;
 
