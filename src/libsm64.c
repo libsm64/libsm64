@@ -116,7 +116,7 @@ SM64_LIB_FN void sm64_global_terminate( void )
 
 SM64_LIB_FN void sm64_static_surfaces_load( const struct SM64Surface *surfaceArray, uint32_t numSurfaces )
 {
-    surfaces_load_static_libsm64( surfaceArray, numSurfaces );
+    surfaces_load_static( surfaceArray, numSurfaces );
 }
 
 SM64_LIB_FN uint32_t sm64_mario_create( int16_t x, int16_t y, int16_t z )
@@ -219,18 +219,23 @@ SM64_LIB_FN void sm64_mario_delete( uint32_t marioId )
 SM64_LIB_FN uint32_t sm64_surface_object_create( const struct SM64SurfaceObject *surfaceObject )
 {
     uint32_t id = surfaces_load_object( surfaceObject );
-    update_dynamic_surface_list();
     return id;
 }
 
 SM64_LIB_FN void sm64_surface_object_move( uint32_t objectId, const struct SM64ObjectTransform *transform )
 {
     surface_object_update_transform( objectId, transform );
-    update_dynamic_surface_list();
 }
 
 SM64_LIB_FN void sm64_surface_object_delete( uint32_t objectId )
 {
+    // A mario standing on the platform that is being destroyed will have a pointer to freed memory if we don't clear it.
+    for( int i = 0; i < s_mario_instance_pool.size; ++i )
+    {
+        struct GlobalState *state = ((struct MarioInstance *)s_mario_instance_pool.objects[ i ])->globalState;
+        if( state->mgMarioObject->platform == surfaces_object_get_transform_ptr( objectId ))
+            state->mgMarioObject->platform = NULL;
+    }
+
     surfaces_unload_object( objectId );
-    update_dynamic_surface_list();
 }

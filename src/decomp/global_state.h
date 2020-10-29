@@ -26,9 +26,6 @@ struct GlobalState
     // rendering_graph_node.c
     u16 mgAreaUpdateCounter;
 
-    // platform_displacement.c
-    void *mgMarioPlatform;
-
     // misc
     u32 mgGlobalTimer;
     u8 mgSpecialTripleJump;

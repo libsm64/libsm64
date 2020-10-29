@@ -12,7 +12,7 @@
 
 struct LoadedSurfaceObject
 {
-    struct SurfaceObjectTransform transform;
+    struct SurfaceObjectTransform *transform;
     uint32_t surfaceCount;
     struct SM64Surface *libSurfaces;
     struct Surface *engineSurfaces;
@@ -23,9 +23,6 @@ static struct Surface *s_static_surface_list = NULL;
 
 static uint32_t s_surface_object_count = 0;
 static struct LoadedSurfaceObject *s_surface_object_list = NULL;
-
-static uint32_t s_dynamic_surface_count = 0;
-static struct Surface *s_dynamic_surface_list = NULL;
 
 #define CONVERT_ANGLE( x ) ((s16)( -(x) / 180.0f * 32768.0f ))
 
@@ -204,39 +201,26 @@ static void engine_surface_from_lib_surface( struct Surface *surface, const stru
 
 uint32_t loaded_surface_iter_group_count( void )
 {
-    return 2;
+    return 1 + s_surface_object_count;
 }
 
 uint32_t loaded_surface_iter_group_size( uint32_t groupIndex )
 {
-    return groupIndex == 0 ? s_static_surface_count : s_dynamic_surface_count;
+    if( groupIndex == 0 )
+        return s_static_surface_count;
+
+    return s_surface_object_list[ groupIndex - 1 ].surfaceCount;
 }
 
 struct Surface *loaded_surface_iter_get_at_index( uint32_t groupIndex, uint32_t surfaceIndex )
 {
-    return groupIndex == 0 ? &s_static_surface_list[ surfaceIndex ] : &s_dynamic_surface_list[ surfaceIndex ];
+    if( groupIndex == 0 )
+        return &s_static_surface_list[ surfaceIndex ];
+
+    return &s_surface_object_list[ groupIndex - 1 ].engineSurfaces[ surfaceIndex ];
 }
 
-void update_dynamic_surface_list( void )
-{
-    // TODO, this is way more expensive than it needs to be.
-
-    free( s_dynamic_surface_list );
-    s_dynamic_surface_count = 0;
-    s_dynamic_surface_list = NULL;
-
-    for( int i = 0; i < s_surface_object_count; ++i )
-    {
-        for( int j = 0; j < s_surface_object_list[i].surfaceCount; ++j )
-        {
-            s_dynamic_surface_count++;
-            s_dynamic_surface_list = realloc( s_dynamic_surface_list, s_dynamic_surface_count * sizeof( struct Surface ));
-            engine_surface_from_lib_surface( &s_dynamic_surface_list[s_dynamic_surface_count - 1], &s_surface_object_list[i].libSurfaces[j], &s_surface_object_list[i].transform );
-        }
-    }
-}
-
-void surfaces_load_static_libsm64( const struct SM64Surface *surfaceArray, uint32_t numSurfaces )
+void surfaces_load_static( const struct SM64Surface *surfaceArray, uint32_t numSurfaces )
 {
     s_static_surface_count = numSurfaces;
     s_static_surface_list = malloc( sizeof( struct Surface ) * numSurfaces );
@@ -247,27 +231,83 @@ void surfaces_load_static_libsm64( const struct SM64Surface *surfaceArray, uint3
 
 uint32_t surfaces_load_object( const struct SM64SurfaceObject *surfaceObject )
 {
+    bool pickedOldIndex = false;
     uint32_t idx = s_surface_object_count;
-    s_surface_object_count++;
-    s_surface_object_list = realloc( s_surface_object_list, s_surface_object_count * sizeof( struct LoadedSurfaceObject ));
+
+    for( int i = 0; i < s_surface_object_count; ++i )
+    {
+        if( s_surface_object_list[i].surfaceCount == 0 )
+        {
+            pickedOldIndex = true;
+            idx = i;
+            break;
+        }
+    }
+
+    if( !pickedOldIndex )
+    {
+        idx = s_surface_object_count;
+        s_surface_object_count++;
+        s_surface_object_list = realloc( s_surface_object_list, s_surface_object_count * sizeof( struct LoadedSurfaceObject ));
+    }
 
     struct LoadedSurfaceObject *obj = &s_surface_object_list[idx];
-    init_transform( &obj->transform, &surfaceObject->transform );
+
     obj->surfaceCount = surfaceObject->surfaceCount;
+
+    obj->transform = malloc( sizeof( struct SurfaceObjectTransform ));
+    init_transform( obj->transform, &surfaceObject->transform );
+
     obj->libSurfaces = malloc( obj->surfaceCount * sizeof( struct SM64Surface ));
     memcpy( obj->libSurfaces, surfaceObject->surfaces, obj->surfaceCount * sizeof( struct SM64Surface ));
+
+    obj->engineSurfaces = malloc( obj->surfaceCount * sizeof( struct Surface ));
+    for( int i = 0; i < obj->surfaceCount; ++i )
+        engine_surface_from_lib_surface( &obj->engineSurfaces[i], &obj->libSurfaces[i], obj->transform );
 
     return idx;
 }
 
 void surfaces_unload_object( uint32_t objId )
 {
-    // TODO implement
+    if( objId >= s_surface_object_count || s_surface_object_list[objId].surfaceCount == 0 )
+    {
+        DEBUG_PRINT("Tried to unload non-existant surface object with ID: %u", objId);
+        return;
+    }
+
+    free( s_surface_object_list[objId].transform );
+    free( s_surface_object_list[objId].libSurfaces );
+    free( s_surface_object_list[objId].engineSurfaces );
+
+    s_surface_object_list[objId].surfaceCount = 0;
+    s_surface_object_list[objId].transform = NULL;
+    s_surface_object_list[objId].libSurfaces = NULL;
+    s_surface_object_list[objId].engineSurfaces = NULL;
 }
 
 void surface_object_update_transform( uint32_t objId, const struct SM64ObjectTransform *newTransform )
 {
-    update_transform( &s_surface_object_list[objId].transform, newTransform );
+    if( objId >= s_surface_object_count || s_surface_object_list[objId].surfaceCount == 0 )
+    {
+        DEBUG_PRINT("Tried to update non-existant surface object with ID: %u", objId);
+        return;
+    }
+
+    update_transform( s_surface_object_list[objId].transform, newTransform );
+    for( int i = 0; i < s_surface_object_list[objId].surfaceCount; ++i )
+    {
+        struct LoadedSurfaceObject *obj = &s_surface_object_list[objId];
+        engine_surface_from_lib_surface( &obj->engineSurfaces[i], &obj->libSurfaces[i], obj->transform );
+    }
+}
+
+struct SurfaceObjectTransform *surfaces_object_get_transform_ptr( uint32_t objId )
+{
+    if( objId >= s_surface_object_count || s_surface_object_list[objId].surfaceCount == 0 )
+        return NULL;
+
+    return s_surface_object_list[objId].transform;
 }
 
 void surfaces_unload_all( void )
@@ -277,12 +317,9 @@ void surfaces_unload_all( void )
     s_static_surface_list = NULL;
 
     for( int i = 0; i < s_surface_object_count; ++i )
-        free( s_surface_object_list[i].libSurfaces );
+        surfaces_unload_object( i );
+
     free( s_surface_object_list );
     s_surface_object_count = 0;
     s_surface_object_list = NULL;
-
-    free( s_dynamic_surface_list );
-    s_dynamic_surface_count = 0;
-    s_dynamic_surface_list = NULL;
 }
