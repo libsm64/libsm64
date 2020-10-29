@@ -21,6 +21,7 @@ struct GlobalState
 
     // mario_misc.c
     struct MarioBodyState mgBodyStates[2];
+    s16 msMarioAttackAnimCounter;
 
     // rendering_graph_node.c
     u16 mgAreaUpdateCounter;

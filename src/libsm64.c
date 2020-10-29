@@ -76,28 +76,6 @@ static void free_area( struct Area *area )
     free( area );
 }
 
-static void update_terrain_objects( void )
-{
-    // TODO, this is way more expensive than it needs to be.
-    update_dynamic_surface_list(); 
-}
-
-static void update_non_terrain_objects( void )
-{
-    bhv_mario_update();
-}
-
-static void update_objects( void )
-{
-    update_mario_platform();
-
-    //clear_dynamic_surfaces();
-    update_terrain_objects();
-    apply_mario_platform_displacement();
-    //detect_object_collisions();
-    update_non_terrain_objects();
-}
-
 SM64_LIB_FN void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugPrintFunctionPtr debugPrintFunction )
 {
     if( s_init_global )
@@ -204,7 +182,9 @@ SM64_LIB_FN void sm64_mario_tick( uint32_t marioId, const struct SM64MarioInputs
     gController.stickY = 64.0f * inputs->stickY;
     gController.stickMag = sqrtf( gController.stickX*gController.stickX + gController.stickY*gController.stickY );
 
-    update_objects();
+    update_mario_platform();
+    apply_mario_platform_displacement();
+    bhv_mario_update();
 
     gfx_adapter_bind_output_buffers( outBuffers );
 
@@ -238,15 +218,19 @@ SM64_LIB_FN void sm64_mario_delete( uint32_t marioId )
 
 SM64_LIB_FN uint32_t sm64_surface_object_create( const struct SM64SurfaceObject *surfaceObject )
 {
-    return surfaces_load_object( surfaceObject );
+    uint32_t id = surfaces_load_object( surfaceObject );
+    update_dynamic_surface_list();
+    return id;
 }
 
 SM64_LIB_FN void sm64_surface_object_move( uint32_t objectId, const struct SM64ObjectTransform *transform )
 {
     surface_object_update_transform( objectId, transform );
+    update_dynamic_surface_list();
 }
 
 SM64_LIB_FN void sm64_surface_object_delete( uint32_t objectId )
 {
     surfaces_unload_object( objectId );
+    update_dynamic_surface_list();
 }

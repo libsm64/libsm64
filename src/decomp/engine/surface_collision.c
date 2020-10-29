@@ -1,5 +1,3 @@
-// CUSTOM/PATCH
-
 #include "../shim.h"
 #include "surface_collision.h"
 #include "../include/surface_terrains.h"
@@ -44,17 +42,6 @@ static struct Surface *find_ceil_from_list( s32 x, s32 y, s32 z, f32 *pheight) {
             continue;
         }
 
-//      // Determine if checking for the camera or not.
-//      if (gCheckingSurfaceCollisionsForCamera != 0) {
-//          if (surf->flags & SURFACE_FLAG_NO_CAM_COLLISION) {
-//              continue;
-//          }
-//      }
-//      // Ignore camera only surfaces.
-//      else if (surf->type == SURFACE_CAMERA_BOUNDARY) {
-//          continue;
-//      }
-
         {
             f32 nx = surf->normal.x;
             f32 ny = surf->normal.y;
@@ -85,9 +72,6 @@ static struct Surface *find_ceil_from_list( s32 x, s32 y, s32 z, f32 *pheight) {
             }
         }
     }
-
-    //! (Surface Cucking) Since only the first ceil is returned and not the lowest,
-    //  lower ceilings can be "cucked" by higher ceilings.
     return ceil;
 }
 
@@ -107,10 +91,8 @@ static struct Surface *find_floor_from_list( s32 x, s32 y, s32 z, f32 *pheight) 
     for( int i = 0; i < count; ++i ) {
         surf = loaded_surface_get_at_index(i);
 
-
         // Do the check normally done in add_surface_to_cell
         if( surf->normal.y <= 0.01f ) continue;
-
 
         x1 = surf->vertex1[0];
         z1 = surf->vertex1[2];
@@ -132,17 +114,6 @@ static struct Surface *find_floor_from_list( s32 x, s32 y, s32 z, f32 *pheight) 
         if ((z3 - z) * (x1 - x3) - (x3 - x) * (z1 - z3) < 0) {
             continue;
         }
-
-//      // Determine if we are checking for the camera or not.
-//      if (gCheckingSurfaceCollisionsForCamera != 0) {
-//          if (surf->flags & SURFACE_FLAG_NO_CAM_COLLISION) {
-//              continue;
-//          }
-//      }
-//      // If we are not checking for the camera, ignore camera only floors.
-//      else if (surf->type == SURFACE_CAMERA_BOUNDARY) {
-//          continue;
-//      }
 
         nx = surf->normal.x;
         ny = surf->normal.y;
@@ -167,9 +138,6 @@ static struct Surface *find_floor_from_list( s32 x, s32 y, s32 z, f32 *pheight) 
             floor = surf;
         }
     }
-
-    //! (Surface Cucking) Since only the first floor is returned and not the highest,
-    //  higher floors can be "cucked" by lower floors.
     return floor;
 }
 
@@ -195,13 +163,11 @@ static s32 find_wall_collisions_from_list( struct WallCollisionData *data) {
     for( int i = 0; i < count; ++i ) {
         surf = loaded_surface_get_at_index(i);
 
-
         // Do the check normally done in add_surface_to_cell
         if( surf->normal.y < -0.01f || surf->normal.y > 0.01f ) continue;
         if( surf->normal.x < -0.707f || surf->normal.x > 0.707f ) {
             surf->flags |= SURFACE_FLAG_X_PROJECTION;
         }
-
 
         // Exclude a large number of walls immediately to optimize.
         if (y < surf->lowerY || y > surf->upperY) {
@@ -272,33 +238,6 @@ static s32 find_wall_collisions_from_list( struct WallCollisionData *data) {
             }
         }
 
-        // Determine if checking for the camera or not.
-//      if (gCheckingSurfaceCollisionsForCamera) {
-//          if (surf->flags & SURFACE_FLAG_NO_CAM_COLLISION) {
-//              continue;
-//          }
-//      } else {
-//          // Ignore camera only surfaces.
-//          if (surf->type == SURFACE_CAMERA_BOUNDARY) {
-//              continue;
-//          }
-
-//          // If an object can pass through a vanish cap wall, pass through.
-//          if (surf->type == SURFACE_VANISH_CAP_WALLS) {
-//              // If an object can pass through a vanish cap wall, pass through.
-//              if (gCurrentObject != NULL
-//                  && (gCurrentObject->activeFlags & ACTIVE_FLAG_MOVE_THROUGH_GRATE)) {
-//                  continue;
-//              }
-
-//              // If Mario has a vanish cap, pass through the vanish cap wall.
-//              if (gCurrentObject != NULL && gCurrentObject == gMarioObject
-//                  && (gMarioState->flags & MARIO_VANISH_CAP)) {
-//                  continue;
-//              }
-//          }
-//      }
-
         //! (Wall Overlaps) Because this doesn't update the x and z local variables,
         //  multiple walls can push mario more than is required.
         data->x += surf->normal.x * (radius - offset);
@@ -316,10 +255,6 @@ static s32 find_wall_collisions_from_list( struct WallCollisionData *data) {
 
     return numCols;
 }
-
-
-
-
 
 s32 f32_find_wall_collision(f32 *xPtr, f32 *yPtr, f32 *zPtr, f32 offsetY, f32 radius)
 {

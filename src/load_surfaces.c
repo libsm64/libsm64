@@ -203,6 +203,8 @@ static void engine_surface_from_lib_surface( struct Surface *surface, const stru
 
 void update_dynamic_surface_list( void )
 {
+    // TODO, this is way more expensive than it needs to be.
+
     free( s_dynamic_surface_list );
     s_dynamic_surface_count = 0;
     s_dynamic_surface_list = NULL;
