@@ -6,6 +6,5 @@
 
 void update_mario_platform(void);
 void apply_mario_platform_displacement(void);
-void clear_mario_platform(void);
 
 #endif // PLATFORM_DISPLACEMENT_H

@@ -14,7 +14,8 @@ struct LoadedSurfaceObject
 {
     struct SurfaceObjectTransform transform;
     uint32_t surfaceCount;
-    struct SM64Surface *surfaces;
+    struct SM64Surface *libSurfaces;
+    struct Surface *engineSurfaces;
 };
 
 static uint32_t s_static_surface_count = 0;
@@ -127,11 +128,11 @@ static void engine_surface_from_lib_surface( struct Surface *surface, const stru
         x2 = v2[0]; y2 = v2[1]; z2 = v2[2];
         x3 = v3[0]; y3 = v3[1]; z3 = v3[2];
 
-        surface->object = (struct Object *)(transform);
+        surface->transform = transform;
     }
     else
     {
-        surface->object = NULL;
+        surface->transform = NULL;
     }
 
     // (v2 - v1) x (v3 - v2)
@@ -201,6 +202,21 @@ static void engine_surface_from_lib_surface( struct Surface *surface, const stru
     }
 }
 
+uint32_t loaded_surface_iter_group_count( void )
+{
+    return 2;
+}
+
+uint32_t loaded_surface_iter_group_size( uint32_t groupIndex )
+{
+    return groupIndex == 0 ? s_static_surface_count : s_dynamic_surface_count;
+}
+
+struct Surface *loaded_surface_iter_get_at_index( uint32_t groupIndex, uint32_t surfaceIndex )
+{
+    return groupIndex == 0 ? &s_static_surface_list[ surfaceIndex ] : &s_dynamic_surface_list[ surfaceIndex ];
+}
+
 void update_dynamic_surface_list( void )
 {
     // TODO, this is way more expensive than it needs to be.
@@ -215,23 +231,9 @@ void update_dynamic_surface_list( void )
         {
             s_dynamic_surface_count++;
             s_dynamic_surface_list = realloc( s_dynamic_surface_list, s_dynamic_surface_count * sizeof( struct Surface ));
-            engine_surface_from_lib_surface( &s_dynamic_surface_list[s_dynamic_surface_count - 1], &s_surface_object_list[i].surfaces[j], &s_surface_object_list[i].transform );
+            engine_surface_from_lib_surface( &s_dynamic_surface_list[s_dynamic_surface_count - 1], &s_surface_object_list[i].libSurfaces[j], &s_surface_object_list[i].transform );
         }
     }
-}
-
-
-struct Surface *loaded_surface_get_at_index( uint32_t index )
-{
-    if( index < s_static_surface_count )
-        return &s_static_surface_list[ index ];
-    
-    return &s_dynamic_surface_list[ index - s_static_surface_count ];
-}
-
-uint32_t loaded_surface_get_count()
-{
-    return s_static_surface_count + s_dynamic_surface_count;
 }
 
 void surfaces_load_static_libsm64( const struct SM64Surface *surfaceArray, uint32_t numSurfaces )
@@ -252,8 +254,8 @@ uint32_t surfaces_load_object( const struct SM64SurfaceObject *surfaceObject )
     struct LoadedSurfaceObject *obj = &s_surface_object_list[idx];
     init_transform( &obj->transform, &surfaceObject->transform );
     obj->surfaceCount = surfaceObject->surfaceCount;
-    obj->surfaces = malloc( obj->surfaceCount * sizeof( struct SM64Surface ));
-    memcpy( obj->surfaces, surfaceObject->surfaces, obj->surfaceCount * sizeof( struct SM64Surface ));
+    obj->libSurfaces = malloc( obj->surfaceCount * sizeof( struct SM64Surface ));
+    memcpy( obj->libSurfaces, surfaceObject->surfaces, obj->surfaceCount * sizeof( struct SM64Surface ));
 
     return idx;
 }
@@ -275,7 +277,7 @@ void surfaces_unload_all( void )
     s_static_surface_list = NULL;
 
     for( int i = 0; i < s_surface_object_count; ++i )
-        free( s_surface_object_list[i].surfaces );
+        free( s_surface_object_list[i].libSurfaces );
     free( s_surface_object_list );
     s_surface_object_count = 0;
     s_surface_object_list = NULL;

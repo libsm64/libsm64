@@ -8,6 +8,7 @@
 #include "macros.h"
 #include "PR/ultratypes.h"
 
+
 // Certain functions are marked as having return values, but do not
 // actually return a value. This causes undefined behavior, which we'd rather
 // avoid on modern GCC. This only impacts -O2 and can matter for both the function
@@ -84,13 +85,27 @@ enum SpTaskState {
 #define ANIM_FLAG_6          (1 << 6) // 0x40
 #define ANIM_FLAG_7          (1 << 7) // 0x80
 
+// Added by libsm64
+struct SurfaceObjectTransform
+{
+    float aPosX, aPosY, aPosZ;
+    float aVelX, aVelY, aVelZ;
+
+    s16 aFaceAnglePitch;
+    s16 aFaceAngleYaw;
+    s16 aFaceAngleRoll;
+
+    s16 aAngleVelPitch;
+    s16 aAngleVelYaw;
+    s16 aAngleVelRoll;
+};
+
 struct Animation {
     /*0x00*/ s16 flags;
     /*0x02*/ s16 animYTransDivisor;
     /*0x04*/ s16 startFrame;
     /*0x06*/ s16 loopStart;
-    /*0x08*/ s16 loopEnd;
-    /*0x0A*/ s16 unusedBoneCount;
+    /*0x08*/ s16 loopEnd; /*0x0A*/ s16 unusedBoneCount;
     /*0x0C*/ s16 *values;
     /*0x10*/ u16 *index;
     /*0x14*/ u32 length; // only used with Mario animations to determine how much to load. 0 otherwise.
@@ -199,7 +214,7 @@ struct Object
     /*0x208*/ f32 hitboxDownOffset;
     /*0x20C*/ const BehaviorScript *behavior;
     /*0x210*/ u32 unused2;
-    /*0x214*/ struct Object *platform;
+    /*0x214*/ struct SurfaceObjectTransform *platform; // libsm64: type change from Object*
     /*0x218*/ void *collisionData;
     /*0x21C*/ Mat4 transform;
     /*0x25C*/ void *respawnInfo;
@@ -241,9 +256,10 @@ struct Surface
         f32 z;
     } normal;
     /*0x28*/ f32 originOffset;
-    /*0x2C*/ struct Object *object;
-
-    u16 terrain;
+//  /*0x2C*/ struct Object *object;
+    
+    struct SurfaceObjectTransform *transform; // libsm64: added field
+    u16 terrain; // libsm64: added field
 };
 
 struct MarioBodyState
@@ -346,7 +362,7 @@ struct MarioState
     /*0xC0*/ f32 quicksandDepth;
     /*0xC4*/ f32 unkC4;
 
-    u16 curTerrain;
+    u16 curTerrain; // libsm64: added field
 };
 
 #endif // TYPES_H

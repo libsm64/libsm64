@@ -47,16 +47,13 @@ void update_mario_platform(void) {
 
     switch (awayFromFloor) {
         case 1:
-            g_state->mgMarioPlatform = NULL;
             gMarioObject->platform = NULL;
             break;
 
         case 0:
-            if (floor != NULL && floor->object != NULL) {
-                g_state->mgMarioPlatform = floor->object;
-                gMarioObject->platform = floor->object;
+            if (floor != NULL && floor->transform != NULL) {
+                gMarioObject->platform = floor->transform;
             } else {
-                g_state->mgMarioPlatform = NULL;
                 gMarioObject->platform = NULL;
             }
             break;
@@ -166,16 +163,7 @@ void apply_platform_displacement(u32 isMario, struct SurfaceObjectTransform *pla
  * If Mario's platform is not null, apply platform displacement.
  */
 void apply_mario_platform_displacement(void) {
-    struct SurfaceObjectTransform *platform = g_state->mgMarioPlatform;
-
-    if (gMarioObject != NULL && platform != NULL) {
-        apply_platform_displacement(TRUE, platform);
+    if (gMarioObject != NULL && gMarioObject->platform != NULL) {
+        apply_platform_displacement(TRUE, gMarioObject->platform);
     }
-}
-
-/**
- * Set Mario's platform to NULL.
- */
-void clear_mario_platform(void) {
-    g_state->mgMarioPlatform = NULL;
 }

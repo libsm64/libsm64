@@ -1,24 +1,11 @@
 #pragma once
 
-#include "decomp/include/PR/ultratypes.h"
+#include "decomp/include/types.h"
 #include "libsm64.h"
 
-struct SurfaceObjectTransform
-{
-    float aPosX, aPosY, aPosZ;
-    float aVelX, aVelY, aVelZ;
-
-    s16 aFaceAnglePitch;
-    s16 aFaceAngleYaw;
-    s16 aFaceAngleRoll;
-
-    s16 aAngleVelPitch;
-    s16 aAngleVelYaw;
-    s16 aAngleVelRoll;
-};
-
-extern struct Surface *loaded_surface_get_at_index( uint32_t index );
-extern uint32_t loaded_surface_get_count();
+extern uint32_t loaded_surface_iter_group_count( void );
+extern uint32_t loaded_surface_iter_group_size( uint32_t groupIndex );
+extern struct Surface *loaded_surface_iter_get_at_index( uint32_t groupIndex, uint32_t surfaceIndex );
 
 extern void update_dynamic_surface_list( void );
 extern void surfaces_load_static_libsm64( const struct SM64Surface *surfaceArray, uint32_t numSurfaces );

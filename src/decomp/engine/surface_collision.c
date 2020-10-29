@@ -13,10 +13,11 @@ static struct Surface *find_ceil_from_list( s32 x, s32 y, s32 z, f32 *pheight) {
 
     ceil = NULL;
 
-    // Stay in this loop until out of ceilings.
-    int count = loaded_surface_get_count();
-    for( int i = 0; i < count; ++i ) {
-        surf = loaded_surface_get_at_index(i);
+    uint32_t groupCount = loaded_surface_iter_group_count();
+    for( int i = 0; i < groupCount; ++i ) {
+    uint32_t surfCount = loaded_surface_iter_group_size( i );
+    for( int j = 0; j < surfCount; ++j ) {
+        surf = loaded_surface_iter_get_at_index( i, j );
 
         // Do the check normally done in add_surface_to_cell
         if( surf->normal.y >= -0.01f ) continue;
@@ -71,7 +72,7 @@ static struct Surface *find_ceil_from_list( s32 x, s32 y, s32 z, f32 *pheight) {
                 ceil = surf;
             }
         }
-    }
+    }}
     return ceil;
 }
 
@@ -86,10 +87,11 @@ static struct Surface *find_floor_from_list( s32 x, s32 y, s32 z, f32 *pheight) 
     f32 height;
     struct Surface *floor = NULL;
 
-    // Iterate through the list of floors until there are no more floors.
-    int count = loaded_surface_get_count();
-    for( int i = 0; i < count; ++i ) {
-        surf = loaded_surface_get_at_index(i);
+    uint32_t groupCount = loaded_surface_iter_group_count();
+    for( int i = 0; i < groupCount; ++i ) {
+    uint32_t surfCount = loaded_surface_iter_group_size( i );
+    for( int j = 0; j < surfCount; ++j ) {
+        surf = loaded_surface_iter_get_at_index( i, j );
 
         // Do the check normally done in add_surface_to_cell
         if( surf->normal.y <= 0.01f ) continue;
@@ -137,7 +139,7 @@ static struct Surface *find_floor_from_list( s32 x, s32 y, s32 z, f32 *pheight) 
             *pheight = height;
             floor = surf;
         }
-    }
+    }}
     return floor;
 }
 
@@ -158,10 +160,11 @@ static s32 find_wall_collisions_from_list( struct WallCollisionData *data) {
         radius = 200.0f;
     }
 
-    // Stay in this loop until out of walls.
-    int count = loaded_surface_get_count();
-    for( int i = 0; i < count; ++i ) {
-        surf = loaded_surface_get_at_index(i);
+    uint32_t groupCount = loaded_surface_iter_group_count();
+    for( int i = 0; i < groupCount; ++i ) {
+    uint32_t surfCount = loaded_surface_iter_group_size( i );
+    for( int j = 0; j < surfCount; ++j ) {
+        surf = loaded_surface_iter_get_at_index( i, j );
 
         // Do the check normally done in add_surface_to_cell
         if( surf->normal.y < -0.01f || surf->normal.y > 0.01f ) continue;
@@ -251,7 +254,7 @@ static s32 find_wall_collisions_from_list( struct WallCollisionData *data) {
         }
 
         numCols++;
-    }
+    }}
 
     return numCols;
 }
