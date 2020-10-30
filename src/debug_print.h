@@ -1,6 +1,7 @@
 #pragma once
 
 #include "libsm64.h"
+#include <stdio.h>
 
 extern SM64DebugPrintFunctionPtr g_debug_print_func;
 

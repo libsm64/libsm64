@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #include "decomp/include/types.h"
 #include "decomp/include/surface_terrains.h"
@@ -88,7 +89,7 @@ static s32 surface_has_force(s16 surfaceType) {
     return hasForce;
 }
 
-static void engine_surface_from_lib_surface( struct Surface *surface, const struct SM64Surface *libSurf, const struct SurfaceObjectTransform *transform )
+static void engine_surface_from_lib_surface( struct Surface *surface, const struct SM64Surface *libSurf, struct SurfaceObjectTransform *transform )
 {
     int16_t type = libSurf->type;
     int16_t force = libSurf->force;

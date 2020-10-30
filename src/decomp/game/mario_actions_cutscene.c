@@ -62,7 +62,7 @@ static struct Object *sIntroWarpPipeObj;
 static struct Object *sEndPeachObj;
 //static struct Object *sEndRightToadObj;
 //static struct Object *sEndLeftToadObj;
-static struct Object *sEndJumboStarObj;
+//static struct Object *sEndJumboStarObj;
 static UNUSED s32 sUnused;
 static s16 sEndPeachAnimation;
 //static s16 sEndToadAnims[2];
@@ -71,7 +71,7 @@ static Vp sEndCutsceneVp = { { { 640, 480, 511, 0 }, { 640, 480, 511, 0 } } };
 //static struct CreditsEntry *sDispCreditsEntry = NULL;
 
 // related to peach gfx?
-static s8 D_8032CBE4 = 0;
+//static s8 D_8032CBE4 = 0;
 //static s8 D_8032CBE8 = 0;
 //static s8 D_8032CBEC[7] = { 2, 3, 2, 1, 2, 3, 2 };
 
@@ -2065,22 +2065,22 @@ static void end_peach_cutscene_mario_landing(struct MarioState *m) {
 
 // raise hand animation, lower hand animation, do some special effects
 static void end_peach_cutscene_summon_jumbo_star(struct MarioState *m) {
-    set_mario_animation(m, m->actionState == 0 ? MARIO_ANIM_CREDITS_RAISE_HAND
-                                               : MARIO_ANIM_CREDITS_LOWER_HAND);
+//  set_mario_animation(m, m->actionState == 0 ? MARIO_ANIM_CREDITS_RAISE_HAND
+//                                             : MARIO_ANIM_CREDITS_LOWER_HAND);
 
-    if (m->actionState == 0 && is_anim_past_end(m)) {
-        m->actionState++;
-    }
-    if (m->actionTimer == 90) {
-        play_cutscene_music(SEQUENCE_ARGS(0, SEQ_EVENT_CUTSCENE_ENDING));
-    }
-    if (m->actionTimer == 255) {
-        advance_cutscene_step(m);
-    }
+//  if (m->actionState == 0 && is_anim_past_end(m)) {
+//      m->actionState++;
+//  }
+//  if (m->actionTimer == 90) {
+//      play_cutscene_music(SEQUENCE_ARGS(0, SEQ_EVENT_CUTSCENE_ENDING));
+//  }
+//  if (m->actionTimer == 255) {
+//      advance_cutscene_step(m);
+//  }
 
-    sEndJumboStarObj->oFaceAngleYaw += 0x0400;
-    generate_yellow_sparkles(0, 2528, -1800, 250.0f);
-    play_sound(SOUND_AIR_PEACH_TWINKLE, sEndJumboStarObj->header.gfx.cameraToObject);
+//  sEndJumboStarObj->oFaceAngleYaw += 0x0400;
+//  generate_yellow_sparkles(0, 2528, -1800, 250.0f);
+//  play_sound(SOUND_AIR_PEACH_TWINKLE, sEndJumboStarObj->header.gfx.cameraToObject);
 }
 
 #ifdef VERSION_EU
@@ -2362,50 +2362,50 @@ static void end_peach_cutscene_kiss_from_peach(struct MarioState *m) {
 }
 
 static void end_peach_cutscene_star_dance(struct MarioState *m) {
-    s32 animFrame = set_mario_animation(m, MARIO_ANIM_CREDITS_PEACE_SIGN);
-
-    if (animFrame == 77) {
-        cutscene_put_cap_on(m);
-    }
-    if (animFrame == 88) {
-        play_sound(SOUND_MARIO_HERE_WE_GO, m->marioObj->header.gfx.cameraToObject);
-    }
-    if (animFrame >= 98) {
-        m->marioBodyState->handState = MARIO_HAND_PEACE_SIGN;
-    }
-
-    if (m->actionTimer < 52) {
-        m->marioBodyState->eyeState = MARIO_EYES_HALF_CLOSED;
-    }
-
-    switch (m->actionTimer) {
-        case 70:
-            D_8032CBE4 = 1;
-            break;
-
-        case 86:
-            D_8032CBE4 = 2;
-            break;
-
-        case 90:
-            D_8032CBE4 = 3;
-            break;
-
-        case 120:
-            D_8032CBE4 = 0;
-            break;
-
-        case 140:
-#ifndef VERSION_JP
-//          sequence_player_unlower(SEQ_PLAYER_LEVEL, 60);
-#endif
-            play_cutscene_music(SEQUENCE_ARGS(15, SEQ_EVENT_CUTSCENE_CREDITS));
-            break;
-
-        case 142:
-            advance_cutscene_step(m);
-            break;
-    }
+//    s32 animFrame = set_mario_animation(m, MARIO_ANIM_CREDITS_PEACE_SIGN);
+//
+//    if (animFrame == 77) {
+//        cutscene_put_cap_on(m);
+//    }
+//    if (animFrame == 88) {
+//        play_sound(SOUND_MARIO_HERE_WE_GO, m->marioObj->header.gfx.cameraToObject);
+//    }
+//    if (animFrame >= 98) {
+//        m->marioBodyState->handState = MARIO_HAND_PEACE_SIGN;
+//    }
+//
+//    if (m->actionTimer < 52) {
+//        m->marioBodyState->eyeState = MARIO_EYES_HALF_CLOSED;
+//    }
+//
+//    switch (m->actionTimer) {
+//        case 70:
+//            D_8032CBE4 = 1;
+//            break;
+//
+//        case 86:
+//            D_8032CBE4 = 2;
+//            break;
+//
+//        case 90:
+//            D_8032CBE4 = 3;
+//            break;
+//
+//        case 120:
+//            D_8032CBE4 = 0;
+//            break;
+//
+//        case 140:
+//#ifndef VERSION_JP
+////          sequence_player_unlower(SEQ_PLAYER_LEVEL, 60);
+//#endif
+//            play_cutscene_music(SEQUENCE_ARGS(15, SEQ_EVENT_CUTSCENE_CREDITS));
+//            break;
+//
+//        case 142:
+//            advance_cutscene_step(m);
+//            break;
+//    }
 }
 
 // dialog 3

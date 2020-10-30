@@ -2901,7 +2901,7 @@ typedef union {
 #endif
 
 #ifndef F3D_OLD
-//# define gSPPerspNormalize(pkt, s)	gMoveWd(pkt, G_MW_PERSPNORM, 0, (s))
+# define gSPPerspNormalize(pkt, s)	gMoveWd(pkt, G_MW_PERSPNORM, 0, (s))
 # define gsSPPerspNormalize(s)		gsMoveWd(    G_MW_PERSPNORM, 0, (s))
 #else
 # define gSPPerspNormalize(pkt, s)					\
@@ -3127,11 +3127,9 @@ typedef union {
 #define	gsDPSetDepthSource(src)	\
 	gsSPSetOtherMode(G_SETOTHERMODE_L, G_MDSFT_ZSRCSEL, 1, src)
 
-/*
 #define	gDPSetRenderMode(pkt, c0, c1)	\
 	gSPSetOtherMode(pkt, G_SETOTHERMODE_L, G_MDSFT_RENDERMODE, 29, 	\
 			(c0) | (c1))
-*/
 #define	gsDPSetRenderMode(c0, c1)	\
 	gsSPSetOtherMode(G_SETOTHERMODE_L, G_MDSFT_RENDERMODE, 29, 	\
 			 (c0) | (c1))

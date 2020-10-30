@@ -31,8 +31,8 @@ static uint32_t read_u32_be( uint8_t *p )
 
 void load_mario_anims_from_rom( uint8_t *rom )
 {
-    #define GET_OFFSET( n ) (read_u32_be(&((struct OffsetSizePair*)( rom + ANIM_DATA_ADDRESS + 8 + (n)*8 ))->offset))
-    #define GET_SIZE(   n ) (read_u32_be(&((struct OffsetSizePair*)( rom + ANIM_DATA_ADDRESS + 8 + (n)*8 ))->size  ))
+    #define GET_OFFSET( n ) (read_u32_be((uint8_t*)&((struct OffsetSizePair*)( rom + ANIM_DATA_ADDRESS + 8 + (n)*8 ))->offset))
+    #define GET_SIZE(   n ) (read_u32_be((uint8_t*)&((struct OffsetSizePair*)( rom + ANIM_DATA_ADDRESS + 8 + (n)*8 ))->size  ))
 
     uint8_t *read_ptr = rom + ANIM_DATA_ADDRESS;
     s_num_entries = read_u32_be( read_ptr );
@@ -82,8 +82,8 @@ void load_mario_anims_from_rom( uint8_t *rom )
 
 void load_mario_animation(struct MarioAnimation *a, u32 index)
 {
-    if ((u32)a->currentAnimAddr != 1 + index) {
-        a->currentAnimAddr = (u8*)(1 + index);
+    if (a->currentAnimAddr != 1 + index) {
+        a->currentAnimAddr = 1 + index;
         a->targetAnim = &s_libsm64_mario_animations[index];
     }
 }

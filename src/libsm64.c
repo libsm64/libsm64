@@ -1,4 +1,7 @@
-#define SM64_LIB_EXPORT
+#ifndef SM64_LIB_EXPORT
+    #define SM64_LIB_EXPORT
+#endif
+
 #include "libsm64.h"
 
 #include <stdio.h>

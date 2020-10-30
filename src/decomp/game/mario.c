@@ -40,6 +40,9 @@
 #include "../../load_anim_data.h"
 
 
+static f32 gDefaultSoundArgs[3] = { 0.0f, 0.0f, 0.0f };
+
+
 /**************************************************
  *                    ANIMATIONS                  *
  **************************************************/
@@ -1454,6 +1457,7 @@ void set_submerged_cam_preset_and_spawn_bubbles(struct MarioState *m) {
         }
     }
 }
+
 
 /**
  * Both increments and decrements Mario's HP.

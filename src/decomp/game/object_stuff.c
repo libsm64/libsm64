@@ -59,7 +59,6 @@
 
 static Vec3f gVec3fZero = { 0.0f, 0.0f, 0.0f };
 static Vec3s gVec3sZero = { 0, 0, 0 };
-static Vec3f gVec3fOne = { 1.0f, 1.0f, 1.0f };
 
 static struct Object *try_allocate_object(void) {
     struct ObjectNode *nextObj;

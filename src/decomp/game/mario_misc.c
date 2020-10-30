@@ -28,10 +28,7 @@
 #include "../include/object_fields.h"
 #include "../include/mario_geo_switch_case_ids.h"
 
-
-static Vec3f gVec3fZero = {0,0,0};
 static Vec3s gVec3sZero = {0,0,0};
-static Vec3f gVec3fOne = {1,1,1};
 
 #define TOAD_STAR_1_REQUIREMENT 12
 #define TOAD_STAR_2_REQUIREMENT 25
@@ -627,7 +624,7 @@ Gfx *geo_render_mirror_mario(s32 callContext, struct GraphNode *node, UNUSED Mat
 //          }
 //          break;
 //  }
-//  return NULL;
+    return NULL;
 }
 
 /**

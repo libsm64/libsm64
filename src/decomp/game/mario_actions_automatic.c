@@ -49,17 +49,16 @@ void add_tree_leaf_particles(struct MarioState *m) {
 
 void play_climbing_sounds(struct MarioState *m, s32 b) {
 //  s32 isOnTree = (m->usedObj->behavior == segmented_to_virtual(bhvTree));
-    s32 isOnTree = FALSE;
 
-    if (b == 1) {
-        if (is_anim_past_frame(m, 1)) {
-            play_sound(isOnTree ? SOUND_ACTION_CLIMB_UP_TREE : SOUND_ACTION_CLIMB_UP_POLE,
-                       m->marioObj->header.gfx.cameraToObject);
-        }
-    } else {
-        play_sound(isOnTree ? SOUND_MOVING_SLIDE_DOWN_TREE : SOUND_MOVING_SLIDE_DOWN_POLE,
-                   m->marioObj->header.gfx.cameraToObject);
-    }
+//  if (b == 1) {
+//      if (is_anim_past_frame(m, 1)) {
+//          play_sound(isOnTree ? SOUND_ACTION_CLIMB_UP_TREE : SOUND_ACTION_CLIMB_UP_POLE,
+//                     m->marioObj->header.gfx.cameraToObject);
+//      }
+//  } else {
+//      play_sound(isOnTree ? SOUND_MOVING_SLIDE_DOWN_TREE : SOUND_MOVING_SLIDE_DOWN_POLE,
+//                 m->marioObj->header.gfx.cameraToObject);
+//  }
 }
 
 s32 set_pole_position(struct MarioState *m, f32 offsetY) {
@@ -150,7 +149,7 @@ s32 act_holding_pole(struct MarioState *m) {
 
     if (m->controller->stickY > 16.0f) {
         f32 poleTop = m->usedObj->hitboxHeight - 100.0f;
-        const BehaviorScript *poleBehavior = virtual_to_segmented(0x13, m->usedObj->behavior);
+//      const BehaviorScript *poleBehavior = virtual_to_segmented(0x13, m->usedObj->behavior);
 
         if (marioObj->oMarioPolePos < poleTop - 0.4f) {
             return set_mario_action(m, ACT_CLIMBING_POLE, 0);

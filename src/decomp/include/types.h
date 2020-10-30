@@ -294,7 +294,7 @@ struct MarioAnimDmaRelatedThing
 struct MarioAnimation
 {
     struct MarioAnimDmaRelatedThing *animDmaTable;
-    u8 *currentAnimAddr;
+    u32 currentAnimAddr; // libsm64: type change
     struct Animation *targetAnim;
     u8 padding[4];
 };

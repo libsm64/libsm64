@@ -1,6 +1,7 @@
 #include "load_tex_data.h"
 
 #include <stddef.h>
+#include <stdlib.h>
 #include <string.h>
 #include "libsm64.h"
 
@@ -34,7 +35,7 @@ void load_mario_textures_from_rom( uint8_t *rom, uint8_t *outTexture )
 
     mio0_decode_header( in_buf, &head );
     uint8_t *out_buf = malloc( head.dest_size );
-    int bytes_read = mio0_decode( in_buf, out_buf, NULL );
+    mio0_decode( in_buf, out_buf, NULL );
 
     for( int i = 0; i < NUM_USED_TEXTURES; ++i )
     {

@@ -369,10 +369,10 @@ struct Object *mario_get_collided_object(struct MarioState *m, u32 interactType)
 
 u32 mario_check_object_grab(struct MarioState *m) {
     u32 result = FALSE;
-    const BehaviorScript *script;
+//  const BehaviorScript *script;
 
     if (m->input & INPUT_INTERACT_OBJ_GRABBABLE) {
-        script = virtual_to_segmented(0x13, m->interactObj->behavior);
+//      script = virtual_to_segmented(0x13, m->interactObj->behavior);
 
 //      if (script == bhvBowser) {
 //          s16 facingDYaw = m->faceAngle[1] - m->interactObj->oMoveAngleYaw;
@@ -478,35 +478,35 @@ void hit_object_from_below(struct MarioState *m, UNUSED struct Object *o) {
     set_camera_shake_from_hit(SHAKE_HIT_FROM_BELOW);
 }
 
-static u32 unused_determine_knockback_action(struct MarioState *m) {
-    u32 bonkAction;
-    s16 angleToObject = mario_obj_angle_to_object(m, m->interactObj);
-    s16 facingDYaw = angleToObject - m->faceAngle[1];
-
-    if (m->forwardVel < 16.0f) {
-        m->forwardVel = 16.0f;
-    }
-
-    m->faceAngle[1] = angleToObject;
-
-    if (facingDYaw >= -0x4000 && facingDYaw <= 0x4000) {
-        m->forwardVel *= -1.0f;
-        if (m->action & (ACT_FLAG_AIR | ACT_FLAG_ON_POLE | ACT_FLAG_HANGING)) {
-            bonkAction = ACT_BACKWARD_AIR_KB;
-        } else {
-            bonkAction = ACT_SOFT_BACKWARD_GROUND_KB;
-        }
-    } else {
-        m->faceAngle[1] += 0x8000;
-        if (m->action & (ACT_FLAG_AIR | ACT_FLAG_ON_POLE | ACT_FLAG_HANGING)) {
-            bonkAction = ACT_FORWARD_AIR_KB;
-        } else {
-            bonkAction = ACT_SOFT_FORWARD_GROUND_KB;
-        }
-    }
-
-    return bonkAction;
-}
+// static u32 unused_determine_knockback_action(struct MarioState *m) {
+//     u32 bonkAction;
+//     s16 angleToObject = mario_obj_angle_to_object(m, m->interactObj);
+//     s16 facingDYaw = angleToObject - m->faceAngle[1];
+// 
+//     if (m->forwardVel < 16.0f) {
+//         m->forwardVel = 16.0f;
+//     }
+// 
+//     m->faceAngle[1] = angleToObject;
+// 
+//     if (facingDYaw >= -0x4000 && facingDYaw <= 0x4000) {
+//         m->forwardVel *= -1.0f;
+//         if (m->action & (ACT_FLAG_AIR | ACT_FLAG_ON_POLE | ACT_FLAG_HANGING)) {
+//             bonkAction = ACT_BACKWARD_AIR_KB;
+//         } else {
+//             bonkAction = ACT_SOFT_BACKWARD_GROUND_KB;
+//         }
+//     } else {
+//         m->faceAngle[1] += 0x8000;
+//         if (m->action & (ACT_FLAG_AIR | ACT_FLAG_ON_POLE | ACT_FLAG_HANGING)) {
+//             bonkAction = ACT_FORWARD_AIR_KB;
+//         } else {
+//             bonkAction = ACT_SOFT_FORWARD_GROUND_KB;
+//         }
+//     }
+// 
+//     return bonkAction;
+// }
 
 u32 determine_knockback_action(struct MarioState *m, UNUSED s32 arg) {
     u32 bonkAction;
@@ -630,16 +630,16 @@ u32 should_push_or_pull_door(struct MarioState *m, struct Object *o) {
 }
 
 u32 take_damage_from_interact_object(struct MarioState *m) {
-    s32 shake;
+//  s32 shake;
     s32 damage = m->interactObj->oDamageOrCoinValue;
 
-    if (damage >= 4) {
-        shake = SHAKE_LARGE_DAMAGE;
-    } else if (damage >= 2) {
-        shake = SHAKE_MED_DAMAGE;
-    } else {
-        shake = SHAKE_SMALL_DAMAGE;
-    }
+//  if (damage >= 4) {
+//      shake = SHAKE_LARGE_DAMAGE;
+//  } else if (damage >= 2) {
+//      shake = SHAKE_MED_DAMAGE;
+//  } else {
+//      shake = SHAKE_SMALL_DAMAGE;
+//  }
 
     if (!(m->flags & MARIO_CAP_ON_HEAD)) {
         damage += (damage + 1) / 2;
@@ -654,7 +654,7 @@ u32 take_damage_from_interact_object(struct MarioState *m) {
 #ifdef VERSION_SH
     queue_rumble_data(5, 80);
 #endif
-    set_camera_shake_from_hit(shake);
+//  set_camera_shake_from_hit(shake);
 
     return damage;
 }
@@ -908,7 +908,7 @@ void mario_handle_special_floors(struct MarioState *m) {
                 break;
 
             case SURFACE_WARP:
-                level_trigger_warp(m, WARP_OP_WARP_FLOOR);
+//              level_trigger_warp(m, WARP_OP_WARP_FLOOR);
                 break;
 
             case SURFACE_TIMER_START:

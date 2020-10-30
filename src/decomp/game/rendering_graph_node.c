@@ -153,8 +153,8 @@ static void geo_process_master_list_sub(struct GraphNodeMasterList *node) {
     struct DisplayListNode *currList;
     s32 i;
     s32 enableZBuffer = (node->node.flags & GRAPH_RENDER_Z_BUFFER) != 0;
-    struct RenderModeContainer *modeList = &renderModeTable_1Cycle[enableZBuffer];
-    struct RenderModeContainer *mode2List = &renderModeTable_2Cycle[enableZBuffer];
+//  struct RenderModeContainer *modeList = &renderModeTable_1Cycle[enableZBuffer];
+//  struct RenderModeContainer *mode2List = &renderModeTable_2Cycle[enableZBuffer];
 
     // @bug This is where the LookAt values should be calculated but aren't.
     // As a result, environment mapping is broken on Fast3DEX2 without the
@@ -169,12 +169,13 @@ static void geo_process_master_list_sub(struct GraphNodeMasterList *node) {
         gSPSetGeometryMode(gDisplayListHead++, G_ZBUFFER);
     }
 
-    // HACK 
-    // Mario ends up in the second master list for some reason, and the first item in that list is an invalid pointer.
+    // libsm64 HACK 
+    // Mario ends up in the second master list for some reason.
+    // The first item in the list is the projection matrix that is uninitialized, so just skip it.
     int xx = FALSE;
     for (i = 1; i < GFX_NUM_MASTER_LISTS; i++) {
         if ((currList = node->listHeads[i]) != NULL) {
-            gDPSetRenderMode(gDisplayListHead++, modeList->modes[i], mode2List->modes[i]);
+//          gDPSetRenderMode(gDisplayListHead++, modeList->modes[i], mode2List->modes[i]);
             while (currList != NULL) {
                 if( !xx ) {
                     xx = TRUE;
@@ -245,13 +246,13 @@ static void geo_process_master_list(struct GraphNodeMasterList *node) {
 static void geo_process_ortho_projection(struct GraphNodeOrthoProjection *node) {
     if (node->node.children != NULL) {
         Mtx *mtx = alloc_display_list(sizeof(*mtx));
-        f32 left = (gCurGraphNodeRoot->x - gCurGraphNodeRoot->width) / 2.0f * node->scale;
-        f32 right = (gCurGraphNodeRoot->x + gCurGraphNodeRoot->width) / 2.0f * node->scale;
-        f32 top = (gCurGraphNodeRoot->y - gCurGraphNodeRoot->height) / 2.0f * node->scale;
-        f32 bottom = (gCurGraphNodeRoot->y + gCurGraphNodeRoot->height) / 2.0f * node->scale;
+//      f32 left = (gCurGraphNodeRoot->x - gCurGraphNodeRoot->width) / 2.0f * node->scale;
+//      f32 right = (gCurGraphNodeRoot->x + gCurGraphNodeRoot->width) / 2.0f * node->scale;
+//      f32 top = (gCurGraphNodeRoot->y - gCurGraphNodeRoot->height) / 2.0f * node->scale;
+//      f32 bottom = (gCurGraphNodeRoot->y + gCurGraphNodeRoot->height) / 2.0f * node->scale;
 
-        guOrtho(mtx, left, right, bottom, top, -2.0f, 2.0f, 1.0f);
-        gSPPerspNormalize(gDisplayListHead++, 0xFFFF);
+//      guOrtho(mtx, left, right, bottom, top, -2.0f, 2.0f, 1.0f);
+//      gSPPerspNormalize(gDisplayListHead++, 0xFFFF);
         gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(mtx), G_MTX_PROJECTION | G_MTX_LOAD | G_MTX_NOPUSH);
 
         geo_process_node_and_siblings(node->node.children);
@@ -266,17 +267,17 @@ static void geo_process_perspective(struct GraphNodePerspective *node) {
         node->fnNode.func(GEO_CONTEXT_RENDER, &node->fnNode.node, gMatStack[gMatStackIndex]);
     }
     if (node->fnNode.node.children != NULL) {
-        u16 perspNorm;
+//      u16 perspNorm;
         Mtx *mtx = alloc_display_list(sizeof(*mtx));
 
-#ifdef VERSION_EU
-        f32 aspect = ((f32) gCurGraphNodeRoot->width / (f32) gCurGraphNodeRoot->height) * 1.1f;
-#else
-        f32 aspect = (f32) gCurGraphNodeRoot->width / (f32) gCurGraphNodeRoot->height;
-#endif
+// #ifdef VERSION_EU
+//         f32 aspect = ((f32) gCurGraphNodeRoot->width / (f32) gCurGraphNodeRoot->height) * 1.1f;
+// #else
+//         f32 aspect = (f32) gCurGraphNodeRoot->width / (f32) gCurGraphNodeRoot->height;
+// #endif
 
-        guPerspective(mtx, &perspNorm, node->fov, aspect, node->near, node->far, 1.0f);
-        gSPPerspNormalize(gDisplayListHead++, perspNorm);
+//      guPerspective(mtx, &perspNorm, node->fov, aspect, node->near, node->far, 1.0f);
+//      gSPPerspNormalize(gDisplayListHead++, perspNorm);
 
         gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(mtx), G_MTX_PROJECTION | G_MTX_LOAD | G_MTX_NOPUSH);
 

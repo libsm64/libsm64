@@ -171,8 +171,8 @@ static void process_display_list( void *dl )
             {
                 int64_t uls = *ptr++;
                 int64_t ult = *ptr++;
-                int64_t lrs = *ptr++;
-                int64_t lrt = *ptr++;
+                ptr++; // lrs
+                ptr++; // lrt
 
                 s_uls = (uint16_t)uls;
                 s_ult = (uint16_t)ult;

@@ -1,5 +1,6 @@
 #include "behavior_actions.h"
 #include "rendering_graph_node.h"
+#include "object_stuff.h"
 #include "../shim.h"
 
 // not sure what this is doing here. not in a behavior file.
