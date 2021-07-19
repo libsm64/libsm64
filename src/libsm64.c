@@ -201,7 +201,7 @@ SM64_LIB_FN void sm64_mario_tick( uint32_t marioId, const struct SM64MarioInputs
     outState->faceAngle = (float)gMarioState->faceAngle[1] / 32768.0f * 3.14159f;
 }
 
-SM64_LIB_FN void sm64_mario_delete( uint32_t marioId )
+SM64_LIB_FN void sm64_mario_delete( int32_t marioId )
 {
     if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
     {
