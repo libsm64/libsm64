@@ -6,3 +6,5 @@
 run-test
 *.z64
 *.so
+compile_commands.json
+/.cache/

@@ -223,6 +223,9 @@ struct Surface *loaded_surface_iter_get_at_index( uint32_t groupIndex, uint32_t 
 
 void surfaces_load_static( const struct SM64Surface *surfaceArray, uint32_t numSurfaces )
 {
+    if( s_static_surface_list != NULL )
+        free( s_static_surface_list );
+
     s_static_surface_count = numSurfaces;
     s_static_surface_list = malloc( sizeof( struct Surface ) * numSurfaces );
 

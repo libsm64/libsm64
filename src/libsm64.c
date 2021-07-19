@@ -122,9 +122,9 @@ SM64_LIB_FN void sm64_static_surfaces_load( const struct SM64Surface *surfaceArr
     surfaces_load_static( surfaceArray, numSurfaces );
 }
 
-SM64_LIB_FN uint32_t sm64_mario_create( int16_t x, int16_t y, int16_t z )
+SM64_LIB_FN int32_t sm64_mario_create( int16_t x, int16_t y, int16_t z )
 {
-    uint32_t marioIndex = obj_pool_alloc_index( &s_mario_instance_pool, sizeof( struct MarioInstance ));
+    int32_t marioIndex = obj_pool_alloc_index( &s_mario_instance_pool, sizeof( struct MarioInstance ));
     struct MarioInstance *newInstance = s_mario_instance_pool.objects[marioIndex];
 
     newInstance->globalState = global_state_create();

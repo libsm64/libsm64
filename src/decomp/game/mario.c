@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <math.h>
+#include <stdio.h> // For printf before exit, TODO remove
 
 #include "../shim.h"
 #include "../include/PR/os_cont.h"
