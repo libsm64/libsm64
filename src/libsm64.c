@@ -165,7 +165,7 @@ SM64_LIB_FN int32_t sm64_mario_create( int16_t x, int16_t y, int16_t z )
     return marioIndex;
 }
 
-SM64_LIB_FN void sm64_mario_tick( uint32_t marioId, const struct SM64MarioInputs *inputs, struct SM64MarioState *outState, struct SM64MarioGeometryBuffers *outBuffers )
+SM64_LIB_FN void sm64_mario_tick( int32_t marioId, const struct SM64MarioInputs *inputs, struct SM64MarioState *outState, struct SM64MarioGeometryBuffers *outBuffers )
 {
     if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
     {
