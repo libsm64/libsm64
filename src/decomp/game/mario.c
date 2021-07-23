@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <math.h>
-#include <stdio.h> // For printf before exit, TODO remove
 
 #include "../shim.h"
 #include "../include/PR/os_cont.h"
@@ -1797,7 +1796,7 @@ s32 execute_mario_action(UNUSED struct Object *o) {
  *                  INITIALIZATION                *
  **************************************************/
 
-void init_mario(void) {
+int init_mario(void) {
     //Vec3s capPos;
     //struct Object *capObject;
 
@@ -1843,11 +1842,9 @@ void init_mario(void) {
     gMarioState->floorHeight =
         find_floor(gMarioState->pos[0], gMarioState->pos[1], gMarioState->pos[2], &gMarioState->floor);
 
-    if( gMarioState->floor == NULL ) {
-        printf("Couldn't find floor!\n");
+    if (gMarioState->floor != NULL) {
+        gMarioState->curTerrain = gMarioState->floor->terrain;
     }
-
-    gMarioState->curTerrain = gMarioState->floor->terrain;
 
     if (gMarioState->pos[1] < gMarioState->floorHeight) {
         gMarioState->pos[1] = gMarioState->floorHeight;
@@ -1886,6 +1883,8 @@ void init_mario(void) {
         capObject->oMoveAngleYaw = 0;
     }
 #endif
+
+    return gMarioState->floor != NULL ? 0 : -1;
 }
 
 void init_mario_from_save_file(void) {

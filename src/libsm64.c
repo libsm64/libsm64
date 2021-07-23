@@ -158,7 +158,13 @@ SM64_LIB_FN int32_t sm64_mario_create( int16_t x, int16_t y, int16_t z )
     gMarioSpawnInfoVal.next = NULL;
 
     init_mario_from_save_file();
-    init_mario();
+
+    if( init_mario() < 0 )
+    {
+        sm64_mario_delete( marioIndex );
+        return -1;
+    }
+
     set_mario_action( gMarioState, ACT_SPAWN_SPIN_AIRBORNE, 0);
     find_floor( x, y, z, &gMarioState->floor );
 
