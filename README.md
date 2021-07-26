@@ -7,6 +7,12 @@ This project produces a shared library file containing mostly code from the deco
 and loads an official SM64 ROM at runtime to get Mario's texture and animation data, so any project
 which makes use of this library must ask the user to provide a ROM for asset extraction.
 
+## Bindings and plugins
+
+- [Rust bindings](https://github.com/nickmass/libsm64-rust)
+- [Unity plugin](https://github.com/libsm64/libsm64-unity)
+- [Blender add-on](https://github.com/libsm64/libsm64-blender)
+
 ## Building on Linux
 
 - Ensure python3 is installed.
@@ -23,3 +29,4 @@ which makes use of this library must ask the user to provide a ROM for asset ext
 - `make lib`: (Default) Build the `dist` directory, containing the shared object or DLL and public-facing header.
 - `make test`: Builds the library `dist` directory as well as the test program.
 - `make run`: Build and run the SDL+OpenGL test program.
+
