@@ -103,7 +103,7 @@ SM64_LIB_FN void sm64_global_terminate( void )
     {
         for( int i = 0; i < s_mario_instance_pool.size; ++i )
             if( s_mario_instance_pool.objects[i] != NULL )
-                global_state_delete( ((struct MarioInstance *)s_mario_instance_pool.objects[ i ])->globalState );
+                sm64_mario_delete( i );
 
         obj_pool_free_all( &s_mario_instance_pool );
     }
