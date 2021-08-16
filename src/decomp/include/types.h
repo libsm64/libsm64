@@ -241,23 +241,24 @@ struct Waypoint
 
 struct Surface
 {
-    /*0x00*/ s16 type;
-    /*0x02*/ s16 force;
-    /*0x04*/ s8 flags;
-    /*0x05*/ s8 room;
-    /*0x06*/ s16 lowerY;
-    /*0x08*/ s16 upperY;
-    /*0x0A*/ Vec3s vertex1;
-    /*0x10*/ Vec3s vertex2;
-    /*0x16*/ Vec3s vertex3;
-    /*0x1C*/ struct {
+    s16 type;
+    s16 force;
+    s8 flags;
+    s8 room;
+    s32 lowerY; // libsm64: 32 bit
+    s32 upperY; // libsm64: 32 bit
+    Vec3i vertex1; // libsm64: 32 bit
+    Vec3i vertex2; // libsm64: 32 bit
+    Vec3i vertex3; // libsm64: 32 bit
+    struct {
         f32 x;
         f32 y;
         f32 z;
     } normal;
-    /*0x28*/ f32 originOffset;
-//  /*0x2C*/ struct Object *object;
+    f32 originOffset;
+    //struct Object *object;
     
+    u8 isValid; // libsm64: added field
     struct SurfaceObjectTransform *transform; // libsm64: added field
     u16 terrain; // libsm64: added field
 };
@@ -333,7 +334,7 @@ struct MarioState
     /*0x6C*/ f32 ceilHeight;
     /*0x70*/ f32 floorHeight;
     /*0x74*/ s16 floorAngle;
-    /*0x76*/ s16 waterLevel;
+    /*0x76*/ s32 waterLevel; // libsm64: 32 bit (address offsets after this are wrong)
     /*0x78*/ struct Object *interactObj;
     /*0x7C*/ struct Object *heldObj;
     /*0x80*/ struct Object *usedObj;

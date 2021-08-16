@@ -156,8 +156,14 @@ static void engine_surface_from_lib_surface( struct Surface *surface, const stru
         maxY = y3;
     }
 
-    if (mag < 0.0001)
-        DEBUG_PRINT("ERROR: normal magnitude is very close to zero");
+    if (mag < 0.0001) {
+        DEBUG_PRINT("ERROR: normal magnitude is very close to zero:");
+        DEBUG_PRINT("v1 %i %i %i", x1, y1, z1 );
+        DEBUG_PRINT("v2 %i %i %i", x2, y2, z2 );
+        DEBUG_PRINT("v3 %i %i %i", x3, y3, z3 );
+        surface->isValid = 0;
+        return;
+    }
 
     mag = (f32)(1.0 / mag);
     nx *= mag;
@@ -198,6 +204,8 @@ static void engine_surface_from_lib_surface( struct Surface *surface, const stru
     } else {
         surface->force = 0;
     }
+
+    surface->isValid = 1;
 }
 
 uint32_t loaded_surface_iter_group_count( void )

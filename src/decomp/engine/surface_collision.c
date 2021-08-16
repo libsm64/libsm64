@@ -19,9 +19,11 @@ static struct Surface *find_ceil_from_list( s32 x, s32 y, s32 z, f32 *pheight) {
     for( int j = 0; j < surfCount; ++j ) {
         surf = loaded_surface_iter_get_at_index( i, j );
 
+        // libsm64: Weed out surfaces whose triangles are actually line segs. TODO do this at surface load time
+        if( !surf->isValid ) continue;
+
         // Do the check normally done in add_surface_to_cell
         if( surf->normal.y >= -0.01f ) continue;
-
 
         x1 = surf->vertex1[0];
         z1 = surf->vertex1[2];
@@ -92,6 +94,9 @@ static struct Surface *find_floor_from_list( s32 x, s32 y, s32 z, f32 *pheight) 
     uint32_t surfCount = loaded_surface_iter_group_size( i );
     for( int j = 0; j < surfCount; ++j ) {
         surf = loaded_surface_iter_get_at_index( i, j );
+
+        // libsm64: Weed out surfaces whose triangles are actually line segs. TODO do this at surface load time
+        if( !surf->isValid ) continue;
 
         // Do the check normally done in add_surface_to_cell
         if( surf->normal.y <= 0.01f ) continue;
@@ -166,8 +171,12 @@ static s32 find_wall_collisions_from_list( struct WallCollisionData *data) {
     for( int j = 0; j < surfCount; ++j ) {
         surf = loaded_surface_iter_get_at_index( i, j );
 
+        // libsm64: Weed out surfaces whose triangles are actually line segs. TODO do this at surface load time
+        if( !surf->isValid ) continue;
+
         // Do the check normally done in add_surface_to_cell
         if( surf->normal.y < -0.01f || surf->normal.y > 0.01f ) continue;
+
         if( surf->normal.x < -0.707f || surf->normal.x > 0.707f ) {
             surf->flags |= SURFACE_FLAG_X_PROJECTION;
         }
@@ -285,17 +294,17 @@ s32 f32_find_wall_collision(f32 *xPtr, f32 *yPtr, f32 *zPtr, f32 offsetY, f32 ra
 s32 find_wall_collisions(struct WallCollisionData *colData)
 {
     s32 numCollisions = 0;
-    s16 x = colData->x;
-    s16 z = colData->z;
-
     colData->numWalls = 0;
 
-    if (x <= -LEVEL_BOUNDARY_MAX || x >= LEVEL_BOUNDARY_MAX) {
-        return numCollisions;
-    }
-    if (z <= -LEVEL_BOUNDARY_MAX || z >= LEVEL_BOUNDARY_MAX) {
-        return numCollisions;
-    }
+    // libsm64: Don't care about level boundaries with 32-bit ints for vertex positions
+    // s16 x = colData->x;
+    // s16 z = colData->z;
+    // if (x <= -LEVEL_BOUNDARY_MAX || x >= LEVEL_BOUNDARY_MAX) {
+    //     return numCollisions;
+    // }
+    // if (z <= -LEVEL_BOUNDARY_MAX || z >= LEVEL_BOUNDARY_MAX) {
+    //     return numCollisions;
+    // }
 
     numCollisions += find_wall_collisions_from_list(colData);
     return numCollisions;
