@@ -63,7 +63,43 @@ struct InteractionHandler {
     u32 (*handler)(struct MarioState *, u32, struct Object *);
 };
 
-static struct InteractionHandler sInteractionHandlers[] = { };
+static u32 interact_noop(struct MarioState *m, u32 interactType, struct Object *o) {
+    return FALSE;
+}
+
+static struct InteractionHandler sInteractionHandlers[] = {
+    { INTERACT_COIN,           interact_noop },
+    { INTERACT_WATER_RING,     interact_noop },
+    { INTERACT_STAR_OR_KEY,    interact_noop },
+    { INTERACT_BBH_ENTRANCE,   interact_noop },
+    { INTERACT_WARP,           interact_noop },
+    { INTERACT_WARP_DOOR,      interact_noop },
+    { INTERACT_DOOR,           interact_noop },
+    { INTERACT_CANNON_BASE,    interact_noop },
+    { INTERACT_IGLOO_BARRIER,  interact_noop },
+    { INTERACT_TORNADO,        interact_noop },
+    { INTERACT_WHIRLPOOL,      interact_noop },
+    { INTERACT_STRONG_WIND,    interact_noop },
+    { INTERACT_FLAME,          interact_noop },
+    { INTERACT_SNUFIT_BULLET,  interact_noop },
+    { INTERACT_CLAM_OR_BUBBA,  interact_noop },
+    { INTERACT_BULLY,          interact_noop },
+    { INTERACT_SHOCK,          interact_noop },
+    { INTERACT_BOUNCE_TOP2,    interact_noop },
+    { INTERACT_MR_BLIZZARD,    interact_noop },
+    { INTERACT_HIT_FROM_BELOW, interact_noop },
+    { INTERACT_BOUNCE_TOP,     interact_noop },
+    { INTERACT_DAMAGE,         interact_noop },
+    { INTERACT_POLE,           interact_noop },
+    { INTERACT_HOOT,           interact_noop },
+    { INTERACT_BREAKABLE,      interact_noop },
+    { INTERACT_KOOPA,          interact_noop },
+    { INTERACT_KOOPA_SHELL,    interact_noop },
+    { INTERACT_UNKNOWN_08,     interact_noop },
+    { INTERACT_CAP,            interact_noop },
+    { INTERACT_GRABBABLE,      interact_noop },
+    { INTERACT_TEXT,           interact_noop },
+};
 
 static u32 sForwardKnockbackActions[][3] = {
     { ACT_SOFT_FORWARD_GROUND_KB, ACT_FORWARD_GROUND_KB, ACT_HARD_FORWARD_GROUND_KB },
