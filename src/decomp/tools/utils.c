@@ -1,4 +1,6 @@
+#ifndef _MSC_VER
 #include <dirent.h>
+#endif
 #include <fcntl.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -224,6 +226,7 @@ long copy_file(const char *src_name, const char *dst_name)
 
 void dir_list_ext(const char *dir, const char *extension, dir_list *list)
 {
+#ifndef _MSC_VER
    char *pool;
    char *pool_ptr;
    struct dirent *entry;
@@ -251,6 +254,7 @@ void dir_list_ext(const char *dir, const char *extension, dir_list *list)
    list->count = idx;
 
    closedir(dfd);
+#endif
 }
 
 void dir_list_free(dir_list *list)

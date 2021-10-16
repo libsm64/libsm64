@@ -745,6 +745,16 @@ void geo_obj_init_animation(struct GraphNodeObject *graphNode, struct Animation 
     }
 }
 
+/*
+* unary minus operator applied to unsigned type
+* I'm not sure what the intended behavior here is,
+* so I'm going to play it safe and just disable the warning
+*/
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4146)
+#endif
+
 /**
  * Initialize the animation of an object node
  */
@@ -762,6 +772,10 @@ void geo_obj_init_animation_accel(struct GraphNodeObject *graphNode, struct Anim
 
     graphNode->animInfo.animAccel = animAccel;
 }
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 /**
  * Retrieves an index into animation data based on the attribute pointer

@@ -1446,8 +1446,13 @@ int gSplineState;
 
 // These functions have bogus return values.
 // Disable the compiler warning.
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4172)
+#else
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wreturn-local-addr"
+#endif
 
 /// Copy vector 'src' to 'dest'
 void *vec3f_copy(Vec3f dest, Vec3f src) {
@@ -1572,7 +1577,11 @@ void *vec3f_normalize(Vec3f dest) {
     return &dest; //! warning: function returns address of local variable
 }
 
+#ifdef _MSC_VER
+#pragma warning(pop)
+#else
 #pragma GCC diagnostic pop
+#endif
 
 /// Copy matrix 'src' to 'dest'
 void mtxf_copy(Mat4 dest, Mat4 src) {
@@ -2185,9 +2194,13 @@ s16 atan2s(f32 y, f32 x) {
 /**
  * Compute the atan2 in radians by calling atan2s and converting the result.
  */
-f32 atan2f(f32 y, f32 x) {
-    return (f32) atan2s(y, x) * M_PI / 0x8000;
-}
+/* HACK: I have genuinely no idea why MSVC complains that this function already has a body
+* If this function will need to be used, this will need to solved
+* f32 atan2f(f32 y, f32 x) 
+* {
+*     return (f32)atan2s(y, x) * (float)M_PI / 0x8000;
+* }
+*/
 
 #define CURVE_BEGIN_1 1
 #define CURVE_BEGIN_2 2

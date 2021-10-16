@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef _MSC_VER
+#include <string.h>
+#else
 #include <strings.h>
+#endif
 
 #define STBI_NO_LINEAR
 #define STBI_NO_HDR

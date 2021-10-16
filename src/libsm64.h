@@ -6,13 +6,9 @@
 #include <stdbool.h>
 
 #ifdef _WIN32
-    #ifdef SM64_LIB_EXPORT
-        #define SM64_LIB_FN __declspec(dllexport)
-    #else
-        #define SM64_LIB_FN __declspec(dllimport)
-    #endif
+	#define SM64_LIB_FN __declspec(dllexport)
 #else
-    #define SM64_LIB_FN
+	#define SM64_LIB_FN
 #endif
 
 struct SM64Surface
@@ -69,6 +65,11 @@ enum
     SM64_GEO_MAX_TRIANGLES = 1024,
 };
 
+#ifdef __cplusplus
+extern "C" 
+{
+#endif
+
 extern SM64_LIB_FN void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugPrintFunctionPtr debugPrintFunction );
 extern SM64_LIB_FN void sm64_global_terminate( void );
 
@@ -81,5 +82,9 @@ extern SM64_LIB_FN void sm64_mario_delete( int32_t marioId );
 extern SM64_LIB_FN uint32_t sm64_surface_object_create( const struct SM64SurfaceObject *surfaceObject );
 extern SM64_LIB_FN void sm64_surface_object_move( uint32_t objectId, const struct SM64ObjectTransform *transform );
 extern SM64_LIB_FN void sm64_surface_object_delete( uint32_t objectId );
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif//LIB_SM64_H

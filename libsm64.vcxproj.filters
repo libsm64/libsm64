@@ -1,0 +1,330 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\decomp">
+      <UniqueIdentifier>{fad62bcc-4df0-43ad-94a8-47cd33665d89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\decomp\engine">
+      <UniqueIdentifier>{90a5affa-1187-4b7b-84fa-bb90544501e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\decomp\game">
+      <UniqueIdentifier>{e89d8a2c-8c60-45ed-bd4c-1dd90da4d3d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\decomp\include">
+      <UniqueIdentifier>{8f2fb049-32c1-42b0-861f-21669a4a09f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\decomp\mario">
+      <UniqueIdentifier>{63298c95-fd35-4135-8f05-6ca5d5e449d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\decomp\tools">
+      <UniqueIdentifier>{9dc2f078-75b7-4689-9507-47cf2307fcfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\decomp\include\PR">
+      <UniqueIdentifier>{421903d2-bf47-4521-92d6-46b4c91a727d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\decomp\tools\stb">
+      <UniqueIdentifier>{e0023ccb-fe92-4b65-a83e-c005d93e95b2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\debug_print.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gfx_adapter.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gfx_adapter_commands.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gfx_macros.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\libsm64.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\load_anim_data.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\load_surfaces.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\load_tex_data.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\obj_pool.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\global_state.h">
+      <Filter>Source Files\decomp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\memory.h">
+      <Filter>Source Files\decomp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\shim.h">
+      <Filter>Source Files\decomp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\engine\geo_layout.h">
+      <Filter>Source Files\decomp\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\engine\graph_node.h">
+      <Filter>Source Files\decomp\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\engine\guMtxF2L.h">
+      <Filter>Source Files\decomp\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\engine\math_util.h">
+      <Filter>Source Files\decomp\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\engine\surface_collision.h">
+      <Filter>Source Files\decomp\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\game\area.h">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\game\behavior_actions.h">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\game\camera.h">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\game\interaction.h">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\game\level_update.h">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\game\mario.h">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\game\mario_actions_airborne.h">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\game\mario_actions_automatic.h">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\game\mario_actions_cutscene.h">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\game\mario_actions_moving.h">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\game\mario_actions_object.h">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\game\mario_actions_stationary.h">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\game\mario_actions_submerged.h">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\game\mario_misc.h">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\game\mario_step.h">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\game\object_stuff.h">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\game\platform_displacement.h">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\game\rendering_graph_node.h">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\game\save_file.h">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\include\audio_defines.h">
+      <Filter>Source Files\decomp\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\include\command_macros_base.h">
+      <Filter>Source Files\decomp\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\include\geo_commands.h">
+      <Filter>Source Files\decomp\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\include\level_misc_macros.h">
+      <Filter>Source Files\decomp\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\include\macros.h">
+      <Filter>Source Files\decomp\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\include\mario_animation_ids.h">
+      <Filter>Source Files\decomp\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\include\mario_geo_switch_case_ids.h">
+      <Filter>Source Files\decomp\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\include\object_fields.h">
+      <Filter>Source Files\decomp\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\include\platform_info.h">
+      <Filter>Source Files\decomp\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\include\seq_ids.h">
+      <Filter>Source Files\decomp\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\include\sm64.h">
+      <Filter>Source Files\decomp\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\include\special_preset_names.h">
+      <Filter>Source Files\decomp\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\include\surface_terrains.h">
+      <Filter>Source Files\decomp\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\include\types.h">
+      <Filter>Source Files\decomp\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\include\PR\gbi.h">
+      <Filter>Source Files\decomp\include\PR</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\include\PR\os_cont.h">
+      <Filter>Source Files\decomp\include\PR</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\include\PR\ultratypes.h">
+      <Filter>Source Files\decomp\include\PR</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\mario\geo.inc.h">
+      <Filter>Source Files\decomp\mario</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\mario\model.inc.h">
+      <Filter>Source Files\decomp\mario</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\tools\libmio0.h">
+      <Filter>Source Files\decomp\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\tools\n64graphics.h">
+      <Filter>Source Files\decomp\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\tools\utils.h">
+      <Filter>Source Files\decomp\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\tools\stb\stb_image.h">
+      <Filter>Source Files\decomp\tools\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="src\decomp\tools\stb\stb_image_write.h">
+      <Filter>Source Files\decomp\tools\stb</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\debug_print.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gfx_adapter.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\libsm64.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\load_anim_data.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\load_surfaces.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\load_tex_data.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\obj_pool.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\global_state.c">
+      <Filter>Source Files\decomp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\memory.c">
+      <Filter>Source Files\decomp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\engine\geo_layout.c">
+      <Filter>Source Files\decomp\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\engine\graph_node.c">
+      <Filter>Source Files\decomp\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\engine\graph_node_manager.c">
+      <Filter>Source Files\decomp\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\engine\guMtxF2L.c">
+      <Filter>Source Files\decomp\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\engine\math_util.c">
+      <Filter>Source Files\decomp\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\engine\surface_collision.c">
+      <Filter>Source Files\decomp\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\game\behavior_actions.c">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\game\interaction.c">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\game\mario.c">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\game\mario_actions_airborne.c">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\game\mario_actions_automatic.c">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\game\mario_actions_cutscene.c">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\game\mario_actions_moving.c">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\game\mario_actions_object.c">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\game\mario_actions_stationary.c">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\game\mario_actions_submerged.c">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\game\mario_misc.c">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\game\mario_step.c">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\game\object_stuff.c">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\game\platform_displacement.c">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\game\rendering_graph_node.c">
+      <Filter>Source Files\decomp\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\mario\geo.inc.c">
+      <Filter>Source Files\decomp\mario</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\mario\model.inc.c">
+      <Filter>Source Files\decomp\mario</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\tools\libmio0.c">
+      <Filter>Source Files\decomp\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\tools\n64graphics.c">
+      <Filter>Source Files\decomp\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomp\tools\utils.c">
+      <Filter>Source Files\decomp\tools</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
