@@ -241,6 +241,9 @@ SM64_LIB_FN void sm64_surface_object_delete( uint32_t objectId )
     // A mario standing on the platform that is being destroyed will have a pointer to freed memory if we don't clear it.
     for( int i = 0; i < s_mario_instance_pool.size; ++i )
     {
+        if( s_mario_instance_pool.objects[i] == NULL )
+            continue;
+
         struct GlobalState *state = ((struct MarioInstance *)s_mario_instance_pool.objects[ i ])->globalState;
         if( state->mgMarioObject->platform == surfaces_object_get_transform_ptr( objectId ))
             state->mgMarioObject->platform = NULL;
