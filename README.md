@@ -21,6 +21,12 @@ which makes use of this library must ask the user to provide a ROM for asset ext
 - To run the test program you'll need a SM64 US ROM in the root of the repository with the name `baserom.us.z64`.
 
 ## Building on Windows (test program not supported)
+
+### Visual Studio 2019
+- Ensure v142 x86/x64 build tools are installed.
+- Open .sln in Visual Studio 2019 and change whether to build in Debug/Release, and whether to build for 32bit or 64bit.
+
+### MinGW
 - [Follow steps 1-4 for setting up MSYS2 MinGW 64 here](https://github.com/sm64-port/sm64-port#windows), but replace the repository URL with `https://github.com/libsm64/libsm64.git`
 - Run `make` to build
 
