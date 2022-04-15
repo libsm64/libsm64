@@ -1,12 +1,13 @@
 default: lib
 
 ifdef LIBSM64_MUSL
-  CC    := musl-gcc
+  CC      := musl-gcc
+  LDFLAGS := -lm -static -shared
 else
-  CC    := cc
+  CC      := cc
+  LDFLAGS := -lm -shared
 endif
-CFLAGS  := -g -Wall -fPIC -DSM64_LIB_EXPORT
-LDFLAGS := -lm -shared
+CFLAGS := -g -Wall -fPIC -DSM64_LIB_EXPORT
 
 SRC_DIRS  := src src/decomp src/decomp/engine src/decomp/game src/decomp/mario src/decomp/tools
 BUILD_DIR := build
