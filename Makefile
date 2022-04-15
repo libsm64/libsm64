@@ -1,6 +1,10 @@
 default: lib
 
-CC      := cc
+ifdef LIBSM64_MUSL
+  CC    := musl-gcc
+else
+  CC    := cc
+endif
 CFLAGS  := -g -Wall -fPIC -DSM64_LIB_EXPORT
 LDFLAGS := -lm -shared
 
@@ -28,7 +32,7 @@ ifeq ($(OS),Windows_NT)
   LIB_FILE := $(DIST_DIR)/sm64.dll
 endif
 
-DUMMY != mkdir -p $(ALL_DIRS) build/test src/decomp/mario $(DIST_DIR)/include 
+DUMMY != mkdir -p $(ALL_DIRS) build/test src/decomp/mario $(DIST_DIR)/include
 
 
 $(filter-out src/decomp/mario/geo.inc.c,$(IMPORTED)): src/decomp/mario/geo.inc.c

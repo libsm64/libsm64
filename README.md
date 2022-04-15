@@ -17,7 +17,7 @@ which makes use of this library must ask the user to provide a ROM for asset ext
 
 - Ensure python3 is installed.
 - Ensure the SDL2 and GLEW libraries are installed if you're building the test program (on Ubuntu: libsdl2-dev, libglew-dev)
-- Run `make` to build
+- Run `make` to build. If you want to link musl libc instead of glibc run `LIBSM64_MUSL=1 make` instead.
 - To run the test program you'll need a SM64 US ROM in the root of the repository with the name `baserom.us.z64`.
 
 ## Building on Windows (test program not supported)
