@@ -55,7 +55,7 @@ static void update_button( bool on, u16 button )
 
         gController.buttonDown |= button;
     }
-    else 
+    else
     {
         gController.buttonDown &= ~button;
     }
@@ -98,7 +98,7 @@ SM64_LIB_FN void sm64_global_terminate( void )
     if( !s_init_global ) return;
 
     global_state_bind( NULL );
-    
+
     if( s_init_one_mario )
     {
         for( int i = 0; i < s_mario_instance_pool.size; ++i )
@@ -110,8 +110,13 @@ SM64_LIB_FN void sm64_global_terminate( void )
 
     s_init_global = false;
     s_init_one_mario = false;
-       
-    alloc_only_pool_free( s_mario_geo_pool );
+
+    if( s_mario_geo_pool )
+    {
+        alloc_only_pool_free( s_mario_geo_pool );
+        s_mario_geo_pool = NULL;
+    }
+
     surfaces_unload_all();
     unload_mario_anims();
     memory_terminate();
