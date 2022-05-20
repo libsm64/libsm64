@@ -7,6 +7,10 @@ This project produces a shared library file containing mostly code from the deco
 and loads an official SM64 ROM at runtime to get Mario's texture and animation data, so any project
 which makes use of this library must ask the user to provide a ROM for asset extraction.
 
+The entire external-facing API of the shared library can be found in `libsm64.h`. Any client project
+making use of the library must only include that header and load the library. There's a minimal example
+project under the `test` directory as well, demonstrating usage of the library.
+
 ## Bindings and plugins
 
 - [Rust bindings](https://github.com/nickmass/libsm64-rust)
