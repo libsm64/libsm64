@@ -72,6 +72,6 @@ run: test
 	./$(TEST_FILE)
 
 clean:
-	rm -rf $(BUILD_DIR) $(DIST_DIR) src/decomp/mario test/level.? $(TEST_FILE)
+	rm -rf $(BUILD_DIR) $(DIST_DIR) $(TEST_FILE)
 
 -include $(DEP_FILES)
