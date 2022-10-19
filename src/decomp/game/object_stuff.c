@@ -81,8 +81,12 @@ static struct Object *allocate_object(void) {
     obj->numCollidedObjs = 0;
 
     for (i = 0; i < 0x50; i++) {
+#ifdef _WIN32
         obj->rawData.asS32[i] = 0;
+#endif
+#ifdef _WIN64
         obj->ptrData.asVoidPtr[i] = NULL;
+#endif
     }
 
     obj->unused1 = 0;
