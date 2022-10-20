@@ -1329,7 +1329,9 @@ void update_mario_geometry_inputs(struct MarioState *m) {
 
     m->floorHeight = find_floor(m->pos[0], m->pos[1], m->pos[2], &m->floor);
 
-    m->curTerrain = m->floor->terrain;
+	if(m->floor != NULL) {
+		m->curTerrain = m->floor->terrain;
+	}
 
     // If Mario is OOB, move his position to his graphical position (which was not updated)
     // and check for the floor there.
