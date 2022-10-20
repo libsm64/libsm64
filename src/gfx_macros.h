@@ -2,7 +2,6 @@
 
 #include "decomp/include/types.h"
 #include "gfx_adapter_commands.h"
-#include "cpu_type.h"
 
 /*
  * Vertex (set up for use with colors)
@@ -75,13 +74,13 @@ typedef struct {
 #define	G_OFF                 0
 #define	G_TEXTURE_IMAGE_FRAC  2
 
-typedef DL_INT_SIZE Gfx;
+typedef intptr_t Gfx;
 
 #define gdSPDefLights1(ar,ag,ab,r1,g1,b1,x1,y1,z1) {{{ {ar,ag,ab},0,{ar,ag,ab},0}}, {{{ {r1,g1,b1},0,{r1,g1,b1},0,{x1,y1,z1},0}}} }
 
 #define gsSPVertex(v, n, v0) \
     GFXCMD_VertexData, \
-    (DL_INT_SIZE)v, n, v0
+    (intptr_t)v, n, v0
 
 #define gsSP2Triangles(v00, v01, v02, flag0, v10, v11, v12, flag1) \
     GFXCMD_Triangle, \
@@ -98,11 +97,11 @@ typedef DL_INT_SIZE Gfx;
 
 #define gsSPDisplayList(dl) \
     GFXCMD_SubDisplayList, \
-    (DL_INT_SIZE)dl
+    (intptr_t)dl
 
 #define gsSPLight(l, n) \
     GFXCMD_Light, \
-    (DL_INT_SIZE)l, n
+    (intptr_t)l, n
 
 #define gsSPTexture(s, t, level, tile, on) \
     GFXCMD_Texture, \

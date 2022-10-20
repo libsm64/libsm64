@@ -7,7 +7,6 @@
 #include "gfx_adapter.h"
 #include "gfx_adapter_commands.h"
 #include "load_tex_data.h"
-#include "cpu_type.h"
 
 static Mat4 s_curMatrix;
 static float s_curColor[3];
@@ -42,7 +41,7 @@ static void convert_uv_to_atlas( float *atlas_uv_out, short tc[] )
 
 static void process_display_list( void *dl )
 {
-    DL_INT_SIZE *ptr = (DL_INT_SIZE *)dl;
+    intptr_t *ptr = (intptr_t *)dl;
     Vtx *vdata = NULL;
 
     for( ;; )
@@ -51,19 +50,19 @@ static void process_display_list( void *dl )
         {
             case GFXCMD_VertexData: 
             {
-                UNUSED DL_INT_SIZE v = *ptr++;
-                UNUSED DL_INT_SIZE n = *ptr++;
-                UNUSED DL_INT_SIZE v0 = *ptr++;
+                UNUSED intptr_t v = *ptr++;
+                UNUSED intptr_t n = *ptr++;
+                UNUSED intptr_t v0 = *ptr++;
                 vdata = (Vtx*)v;
                 break;
             }
 
             case GFXCMD_Triangle:
             {
-                DL_INT_SIZE v00 = *ptr++;
-                DL_INT_SIZE v01 = *ptr++;
-                DL_INT_SIZE v02 = *ptr++;
-                UNUSED DL_INT_SIZE flag0 = *ptr++;
+                intptr_t v00 = *ptr++;
+                intptr_t v01 = *ptr++;
+                intptr_t v02 = *ptr++;
+                UNUSED intptr_t flag0 = *ptr++;
 
                 float x0 = vdata[v00].v.ob[0], y0 = vdata[v00].v.ob[1], z0 = vdata[v00].v.ob[2];
                 float x1 = vdata[v01].v.ob[0], y1 = vdata[v01].v.ob[1], z1 = vdata[v01].v.ob[2];
@@ -130,8 +129,8 @@ static void process_display_list( void *dl )
 
             case GFXCMD_Light:
             {
-                DL_INT_SIZE l = *ptr++;
-                DL_INT_SIZE n = *ptr++;
+                intptr_t l = *ptr++;
+                intptr_t n = *ptr++;
 
                 if( n == 1 )
                 {
@@ -146,9 +145,9 @@ static void process_display_list( void *dl )
 
             case GFXCMD_Texture:
             {
-                DL_INT_SIZE s = *ptr++;
-                DL_INT_SIZE t = *ptr++;
-                DL_INT_SIZE on = *ptr++;
+                intptr_t s = *ptr++;
+                intptr_t t = *ptr++;
+                intptr_t on = *ptr++;
 
                 s_scaleS = (uint16_t)s;
                 s_scaleT = (uint16_t)t;
@@ -159,7 +158,7 @@ static void process_display_list( void *dl )
 
             case GFXCMD_SetTextureImage:
             {
-                DL_INT_SIZE i = *ptr++;
+                intptr_t i = *ptr++;
 
                 s_textureIndex = (int)i;
                 s_texWidth = mario_tex_widths[s_textureIndex];
@@ -170,8 +169,8 @@ static void process_display_list( void *dl )
 
             case GFXCMD_SetTileSize:
             {
-                DL_INT_SIZE uls = *ptr++;
-                DL_INT_SIZE ult = *ptr++;
+                intptr_t uls = *ptr++;
+                intptr_t ult = *ptr++;
                 ptr++; // lrs
                 ptr++; // lrt
 
@@ -183,7 +182,7 @@ static void process_display_list( void *dl )
 
             case GFXCMD_SubDisplayList:
             {
-                DL_INT_SIZE dl = *ptr++;
+                intptr_t dl = *ptr++;
                 process_display_list( (void*)dl );
                 break;
             }
