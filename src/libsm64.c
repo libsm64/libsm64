@@ -85,6 +85,13 @@ SM64_LIB_FN void sm64_register_debug_print_function( SM64DebugPrintFunctionPtr d
     g_debug_print_func = debugPrintFunction;
 }
 
+typedef void (*SM64PlaySoundFunctionPtr)( uint32_t soundBits, f32 *pos );
+SM64_LIB_FN void sm64_register_play_sound_function( SM64PlaySoundFunctionPtr playSoundFunction )
+{
+    g_play_sound_func = playSoundFunction;
+}
+
+
 SM64_LIB_FN void sm64_global_init( uint8_t *rom, uint8_t *outTexture )
 {
     if( s_init_global )

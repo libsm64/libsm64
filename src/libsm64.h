@@ -5,6 +5,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "decomp/include/types.h"
+
 #ifdef _WIN32
     #ifdef SM64_LIB_EXPORT
         #define SM64_LIB_FN __declspec(dllexport)
@@ -67,8 +69,13 @@ enum
     SM64_GEO_MAX_TRIANGLES = 1024,
 };
 
+
 typedef void (*SM64DebugPrintFunctionPtr)( const char * );
 extern SM64_LIB_FN void sm64_register_debug_print_function( SM64DebugPrintFunctionPtr debugPrintFunction );
+
+typedef void (*SM64PlaySoundFunctionPtr)( uint32_t soundBits, f32 *pos );
+extern SM64_LIB_FN void sm64_register_play_sound_function( SM64PlaySoundFunctionPtr playSoundFunction );
+
 
 extern SM64_LIB_FN void sm64_global_init( uint8_t *rom, uint8_t *outTexture );
 extern SM64_LIB_FN void sm64_global_terminate( void );
