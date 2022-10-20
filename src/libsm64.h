@@ -60,8 +60,6 @@ struct SM64MarioGeometryBuffers
     uint16_t numTrianglesUsed;
 };
 
-typedef void (*SM64DebugPrintFunctionPtr)( const char * );
-
 enum
 {
     SM64_TEXTURE_WIDTH = 64 * 11,
@@ -69,7 +67,10 @@ enum
     SM64_GEO_MAX_TRIANGLES = 1024,
 };
 
-extern SM64_LIB_FN void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugPrintFunctionPtr debugPrintFunction );
+typedef void (*SM64DebugPrintFunctionPtr)( const char * );
+extern SM64_LIB_FN void sm64_register_debug_print_function( SM64DebugPrintFunctionPtr debugPrintFunction );
+
+extern SM64_LIB_FN void sm64_global_init( uint8_t *rom, uint8_t *outTexture );
 extern SM64_LIB_FN void sm64_global_terminate( void );
 
 extern SM64_LIB_FN void sm64_static_surfaces_load( const struct SM64Surface *surfaceArray, uint32_t numSurfaces );
