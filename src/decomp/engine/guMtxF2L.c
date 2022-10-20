@@ -44,6 +44,9 @@ void guMtxL2F(float mf[4][4], Mtx *m) {
 void guMtxF2L(float mf[4][4], Mtx *m) {
     memcpy(m, mf, sizeof(Mtx));
 }
+void guMtxL2F(float mf[4][4], Mtx *m) {
+    memcpy(mf, m, sizeof(Mtx));
+}
 #endif
 
 void guMtxIdentF(float mf[4][4]) {

@@ -65,9 +65,9 @@ static void process_display_list( void *dl )
                 DL_INT_SIZE v02 = *ptr++;
                 UNUSED DL_INT_SIZE flag0 = *ptr++;
 
-                short x0 = vdata[v00].v.ob[0], y0 = vdata[v00].v.ob[1], z0 = vdata[v00].v.ob[2];
-                short x1 = vdata[v01].v.ob[0], y1 = vdata[v01].v.ob[1], z1 = vdata[v01].v.ob[2];
-                short x2 = vdata[v02].v.ob[0], y2 = vdata[v02].v.ob[1], z2 = vdata[v02].v.ob[2];
+                float x0 = vdata[v00].v.ob[0], y0 = vdata[v00].v.ob[1], z0 = vdata[v00].v.ob[2];
+                float x1 = vdata[v01].v.ob[0], y1 = vdata[v01].v.ob[1], z1 = vdata[v01].v.ob[2];
+                float x2 = vdata[v02].v.ob[0], y2 = vdata[v02].v.ob[1], z2 = vdata[v02].v.ob[2];
                 Vec3f p0 = { (float)x0, (float)y0, (float)z0 };
                 Vec3f p1 = { (float)x1, (float)y1, (float)z1 };
                 Vec3f p2 = { (float)x2, (float)y2, (float)z2 };
