@@ -22,7 +22,7 @@ struct SM64Surface
     int16_t type;
     int16_t force;
     uint16_t terrain;
-    int16_t vertices[3][3];
+    int32_t vertices[3][3];
 };
 
 struct SM64MarioInputs
@@ -82,7 +82,7 @@ extern SM64_LIB_FN void sm64_global_terminate( void );
 
 extern SM64_LIB_FN void sm64_static_surfaces_load( const struct SM64Surface *surfaceArray, uint32_t numSurfaces );
 
-extern SM64_LIB_FN int32_t sm64_mario_create( int16_t x, int16_t y, int16_t z );
+extern SM64_LIB_FN int32_t sm64_mario_create( float x, float y, float z );
 extern SM64_LIB_FN void sm64_mario_tick( int32_t marioId, const struct SM64MarioInputs *inputs, struct SM64MarioState *outState, struct SM64MarioGeometryBuffers *outBuffers );
 extern SM64_LIB_FN void sm64_mario_delete( int32_t marioId );
 
