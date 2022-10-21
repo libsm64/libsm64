@@ -21,21 +21,56 @@
 #define SOUNDARGS_SHIFT_SOUNDID     16
 #define SOUNDARGS_SHIFT_PRIORITY    8
 
+/* Sound banks */
+#define SOUND_BANK_ACTION     0
+#define SOUND_BANK_MOVING     1
+#define SOUND_BANK_VOICE      2
+#define SOUND_BANK_GENERAL    3
+#define SOUND_BANK_ENV        4
+#define SOUND_BANK_OBJ        5
+#define SOUND_BANK_AIR        6
+#define SOUND_BANK_MENU       7
+#define SOUND_BANK_GENERAL2   8
+#define SOUND_BANK_OBJ2       9
+#define SOUND_BANK_COUNT     10
+
+#define SOUND_BANKS_ALL_BITS 0xffff
+#define SOUND_BANKS_ALL ((1 << SOUND_BANK_COUNT) - 1)
+#define SOUND_BANKS_FOREGROUND (\
+    (1 << SOUND_BANK_ACTION) |\
+    (1 << SOUND_BANK_VOICE) |\
+    (1 << SOUND_BANK_MENU))
+#define SOUND_BANKS_BACKGROUND (SOUND_BANKS_ALL & ~SOUND_BANKS_FOREGROUND)
+#define SOUND_BANKS_DISABLED_DURING_INTRO_CUTSCENE (\
+    (1 << SOUND_BANK_ENV) |\
+    (1 << SOUND_BANK_OBJ) |\
+    (1 << SOUND_BANK_GENERAL2) |\
+    (1 << SOUND_BANK_OBJ2))
+#define SOUND_BANKS_DISABLED_AFTER_CREDITS (\
+    (1 << SOUND_BANK_ACTION) |\
+    (1 << SOUND_BANK_MOVING) |\
+    (1 << SOUND_BANK_VOICE) |\
+    (1 << SOUND_BANK_GENERAL))
+
 /* Audio Status */
 #define SOUND_STATUS_STOPPED        0
 #define SOUND_STATUS_STARTING       1
+#define SOUND_STATUS_WAITING SOUND_STATUS_STARTING
 #define SOUND_STATUS_PLAYING        2
 
 /* Audio lower bitflags. TODO: Figure out what these mean and use them below. */
 #define SOUND_LO_BITFLAG_UNK1       0x10 // fade in?
+#define SOUND_LOWER_BACKGROUND_MUSIC SOUND_LO_BITFLAG_UNK1
 #define SOUND_NO_ECHO               0x20 // not in JP
 #define SOUND_LO_BITFLAG_UNK8       0x80 // restart playing on each play_sound call?
+#define SOUND_DISCRETE SOUND_LO_BITFLAG_UNK8
 
 /* Audio playback bitflags. */
 #define SOUND_NO_VOLUME_LOSS        0x1000000 // No volume loss with distance
 #define SOUND_VIBRATO               0x2000000 // Randomly alter frequency each audio frame
 #define SOUND_NO_PRIORITY_LOSS      0x4000000 // Do not prioritize closer sounds
 #define SOUND_NO_FREQUENCY_LOSS     0x8000000 // Frequency scale does not change with distance
+#define SOUND_CONSTANT_FREQUENCY    SOUND_NO_FREQUENCY_LOSS
 
 // silence
 #define NO_SOUND                    0

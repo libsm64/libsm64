@@ -76,6 +76,8 @@ struct PatchStruct {
 extern struct UnkStructSH8034EC88 D_SH_8034EC88[0x80];
 #endif
 
+struct AudioBank *bank_load_immediate(s32 bankId, s32 arg1);
+
 void audio_dma_partial_copy_async(uintptr_t *devAddr, u8 **vAddr, ssize_t *remaining, OSMesgQueue *queue, OSIoMesg *mesg);
 void decrease_sample_dma_ttls(void);
 #ifdef VERSION_SH

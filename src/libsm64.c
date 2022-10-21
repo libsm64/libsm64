@@ -29,6 +29,7 @@
 #include "load_surfaces.h"
 #include "gfx_adapter.h"
 #include "load_anim_data.h"
+#include "load_audio_data.h"
 #include "load_tex_data.h"
 #include "obj_pool.h"
 
@@ -132,6 +133,10 @@ SM64_LIB_FN void sm64_global_terminate( void )
     surfaces_unload_all();
     unload_mario_anims();
     memory_terminate();
+}
+
+SM64_LIB_FN struct AudioBanks sm64_asset_load_audio_banks( void ) {
+    return load_audio_banks();
 }
 
 SM64_LIB_FN void sm64_static_surfaces_load( const struct SM64Surface *surfaceArray, uint32_t numSurfaces )

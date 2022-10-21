@@ -808,16 +808,6 @@ void create_next_audio_buffer(s16 *samples, u32 num_samples) {
 #endif
 
 /**
- * Called from threads: thread5_game_loop
- */
-void play_sound(s32 soundBits, f32 *pos) {
-    sSoundRequests[sSoundRequestCount].soundBits = soundBits;
-    sSoundRequests[sSoundRequestCount].position = pos;
-    sSoundRequestCount++;
-	//DEBUG_PRINT("play_sound(%d) request#%d; pos %f %f %f\n", soundBits,sSoundRequestCount,pos[0],pos[1],pos[2]);
-}
-
-/**
  * Called from threads: thread4_sound, thread5_game_loop (EU only)
  */
 static void process_sound_request(u32 bits, f32 *pos) {

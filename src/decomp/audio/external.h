@@ -28,7 +28,6 @@ extern u8 gAudioSPTaskYieldBuffer[]; // ucode yield data ptr; only used in JP
 
 struct SPTask *create_next_audio_frame_task(void);
 void create_next_audio_buffer(s16 *samples, u32 num_samples);
-void play_sound(s32 soundBits, f32 *pos);
 void audio_signal_game_loop_tick(void);
 void seq_player_fade_out(u8 player, u16 fadeDuration);
 void fade_volume_scale(u8 player, u8 targetScale, u16 fadeDuration);
