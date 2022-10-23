@@ -1329,7 +1329,9 @@ void update_mario_geometry_inputs(struct MarioState *m) {
 
     m->floorHeight = find_floor(m->pos[0], m->pos[1], m->pos[2], &m->floor);
 
-    m->curTerrain = m->floor->terrain;
+	if(m->floor != NULL) {
+		m->curTerrain = m->floor->terrain;
+	}
 
     // If Mario is OOB, move his position to his graphical position (which was not updated)
     // and check for the floor there.
@@ -1836,7 +1838,7 @@ int init_mario(void) {
 
     vec3s_copy(gMarioState->faceAngle, gMarioSpawnInfo->startAngle);
     vec3s_set(gMarioState->angleVel, 0, 0, 0);
-    vec3s_to_vec3f(gMarioState->pos, gMarioSpawnInfo->startPos);
+    vec3f_copy(gMarioState->pos, gMarioSpawnInfo->startPos);
     vec3f_set(gMarioState->vel, 0, 0, 0);
 
     gMarioState->floorHeight =

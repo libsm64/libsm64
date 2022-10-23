@@ -4,6 +4,7 @@
 #include "game/area.h"
 #include "game/level_update.h"
 #include "../libsm64.h"
+#include "../play_sound.h"
 #include "global_state.h"
 
 #define COURSE_MIN    0
@@ -36,7 +37,6 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-function"
 
-static void play_sound(s32 soundBits, f32 *pos) {}
 static void enable_time_stop() {}
 static void disable_time_stop() {}
 static void *segmented_to_virtual(const void *addr) { return (void*)addr; }

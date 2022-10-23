@@ -74,11 +74,13 @@ typedef struct {
 #define	G_OFF                 0
 #define	G_TEXTURE_IMAGE_FRAC  2
 
+typedef intptr_t Gfx;
+
 #define gdSPDefLights1(ar,ag,ab,r1,g1,b1,x1,y1,z1) {{{ {ar,ag,ab},0,{ar,ag,ab},0}}, {{{ {r1,g1,b1},0,{r1,g1,b1},0,{x1,y1,z1},0}}} }
 
 #define gsSPVertex(v, n, v0) \
     GFXCMD_VertexData, \
-    (int64_t)v, n, v0
+    (intptr_t)v, n, v0
 
 #define gsSP2Triangles(v00, v01, v02, flag0, v10, v11, v12, flag1) \
     GFXCMD_Triangle, \
@@ -95,11 +97,11 @@ typedef struct {
 
 #define gsSPDisplayList(dl) \
     GFXCMD_SubDisplayList, \
-    (int64_t)dl
+    (intptr_t)dl
 
 #define gsSPLight(l, n) \
     GFXCMD_Light, \
-    (int64_t)l, n
+    (intptr_t)l, n
 
 #define gsSPTexture(s, t, level, tile, on) \
     GFXCMD_Texture, \
@@ -124,5 +126,3 @@ typedef struct {
 #define gsDPSetTile(fmt, siz, line, tmem, tile, palette, cmt, maskt, shiftt, cms, masks, shifts) (GFXCMD_None)
 #define gsDPLoadBlock(tile, uls, ult, lrs, dxt) (GFXCMD_None)
 #define gsDPLoadSync() (GFXCMD_None)
-
-typedef int64_t Gfx;

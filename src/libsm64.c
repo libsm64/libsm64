@@ -79,13 +79,25 @@ static void free_area( struct Area *area )
     free( area );
 }
 
-SM64_LIB_FN void sm64_global_init( uint8_t *rom, uint8_t *outTexture, SM64DebugPrintFunctionPtr debugPrintFunction )
+typedef void (*SM64DebugPrintFunctionPtr)( const char * );
+SM64_LIB_FN void sm64_register_debug_print_function( SM64DebugPrintFunctionPtr debugPrintFunction )
+{
+    g_debug_print_func = debugPrintFunction;
+}
+
+typedef void (*SM64PlaySoundFunctionPtr)( uint32_t soundBits, f32 *pos );
+SM64_LIB_FN void sm64_register_play_sound_function( SM64PlaySoundFunctionPtr playSoundFunction )
+{
+    g_play_sound_func = playSoundFunction;
+}
+
+
+SM64_LIB_FN void sm64_global_init( uint8_t *rom, uint8_t *outTexture )
 {
     if( s_init_global )
         sm64_global_terminate();
 
     s_init_global = true;
-    g_debug_print_func = debugPrintFunction;
 
     load_mario_textures_from_rom( rom, outTexture );
     load_mario_anims_from_rom( rom );
@@ -127,7 +139,7 @@ SM64_LIB_FN void sm64_static_surfaces_load( const struct SM64Surface *surfaceArr
     surfaces_load_static( surfaceArray, numSurfaces );
 }
 
-SM64_LIB_FN int32_t sm64_mario_create( int16_t x, int16_t y, int16_t z )
+SM64_LIB_FN int32_t sm64_mario_create( float x, float y, float z )
 {
     int32_t marioIndex = obj_pool_alloc_index( &s_mario_instance_pool, sizeof( struct MarioInstance ));
     struct MarioInstance *newInstance = s_mario_instance_pool.objects[marioIndex];
