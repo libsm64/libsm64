@@ -170,8 +170,8 @@ uint8_t *utils_read_file_alloc( const char *path, size_t *fileLength )
 
 static GLuint shader_compile( const char *shaderContents, size_t shaderContentsLength, GLenum shaderType )
 {
-    const GLchar *shaderDefine = shaderType == GL_VERTEX_SHADER 
-        ? "\n#version 410\n#define VERTEX  \n#define v2f out\n" 
+    const GLchar *shaderDefine = shaderType == GL_VERTEX_SHADER
+        ? "\n#version 410\n#define VERTEX  \n#define v2f out\n"
         : "\n#version 410\n#define FRAGMENT\n#define v2f in \n";
 
     const GLchar *shaderStrings[2] = { shaderDefine, shaderContents };
@@ -183,7 +183,7 @@ static GLuint shader_compile( const char *shaderContents, size_t shaderContentsL
 
     GLint isCompiled;
     glGetShaderiv( shader, GL_COMPILE_STATUS, &isCompiled );
-    if( isCompiled == GL_FALSE ) 
+    if( isCompiled == GL_FALSE )
     {
         GLint maxLength;
         glGetShaderiv( shader, GL_INFO_LOG_LENGTH, &maxLength );
@@ -393,7 +393,7 @@ int main( void )
     uint8_t *texture = malloc( 4 * SM64_TEXTURE_WIDTH * SM64_TEXTURE_HEIGHT );
 
     sm64_global_terminate();
-    sm64_global_init( rom, texture, NULL );
+    sm64_global_init( rom, texture );
     sm64_static_surfaces_load( surfaces, surfaces_count );
     uint32_t marioId = sm64_mario_create( 0, 1000, 0 );
 
