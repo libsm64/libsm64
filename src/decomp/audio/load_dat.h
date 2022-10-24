@@ -1,11 +1,14 @@
 #pragma once
 
-extern unsigned char* gSoundDataADSR;
+#include "../tools/convTypes.h"
+#include <stdlib.h>
 
-extern unsigned char* gSoundDataRaw;
+extern struct seqFile *gSoundDataADSR;
 
-extern unsigned char* gMusicData;
+extern struct seqFile *gSoundDataRaw;
+
+extern struct seqFile *gMusicData;
 
 #ifndef VERSION_SH
-extern unsigned char* gBankSetsData;
+extern unsigned char *gBankSetsData;
 #endif

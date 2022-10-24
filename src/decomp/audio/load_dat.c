@@ -1,10 +1,10 @@
 #include "load_dat.h"
 
-unsigned char* gSoundDataADSR;
+struct seqFile *gSoundDataADSR;
 
-unsigned char* gSoundDataRaw;
+struct seqFile *gSoundDataRaw;
 
-unsigned char* gMusicData;
+struct seqFile *gMusicData;
 
 #ifndef VERSION_SH
 unsigned char* gBankSetsData;

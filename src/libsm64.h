@@ -80,7 +80,7 @@ extern SM64_LIB_FN void sm64_register_play_sound_function( SM64PlaySoundFunction
 extern SM64_LIB_FN void sm64_global_init( uint8_t *rom, uint8_t *outTexture );
 extern SM64_LIB_FN void sm64_global_terminate( void );
 
-extern SM64_LIB_FN struct AudioBanks sm64_asset_load_audio_banks( void );
+extern SM64_LIB_FN struct AudioBanks sm64_asset_load_audio_banks( uint8_t *rom  );
 
 extern SM64_LIB_FN void sm64_static_surfaces_load( const struct SM64Surface *surfaceArray, uint32_t numSurfaces );
 

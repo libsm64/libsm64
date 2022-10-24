@@ -135,8 +135,8 @@ SM64_LIB_FN void sm64_global_terminate( void )
     memory_terminate();
 }
 
-SM64_LIB_FN struct AudioBanks sm64_asset_load_audio_banks( void ) {
-    return load_audio_banks();
+SM64_LIB_FN struct AudioBanks sm64_asset_load_audio_banks( uint8_t *rom ) {
+    return load_audio_banks( rom );
 }
 
 SM64_LIB_FN void sm64_static_surfaces_load( const struct SM64Surface *surfaceArray, uint32_t numSurfaces )
