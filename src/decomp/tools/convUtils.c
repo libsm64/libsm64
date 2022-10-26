@@ -4,9 +4,9 @@
 #include "utils.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include "convUtils.h"
 #include "convTypes.h"
-#include "../../debug_print.h"
 
 /**
  * This code is based on the only documentation that exists (that I know of) for the SM64 CTL/TBL format
@@ -21,15 +21,10 @@
 unsigned char* gCtlSeqs;
 
 struct seqFile* parse_seqfile(unsigned char* seq){ /* Read SeqFile data */
-	DEBUG_PRINT("parse_seqfile()");
-
     short revision = read_u16_be(seq);
     short bankCount = read_u16_be(seq + 2);
-	DEBUG_PRINT("- bankCount: %d", bankCount);
 	
 	unsigned int size = sizeof(struct seqFile) + (bankCount-1) * sizeof(struct seqObject);
-	DEBUG_PRINT("- seqFile size: %d", sizeof(struct seqFile));
-	DEBUG_PRINT("- actual size: %d", size);
 	
     struct seqFile* seqFile = (struct seqFile*)calloc(size, 1);
     seqFile->revision = revision;
@@ -40,7 +35,6 @@ struct seqFile* parse_seqfile(unsigned char* seq){ /* Read SeqFile data */
     }
 
     if (revision == TYPE_CTL){
-		DEBUG_PRINT("- found ctl!");
         // CTL file, contains instrument and drum data, this is really the only one that needs to be parsed, the rest only needs a header change
 		gCtlSeqs = (unsigned char*)calloc(0x20B40, 1); // We only really need 0x20AD0 bytes but still
 		uintptr_t pos = (uintptr_t)gCtlSeqs;
@@ -51,20 +45,16 @@ struct seqFile* parse_seqfile(unsigned char* seq){ /* Read SeqFile data */
 			seqFile->seqArray[i].len = (unsigned int)(pos - start);
         }
     }else if (revision == TYPE_TBL){
-		DEBUG_PRINT("- found tbl!");
         // TBL file, contains raw audio data
         for (int i = 0; i < bankCount; i++){
             seqFile->seqArray[i].offset = seq+(seqFile->seqArray[i].offset);
         }
     }else if (revision == TYPE_SEQ){
-		DEBUG_PRINT("- found seq!");
         // SEQ file, contains music files (*.m64)
         for (int i = 0; i < bankCount; i++){
             seqFile->seqArray[i].offset = seq+(seqFile->seqArray[i].offset);
         }
     }
-
-	DEBUG_PRINT("- returning seq: %p", seqFile);
 
     return seqFile;
 }
@@ -83,23 +73,14 @@ void snd_ptrs_to_offsets(struct CSound* snd, uintptr_t ctlData){
 }
 
 void ptrs_to_offsets(struct seqFile* ctl){
-    DEBUG_PRINT("ptrs_to_offsets()");
-
-	DEBUG_PRINT("- checking if type is not ctl...");
-	DEBUG_PRINT("%p", ctl);
 	if (ctl->revision != TYPE_CTL){
-        DEBUG_PRINT("Sequence file is not a CTL file\n");
         return;
     }
 
-    DEBUG_PRINT("- looping through ctl");
-    DEBUG_PRINT("seq count: %d", ctl->seqCount);
 	for (int i = 0; i < ctl->seqCount; i++){
-		DEBUG_PRINT("- for seq");
         struct CTL* ptr = (struct CTL*)ctl->seqArray[i].offset;
 		uintptr_t ctlData = (uintptr_t)ptr + 0x10;
         // find all samples in the CTL file
-		DEBUG_PRINT("- finding samples");
         for (int j = 0; j < ptr->numInstruments; j++){
             struct CInstrument* inst = ptr->instrument_pointers[j];
             if (inst==0x0)
@@ -116,7 +97,6 @@ void ptrs_to_offsets(struct seqFile* ctl){
             }
 			ptr->instrument_pointers[j] = (struct CInstrument*)((uintptr_t)(inst) - ctlData);
         }
-		DEBUG_PRINT("- finding drums");
 		if(ptr->numDrums != 0){
 			for (int j = 0; j < ptr->numDrums; j++){
 				struct CDrum* drum = ptr->drum_pointers[j];
