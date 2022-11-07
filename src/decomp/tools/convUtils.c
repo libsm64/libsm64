@@ -1,6 +1,7 @@
 #pragma once
 #include "convUtils.h"
 
+#include "../../debug_print.h"
 #include "utils.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -21,6 +22,8 @@
 unsigned char* gCtlSeqs;
 
 struct seqFile* parse_seqfile(unsigned char* seq){ /* Read SeqFile data */
+	DEBUG_PRINT("parse_seqfile()");
+
     short revision = read_u16_be(seq);
     short bankCount = read_u16_be(seq + 2);
 	
@@ -34,14 +37,20 @@ struct seqFile* parse_seqfile(unsigned char* seq){ /* Read SeqFile data */
         seqFile->seqArray[i].len = read_u32_be((seq + 4 + i * 8 + 4));
     }
 
+	DEBUG_PRINT("- revision: %d", revision);
     if (revision == TYPE_CTL){
+		DEBUG_PRINT("- ctl!");
         // CTL file, contains instrument and drum data, this is really the only one that needs to be parsed, the rest only needs a header change
 		gCtlSeqs = (unsigned char*)calloc(0x20B40, 1); // We only really need 0x20AD0 bytes but still
 		uintptr_t pos = (uintptr_t)gCtlSeqs;
+		DEBUG_PRINT("- bank count: %d", bankCount);
 		for (int i = 0; i < bankCount; i++){
+			DEBUG_PRINT("- ctl bank index: %d", i);
 			uintptr_t start = pos;
             struct CTL* ptr = parse_ctl_data(seq+(seqFile->seqArray[i].offset), &pos);
+			DEBUG_PRINT("- read ptr: %x", ptr);
             seqFile->seqArray[i].offset = ptr;
+			DEBUG_PRINT("- stored offset: %x", seqFile->seqArray[i].offset);
 			seqFile->seqArray[i].len = (unsigned int)(pos - start);
         }
     }else if (revision == TYPE_TBL){
@@ -247,6 +256,9 @@ struct SEQ* parse_seq_data(unsigned char* seq){
 }
 
 struct CTL* parse_ctl_data(unsigned char* ctlData, uintptr_t* pos){
+	DEBUG_PRINT("parse_ctl_data()");
+	DEBUG_PRINT("- ctlData: %x", ctlData);
+	DEBUG_PRINT("- pos: %x", pos);
 	int instruments=read_u32_be(ctlData);
 	unsigned int size = sizeof(struct CTL) + sizeof(struct CInstrument*) * (instruments-1);
 	struct CTL* ctl = (struct CTL*)(*pos);

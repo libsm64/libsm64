@@ -35,11 +35,6 @@
 #define SAMPLES_TO_OVERPRODUCE 0x10
 #define EXTRA_BUFFERED_AI_SAMPLES_TARGET 0x40
 
-struct Sound {
-    s32 soundBits;
-    f32 *position;
-}; // size = 0x8
-
 struct ChannelVolumeScaleFade {
     f32 velocity;
     u8 target;
@@ -413,7 +408,7 @@ extern void func_802ad74c(u32 bits, u32 arg);
 extern void func_802ad770(u32 bits, s8 arg);
 
 static void update_background_music_after_sound(u8 bank, u8 soundIndex);
-static void update_game_sound(void);
+void update_game_sound(void);
 static void fade_channel_volume_scale(u8 player, u8 channelId, u8 targetScale, u16 fadeTimer);
 void process_level_music_dynamics(void);
 static u8 begin_background_music_fade(u16 fadeDuration);
@@ -663,7 +658,11 @@ extern void func_sh_802F64C8(void);
  * Called from threads: thread5_game_loop
  */
 void maybe_tick_game_sound(void) {
+	DEBUG_PRINT("maybe_tick_game_sound()");
+	
+	DEBUG_PRINT("- if game loop ticked is false...");
     if (sGameLoopTicked != 0) {
+		DEBUG_PRINT("- updating game sound");
         update_game_sound();
         sGameLoopTicked = 0;
     }
@@ -794,14 +793,17 @@ struct SPTask *create_next_audio_frame_task(void) {
     return NULL;
 }
 void create_next_audio_buffer(s16 *samples, u32 num_samples) {
+	DEBUG_PRINT("create_next_audio_buffer()");
     gAudioFrameCount++;
     if (sGameLoopTicked != 0) {
         update_game_sound();
         sGameLoopTicked = 0;
     }
     s32 writtenCmds;
+	DEBUG_PRINT("- synthesis execute");
     synthesis_execute(gAudioCmdBuffers[0], &writtenCmds, samples, num_samples);
     gAudioRandom = ((gAudioRandom + gAudioFrameCount) * gAudioFrameCount);
+	DEBUG_PRINT("- decrease sample dma ttls");
     decrease_sample_dma_ttls();
 }
 #endif
@@ -811,7 +813,7 @@ void create_next_audio_buffer(s16 *samples, u32 num_samples) {
  * Called from threads: thread4_sound, thread5_game_loop (EU only)
  */
 static void process_sound_request(u32 bits, f32 *pos) {
-	//DEBUG_PRINT("process_sound_request %d\n", bits);
+	DEBUG_PRINT("# process_sound_request %d\n", bits);
     u8 bank;
     u8 soundIndex;
     u8 counter = 0;
@@ -874,7 +876,7 @@ static void process_sound_request(u32 bits, f32 *pos) {
 
     // If free list has more than one element remaining
     if (sSoundBanks[bank][sSoundBankFreeListFront[bank]].next != 0xff && soundIndex != 0) {
-		//DEBUG_PRINT("process_sound_request2: soundIndex %d\n", soundIndex);
+		DEBUG_PRINT("process_sound_request2: soundIndex %d\n", soundIndex);
         // Allocate from free list
         soundIndex = sSoundBankFreeListFront[bank];
 
@@ -1333,7 +1335,7 @@ void audio_signal_game_loop_tick(void) {
 /**
  * Called from threads: thread4_sound, thread5_game_loop (EU and SH only)
  */
-static void update_game_sound(void) {
+void update_game_sound(void) {
     u8 soundStatus;
     u8 i;
     u8 soundId;
@@ -2628,6 +2630,7 @@ void play_toads_jingle(void) {
  * Called from threads: thread5_game_loop
  */
 void sound_reset(u8 presetId) {
+	DEBUG_PRINT("sound_reset()");
 #ifndef VERSION_JP
     if (presetId >= 8) {
         presetId = 0;
@@ -2635,26 +2638,35 @@ void sound_reset(u8 presetId) {
     }
 #endif
     sGameLoopTicked = 0;
+	DEBUG_PRINT("- disable all sequence players");
     disable_all_sequence_players();
+	DEBUG_PRINT("- sound init");
     sound_init();
 #ifdef VERSION_SH
     func_802ad74c(0xF2000000, 0);
 #endif
 #if defined(VERSION_JP) || defined(VERSION_US)
+	DEBUG_PRINT("- audio reset session");
     audio_reset_session(&gAudioSessionPresets[presetId]);
 #else
     audio_reset_session_eu(presetId);
 #endif
+	DEBUG_PRINT("- os write back dcache all");
     osWritebackDCacheAll();
     if (presetId != 7) {
+		DEBUG_PRINT("- preloading solve puzzle sequence");
         preload_sequence(SEQ_EVENT_SOLVE_PUZZLE, PRELOAD_BANKS | PRELOAD_SEQUENCE);
+		DEBUG_PRINT("- preloading peach message");
         preload_sequence(SEQ_EVENT_PEACH_MESSAGE, PRELOAD_BANKS | PRELOAD_SEQUENCE);
+		DEBUG_PRINT("- preloading star spawn");
         preload_sequence(SEQ_EVENT_CUTSCENE_STAR_SPAWN, PRELOAD_BANKS | PRELOAD_SEQUENCE);
     }
+	DEBUG_PRINT("- playing sfx sequence");
     seq_player_play_sequence(SEQ_PLAYER_SFX, SEQ_SOUND_PLAYER, 0);
     D_80332108 = (D_80332108 & 0xf0) + presetId;
     gSoundMode = D_80332108 >> 4;
     sHasStartedFadeOut = FALSE;
+	DEBUG_PRINT("- done resetting sound");
 }
 
 /**

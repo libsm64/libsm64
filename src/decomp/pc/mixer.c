@@ -4,6 +4,7 @@
 #include <ultra64.h>
 
 #include "mixer.h"
+#include "../../debug_print.h"
 
 #ifdef __SSE4_1__
 #include <immintrin.h>
@@ -147,6 +148,8 @@ void aSaveBufferImpl(uint16_t source_addr, int16_t *dest_addr, uint16_t nbytes) 
 }
 #else
 void aLoadBufferImpl(const void *source_addr) {
+	DEBUG_PRINT("aLoadBufferImpl()");
+	DEBUG_PRINT("- source_addr: %x", source_addr);
     memcpy(BUF_U8(rspa.in), source_addr, ROUND_UP_8(rspa.nbytes));
 }
 

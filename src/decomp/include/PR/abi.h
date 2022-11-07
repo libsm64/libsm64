@@ -439,10 +439,14 @@ typedef short ENVMIX_STATE[40];
  * s parameter to this command is the source in DRAM.
  */
 #define aLoadBuffer(pkt, s)                                             \
-{                                                                       \
+{ \
+		DEBUG_PRINT("aLoadBuffer()"); \
+		DEBUG_PRINT("- getting pkt"); \
         Acmd *_a = (Acmd *)pkt;                                         \
                                                                         \
+		DEBUG_PRINT("- setting first word"); \
         _a->words.w0 = _SHIFTL(A_LOADBUFF, 24, 8);                      \
+		DEBUG_PRINT("- setting second word"); \
         _a->words.w1 = (uintptr_t)(s);                                  \
 }
 
@@ -558,6 +562,8 @@ typedef short ENVMIX_STATE[40];
  */
 #define aSetBuffer(pkt, f, i, o, c)                                     \
 {                                                                       \
+		DEBUG_PRINT("aSetBuffer()"); \
+		DEBUG_PRINT("- getting pkt"); \
         Acmd *_a = (Acmd *)pkt;                                         \
                                                                         \
         _a->words.w0 = (_SHIFTL(A_SETBUFF, 24, 8) | _SHIFTL(f, 16, 8) | \

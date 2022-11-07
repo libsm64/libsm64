@@ -24,11 +24,20 @@ extern u32 gAudioRandom;
 extern f32 gAudioVolume;
 extern u8 gAudioReverb;
 
+struct Sound {
+    s32 soundBits;
+    f32 *position;
+}; // size = 0x8
+
+extern struct Sound sSoundRequests[0x100];
+extern u8 sSoundRequestCount;
+
 extern u8 gAudioSPTaskYieldBuffer[]; // ucode yield data ptr; only used in JP
 
 struct SPTask *create_next_audio_frame_task(void);
 void create_next_audio_buffer(s16 *samples, u32 num_samples);
 void audio_signal_game_loop_tick(void);
+void update_game_sound(void);
 void seq_player_fade_out(u8 player, u16 fadeDuration);
 void fade_volume_scale(u8 player, u8 targetScale, u16 fadeDuration);
 void seq_player_lower_volume(u8 player, u16 fadeDuration, u8 percentage);
@@ -41,7 +50,6 @@ void stop_sounds_from_source(f32 *pos);
 void stop_sounds_in_continuous_banks(void);
 void sound_banks_disable(u8 player, u16 bankMask);
 void sound_banks_enable(u8 player, u16 bankMask);
-void func_80320A4C(u8 bankIndex, u8 arg1);
 void set_sound_moving_speed(u8 bank, u8 speed);
 void play_dialog_sound(u8 dialogID);
 void play_music(u8 player, u16 seqArgs, u16 fadeTimer);

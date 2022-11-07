@@ -10,6 +10,7 @@
 #include <string.h>
 #include <math.h>
 
+#include "decomp/audio/external.h"
 #include "decomp/include/PR/os_cont.h"
 #include "decomp/engine/math_util.h"
 #include "decomp/include/sm64.h"
@@ -135,8 +136,27 @@ SM64_LIB_FN void sm64_global_terminate( void )
     memory_terminate();
 }
 
-SM64_LIB_FN struct AudioBanks sm64_asset_load_audio_banks( uint8_t *rom ) {
-    return load_audio_banks( rom );
+SM64_LIB_FN void sm64_audio_init( uint8_t *rom ) {
+    load_audio_banks( rom );
+}
+
+#define SAMPLES_HIGH 544
+#define SAMPLES_LOW 528
+
+extern SM64_LIB_FN uint32_t sm64_audio_tick( uint32_t numQueuedSamples, uint32_t numDesiredSamples, int16_t *audio_buffer ) {
+	DEBUG_PRINT("sm64_tick_audio()");
+	
+	DEBUG_PRINT("- update game sound");
+	update_game_sound();
+	
+	DEBUG_PRINT("- create next audio buffer");
+    u32 num_audio_samples = numQueuedSamples < numDesiredSamples ? SAMPLES_HIGH : SAMPLES_LOW;
+    for (int i = 0; i < 2; i++)
+	{
+        create_next_audio_buffer(audio_buffer + i * (2 * num_audio_samples), num_audio_samples);
+    }
+	
+	return num_audio_samples;
 }
 
 SM64_LIB_FN void sm64_static_surfaces_load( const struct SM64Surface *surfaceArray, uint32_t numSurfaces )
