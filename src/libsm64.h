@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "decomp/engine/surface_collision.h"
 #include "decomp/include/types.h"
 
 #ifdef _WIN32
@@ -89,5 +90,14 @@ extern SM64_LIB_FN void sm64_mario_delete( int32_t marioId );
 extern SM64_LIB_FN uint32_t sm64_surface_object_create( const struct SM64SurfaceObject *surfaceObject );
 extern SM64_LIB_FN void sm64_surface_object_move( uint32_t objectId, const struct SM64ObjectTransform *transform );
 extern SM64_LIB_FN void sm64_surface_object_delete( uint32_t objectId );
+
+extern SM64_LIB_FN s32 sm64_surface_find_wall_collision(f32 *xPtr, f32 *yPtr, f32 *zPtr, f32 offsetY, f32 radius);
+extern SM64_LIB_FN s32 sm64_surface_find_wall_collisions(struct WallCollisionData *colData);
+extern SM64_LIB_FN f32 sm64_surface_find_ceil(f32 posX, f32 posY, f32 posZ, struct Surface **pceil);
+extern SM64_LIB_FN f32 sm64_surface_find_floor_height_and_data(f32 xPos, f32 yPos, f32 zPos, struct FloorGeometry **floorGeo);
+extern SM64_LIB_FN f32 sm64_surface_find_floor_height(f32 x, f32 y, f32 z);
+extern SM64_LIB_FN f32 sm64_surface_find_floor(f32 xPos, f32 yPos, f32 zPos, struct Surface **pfloor);
+extern SM64_LIB_FN f32 sm64_surface_find_water_level(f32 x, f32 z);
+extern SM64_LIB_FN f32 sm64_surface_find_poison_gas_level(f32 x, f32 z);
 
 #endif//LIB_SM64_H

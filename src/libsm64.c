@@ -268,3 +268,44 @@ SM64_LIB_FN void sm64_surface_object_delete( uint32_t objectId )
 
     surfaces_unload_object( objectId );
 }
+
+
+SM64_LIB_FN s32 sm64_surface_find_wall_collision(f32 *xPtr, f32 *yPtr, f32 *zPtr, f32 offsetY, f32 radius) 
+{
+    return f32_find_wall_collision( xPtr, yPtr, zPtr, offsetY, radius );
+}
+
+SM64_LIB_FN s32 sm64_surface_find_wall_collisions(struct WallCollisionData *colData)
+{
+    return find_wall_collisions( colData );
+}
+
+SM64_LIB_FN f32 sm64_surface_find_ceil(f32 posX, f32 posY, f32 posZ, struct Surface **pceil)
+{
+    return find_ceil( posX, posY, posZ, pceil );
+}
+
+SM64_LIB_FN f32 sm64_surface_find_floor_height_and_data(f32 xPos, f32 yPos, f32 zPos, struct FloorGeometry **floorGeo)
+{
+    return find_floor_height_and_data( xPos, yPos, zPos, floorGeo );
+}
+
+SM64_LIB_FN f32 sm64_surface_find_floor_height(f32 x, f32 y, f32 z)
+{
+    return find_floor_height( x, y, z );
+}
+
+SM64_LIB_FN f32 sm64_surface_find_floor(f32 xPos, f32 yPos, f32 zPos, struct Surface **pfloor)
+{
+    return find_floor( xPos, yPos, zPos, pfloor );
+}
+
+SM64_LIB_FN f32 sm64_surface_find_water_level(f32 x, f32 z)
+{
+    return find_water_level( x, z );
+}
+
+SM64_LIB_FN f32 sm64_surface_find_poison_gas_level(f32 x, f32 z)
+{
+    return find_poison_gas_level( x, z );
+}
