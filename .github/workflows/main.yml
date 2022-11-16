@@ -22,29 +22,31 @@ jobs:
           sudo apt-get update -y -qq
           sudo apt-get install libsdl2-dev libglew-dev
 
-      - name: Print Folder Structure
-        if: runner.os == 'Linux'
-        run: ls -l
+      #- name: Print Folder Structure
+      #  if: runner.os == 'Linux'
+      #  run: ls -l
 
       - name: Linux - Build Base Binary
         if: runner.os == 'Linux'
-        run: make
-
-      - name: Print Folder Structure
-        if: runner.os == 'Linux'
         run: |
-          ls -l
-          ls -l ./build
-          ls -l ./dist
+          make lib
+          make test
 
-      #- name: Linux - Upload Build
-      #  uses: actions/upload-artifact@v3
+      #- name: Print Folder Structure
       #  if: runner.os == 'Linux'
-      #  with:
-      #    name: sort_cuda
-      #    path: |
-      #      ./dist/libsm64.h
-      #      ./dist/libsm64.so
+      #  run: |
+      #    ls -l
+      #    ls -l ./build
+      #    ls -l ./dist
+
+      - name: Linux - Upload Build
+        uses: actions/upload-artifact@v3
+        if: runner.os == 'Linux'
+        with:
+          name: libsm64
+          path: |
+            ./dist
+            ./build
 
   #Release:
   #  name: "Snapshot Release"
