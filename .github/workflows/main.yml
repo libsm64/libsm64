@@ -1,6 +1,7 @@
 name: Build libsm64
 
 on:
+  pull_request:
   push:
     branches: [master]
 
