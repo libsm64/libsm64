@@ -127,7 +127,7 @@ enum
 typedef void (*SM64DebugPrintFunctionPtr)( const char * );
 extern SM64_LIB_FN void sm64_register_debug_print_function( SM64DebugPrintFunctionPtr debugPrintFunction );
 
-typedef void (*SM64PlaySoundFunctionPtr)( uint32_t soundBits, float  *pos );
+typedef void (*SM64PlaySoundFunctionPtr)( uint32_t soundBits, float *pos );
 extern SM64_LIB_FN void sm64_register_play_sound_function( SM64PlaySoundFunctionPtr playSoundFunction );
 
 extern SM64_LIB_FN void sm64_global_init( uint8_t *rom, uint8_t *outTexture );
