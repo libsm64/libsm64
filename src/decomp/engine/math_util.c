@@ -1840,7 +1840,7 @@ void mtxf_align_terrain_normal(Mat4 dest, Vec3f upDir, Vec3f pos, s16 yaw) {
  * 'radius' is the distance from each triangle vertex to the center
  */
 void mtxf_align_terrain_triangle(Mat4 mtx, Vec3f pos, s16 yaw, f32 radius) {
-    struct Surface *sp74;
+    struct SM64SurfaceCollisionData *sp74;
     Vec3f point0;
     Vec3f point1;
     Vec3f point2;

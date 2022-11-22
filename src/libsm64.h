@@ -5,9 +5,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "decomp/engine/surface_collision.h"
-#include "decomp/include/types.h"
-
 #ifdef _WIN32
     #ifdef SM64_LIB_EXPORT
         #define SM64_LIB_FN __declspec(dllexport)
@@ -63,6 +60,62 @@ struct SM64MarioGeometryBuffers
     uint16_t numTrianglesUsed;
 };
 
+struct SM64WallCollisionData
+{
+    /*0x00*/ float x, y, z;
+    /*0x0C*/ float offsetY;
+    /*0x10*/ float radius;
+    /*0x14*/ int16_t unk14;
+    /*0x16*/ int16_t numWalls;
+    /*0x18*/ struct SM64SurfaceCollisionData *walls[4];
+};
+
+struct SM64FloorCollisionData
+{
+    float unused[4]; // possibly position data?
+    float normalX;
+    float normalY;
+    float normalZ;
+    float originOffset;
+};
+
+struct SM64SurfaceObjectTransform
+{
+    float aPosX, aPosY, aPosZ;
+    float aVelX, aVelY, aVelZ;
+
+    int16_t aFaceAnglePitch;
+    int16_t aFaceAngleYaw;
+    int16_t aFaceAngleRoll;
+
+    int16_t aAngleVelPitch;
+    int16_t aAngleVelYaw;
+    int16_t aAngleVelRoll;
+};
+
+struct SM64SurfaceCollisionData
+{
+    int16_t type;
+    int16_t force;
+    int8_t flags;
+    int8_t room;
+    int32_t lowerY; // libsm64: 32 bit
+    int32_t upperY; // libsm64: 32 bit
+	int32_t vertex1[3]; // libsm64: 32 bit
+	int32_t vertex2[3]; // libsm64: 32 bit
+	int32_t vertex3[3]; // libsm64: 32 bit
+    struct {
+        float x;
+        float y;
+        float z;
+    } normal;
+    float originOffset;
+    
+    uint8_t isValid; // libsm64: added field
+    struct SM64SurfaceObjectTransform *transform; // libsm64: added field
+    uint16_t terrain; // libsm64: added field
+};
+
 enum
 {
     SM64_TEXTURE_WIDTH = 64 * 11,
@@ -74,9 +127,8 @@ enum
 typedef void (*SM64DebugPrintFunctionPtr)( const char * );
 extern SM64_LIB_FN void sm64_register_debug_print_function( SM64DebugPrintFunctionPtr debugPrintFunction );
 
-typedef void (*SM64PlaySoundFunctionPtr)( uint32_t soundBits, f32 *pos );
+typedef void (*SM64PlaySoundFunctionPtr)( uint32_t soundBits, float  *pos );
 extern SM64_LIB_FN void sm64_register_play_sound_function( SM64PlaySoundFunctionPtr playSoundFunction );
-
 
 extern SM64_LIB_FN void sm64_global_init( uint8_t *rom, uint8_t *outTexture );
 extern SM64_LIB_FN void sm64_global_terminate( void );
@@ -91,13 +143,13 @@ extern SM64_LIB_FN uint32_t sm64_surface_object_create( const struct SM64Surface
 extern SM64_LIB_FN void sm64_surface_object_move( uint32_t objectId, const struct SM64ObjectTransform *transform );
 extern SM64_LIB_FN void sm64_surface_object_delete( uint32_t objectId );
 
-extern SM64_LIB_FN s32 sm64_surface_find_wall_collision(f32 *xPtr, f32 *yPtr, f32 *zPtr, f32 offsetY, f32 radius);
-extern SM64_LIB_FN s32 sm64_surface_find_wall_collisions(struct WallCollisionData *colData);
-extern SM64_LIB_FN f32 sm64_surface_find_ceil(f32 posX, f32 posY, f32 posZ, struct Surface **pceil);
-extern SM64_LIB_FN f32 sm64_surface_find_floor_height_and_data(f32 xPos, f32 yPos, f32 zPos, struct FloorGeometry **floorGeo);
-extern SM64_LIB_FN f32 sm64_surface_find_floor_height(f32 x, f32 y, f32 z);
-extern SM64_LIB_FN f32 sm64_surface_find_floor(f32 xPos, f32 yPos, f32 zPos, struct Surface **pfloor);
-extern SM64_LIB_FN f32 sm64_surface_find_water_level(f32 x, f32 z);
-extern SM64_LIB_FN f32 sm64_surface_find_poison_gas_level(f32 x, f32 z);
+extern SM64_LIB_FN int32_t sm64_surface_find_wall_collision( float *xPtr, float *yPtr, float *zPtr, float offsetY, float radius );
+extern SM64_LIB_FN int32_t sm64_surface_find_wall_collisions( struct SM64WallCollisionData *colData );
+extern SM64_LIB_FN float sm64_surface_find_ceil( float posX, float posY, float posZ, struct SM64SurfaceCollisionData **pceil );
+extern SM64_LIB_FN float sm64_surface_find_floor_height_and_data( float xPos, float yPos, float zPos, struct SM64FloorCollisionData **floorGeo );
+extern SM64_LIB_FN float sm64_surface_find_floor_height( float x, float y, float z );
+extern SM64_LIB_FN float sm64_surface_find_floor( float xPos, float yPos, float zPos, struct SM64SurfaceCollisionData **pfloor );
+extern SM64_LIB_FN float sm64_surface_find_water_level( float x, float z );
+extern SM64_LIB_FN float sm64_surface_find_poison_gas_level( float x, float z );
 
 #endif//LIB_SM64_H

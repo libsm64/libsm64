@@ -80,9 +80,9 @@ static f32 get_buoyancy(struct MarioState *m) {
 }
 
 static u32 perform_water_full_step(struct MarioState *m, Vec3f nextPos) {
-    struct Surface *wall;
-    struct Surface *ceil;
-    struct Surface *floor;
+    struct SM64SurfaceCollisionData *wall;
+    struct SM64SurfaceCollisionData *ceil;
+    struct SM64SurfaceCollisionData *floor;
     f32 ceilHeight;
     f32 floorHeight;
 

@@ -115,7 +115,7 @@ s32 check_kick_or_dive_in_air(struct MarioState *m) {
 }
 
 s32 should_get_stuck_in_ground(struct MarioState *m) {
-    struct Surface *floor = m->floor;
+    struct SM64SurfaceCollisionData *floor = m->floor;
     s32 flags = floor->flags;
     s32 type = floor->type;
 
@@ -148,7 +148,7 @@ s32 check_fall_damage_or_get_stuck(struct MarioState *m, u32 hardFallAction) {
 }
 
 s32 check_horizontal_wind(struct MarioState *m) {
-    struct Surface *floor;
+    struct SM64SurfaceCollisionData *floor;
     f32 speed;
     s16 pushAngle;
 

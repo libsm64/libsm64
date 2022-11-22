@@ -443,16 +443,16 @@ struct CutsceneSplinePoint
  */
 struct PlayerGeometry
 {
-    /*0x00*/ struct Surface *currFloor;
+    /*0x00*/ struct SM64SurfaceCollisionData *currFloor;
     /*0x04*/ f32 currFloorHeight;
     /*0x08*/ s16 currFloorType;
-    /*0x0C*/ struct Surface *currCeil;
+    /*0x0C*/ struct SM64SurfaceCollisionData *currCeil;
     /*0x10*/ s16 currCeilType;
     /*0x14*/ f32 currCeilHeight;
-    /*0x18*/ struct Surface *prevFloor;
+    /*0x18*/ struct SM64SurfaceCollisionData *prevFloor;
     /*0x1C*/ f32 prevFloorHeight;
     /*0x20*/ s16 prevFloorType;
-    /*0x24*/ struct Surface *prevCeil;
+    /*0x24*/ struct SM64SurfaceCollisionData *prevCeil;
     /*0x28*/ f32 prevCeilHeight;
     /*0x2C*/ s16 prevCeilType;
     /// Unused, but recalculated every frame
@@ -716,7 +716,7 @@ struct LakituState
 // f32 camera_approach_f32_symmetric(f32 value, f32 target, f32 increment);
 // void random_vec3s(Vec3s dst, s16 xRange, s16 yRange, s16 zRange);
 // s32 clamp_positions_and_find_yaw(Vec3f pos, Vec3f origin, f32 xMax, f32 xMin, f32 zMax, f32 zMin);
-// s32 is_range_behind_surface(Vec3f from, Vec3f to, struct Surface *surf, s16 range, s16 surfType);
+// s32 is_range_behind_surface(Vec3f from, Vec3f to, struct SM64SurfaceCollisionData *surf, s16 range, s16 surfType);
 // void scale_along_line(Vec3f dest, Vec3f from, Vec3f to, f32 scale);
 // s16 calculate_pitch(Vec3f from, Vec3f to);
 // s16 calculate_yaw(Vec3f from, Vec3f to);
