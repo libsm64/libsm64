@@ -1,19 +1,12 @@
 #include "libultra_internal.h"
 #include "libaudio_internal.h"
 
-#include "../../debug_print.h"
-
 #define PATCH(SRC, BASE, TYPE) //SRC = (TYPE)((uintptr_t) SRC + (uintptr_t) BASE)
 
 void alSeqFileNew(ALSeqFile *f, u8 *base) {
-	DEBUG_PRINT("alSeqFileNew()");
     int i;
-	DEBUG_PRINT("- patching %d entries", f->seqCount);
     for (i = 0; i < f->seqCount; i++) {
-		DEBUG_PRINT("- handling entry %d", i);
-		DEBUG_PRINT("- patching offset (%x) with base (%x)", f->seqArray[i].offset, base);
         PATCH(f->seqArray[i].offset, base, u8 *);
-		DEBUG_PRINT("- result is (%x)", f->seqArray[i].offset);
     }
 }
 
