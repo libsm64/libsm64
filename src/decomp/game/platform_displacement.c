@@ -17,7 +17,7 @@
  * within 4 units of the floor. Set his referenced platform object accordingly.
  */
 void update_mario_platform(void) {
-    struct Surface *floor;
+    struct SM64SurfaceCollisionData *floor;
     UNUSED u32 unused;
     f32 marioX;
     f32 marioY;
@@ -82,7 +82,7 @@ static void set_mario_pos(f32 x, f32 y, f32 z) {
  * Apply one frame of platform rotation to Mario or an object using the given
  * platform. If isMario is false, use gCurrentObject.
  */
-void apply_platform_displacement(u32 isMario, struct SurfaceObjectTransform *platform) {
+void apply_platform_displacement(u32 isMario, struct SM64SurfaceObjectTransform *platform) {
     f32 x;
     f32 y;
     f32 z;

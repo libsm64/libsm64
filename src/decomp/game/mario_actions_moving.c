@@ -102,10 +102,10 @@ s32 begin_walking_action(struct MarioState *m, f32 forwardVel, u32 action, u32 a
 }
 
 void check_ledge_climb_down(struct MarioState *m) {
-    struct WallCollisionData wallCols;
-    struct Surface *floor;
+    struct SM64WallCollisionData wallCols;
+    struct SM64SurfaceCollisionData *floor;
     f32 floorHeight;
-    struct Surface *wall;
+    struct SM64SurfaceCollisionData *wall;
     s16 wallAngle;
     s16 wallDYaw;
 
@@ -164,7 +164,7 @@ void update_sliding_angle(struct MarioState *m, f32 accel, f32 lossFactor) {
     s32 newFacingDYaw;
     s16 facingDYaw;
 
-    struct Surface *floor = m->floor;
+    struct SM64SurfaceCollisionData *floor = m->floor;
     s16 slopeAngle = atan2s(floor->normal.z, floor->normal.x);
     f32 steepness = sqrtf(floor->normal.x * floor->normal.x + floor->normal.z * floor->normal.z);
     UNUSED f32 normalY = floor->normal.y;
@@ -287,7 +287,7 @@ s32 update_sliding(struct MarioState *m, f32 stopSpeed) {
 void apply_slope_accel(struct MarioState *m) {
     f32 slopeAccel;
 
-    struct Surface *floor = m->floor;
+    struct SM64SurfaceCollisionData *floor = m->floor;
     f32 steepness = sqrtf(floor->normal.x * floor->normal.x + floor->normal.z * floor->normal.z);
 
     UNUSED f32 normalY = floor->normal.y;

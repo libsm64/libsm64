@@ -567,7 +567,7 @@ s32 act_reading_sign(struct MarioState *m) {
 s32 act_debug_free_move(struct MarioState *m) {
     struct Controller *gPlayer1Controller = &gController;
 
-    struct Surface *surf;
+    struct SM64SurfaceCollisionData *surf;
     f32 floorHeight;
     Vec3f pos;
     f32 speed;
@@ -2014,7 +2014,7 @@ void generate_yellow_sparkles(s16 x, s16 y, s16 z, f32 radius) {
 // not sure what this does, returns the height of the floor.
 // (animation related?)
 // static f32 end_obj_set_visual_pos(struct Object *o) {
-//     struct Surface *surf;
+//     struct SM64SurfaceCollisionData *surf;
 //     Vec3s sp24;
 //     f32 sp20;
 //     f32 sp1C;
@@ -2178,7 +2178,7 @@ static void end_peach_cutscene_descend_peach(struct MarioState *m) {
 
 // Mario runs to peach
 static void end_peach_cutscene_run_to_peach(struct MarioState *m) {
-    struct Surface *surf;
+    struct SM64SurfaceCollisionData *surf;
 
     if (m->actionTimer == 22) {
         sEndPeachAnimation = 5;

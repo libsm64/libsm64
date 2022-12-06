@@ -85,7 +85,7 @@ SM64_LIB_FN void sm64_register_debug_print_function( SM64DebugPrintFunctionPtr d
     g_debug_print_func = debugPrintFunction;
 }
 
-typedef void (*SM64PlaySoundFunctionPtr)( uint32_t soundBits, f32 *pos );
+typedef void (*SM64PlaySoundFunctionPtr)( uint32_t soundBits, float *pos );
 SM64_LIB_FN void sm64_register_play_sound_function( SM64PlaySoundFunctionPtr playSoundFunction )
 {
     g_play_sound_func = playSoundFunction;
@@ -267,4 +267,45 @@ SM64_LIB_FN void sm64_surface_object_delete( uint32_t objectId )
     }
 
     surfaces_unload_object( objectId );
+}
+
+
+SM64_LIB_FN int32_t sm64_surface_find_wall_collision( float *xPtr, float *yPtr, float *zPtr, float offsetY, float radius ) 
+{
+    return f32_find_wall_collision( xPtr, yPtr, zPtr, offsetY, radius );
+}
+
+SM64_LIB_FN int32_t sm64_surface_find_wall_collisions( struct SM64WallCollisionData *colData )
+{
+    return find_wall_collisions( colData );
+}
+
+SM64_LIB_FN float sm64_surface_find_ceil( float posX, float posY, float posZ, struct SM64SurfaceCollisionData **pceil )
+{
+    return find_ceil( posX, posY, posZ, pceil );
+}
+
+SM64_LIB_FN float sm64_surface_find_floor_height_and_data( float xPos, float yPos, float zPos, struct SM64FloorCollisionData **floorGeo )
+{
+    return find_floor_height_and_data( xPos, yPos, zPos, floorGeo );
+}
+
+SM64_LIB_FN float sm64_surface_find_floor_height( float x, float y, float z )
+{
+    return find_floor_height( x, y, z );
+}
+
+SM64_LIB_FN float sm64_surface_find_floor( float xPos, float yPos, float zPos, struct SM64SurfaceCollisionData **pfloor )
+{
+    return find_floor( xPos, yPos, zPos, pfloor );
+}
+
+SM64_LIB_FN float sm64_surface_find_water_level( float x, float z )
+{
+    return find_water_level( x, z );
+}
+
+SM64_LIB_FN float sm64_surface_find_poison_gas_level( float x, float z )
+{
+    return find_poison_gas_level( x, z );
 }
