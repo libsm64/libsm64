@@ -13,21 +13,21 @@
 
 struct LoadedSurfaceObject
 {
-    struct SurfaceObjectTransform *transform;
+    struct SM64SurfaceObjectTransform *transform;
     uint32_t surfaceCount;
     struct SM64Surface *libSurfaces;
-    struct Surface *engineSurfaces;
+    struct SM64SurfaceCollisionData *engineSurfaces;
 };
 
 static uint32_t s_static_surface_count = 0;
-static struct Surface *s_static_surface_list = NULL;
+static struct SM64SurfaceCollisionData *s_static_surface_list = NULL;
 
 static uint32_t s_surface_object_count = 0;
 static struct LoadedSurfaceObject *s_surface_object_list = NULL;
 
 #define CONVERT_ANGLE( x ) ((s16)( -(x) / 180.0f * 32768.0f ))
 
-static void init_transform( struct SurfaceObjectTransform *out, const struct SM64ObjectTransform *in )
+static void init_transform( struct SM64SurfaceObjectTransform *out, const struct SM64ObjectTransform *in )
 {
     out->aVelX = 0.0f;
     out->aVelY = 0.0f;
@@ -44,7 +44,7 @@ static void init_transform( struct SurfaceObjectTransform *out, const struct SM6
     out->aFaceAngleRoll  = CONVERT_ANGLE(in->eulerRotation[2]);
 }
 
-static void update_transform( struct SurfaceObjectTransform *out, const struct SM64ObjectTransform *in )
+static void update_transform( struct SM64SurfaceObjectTransform *out, const struct SM64ObjectTransform *in )
 {
     out->aVelX = in->position[0] - out->aPosX;
     out->aVelY = in->position[1] - out->aPosY;
@@ -89,7 +89,7 @@ static s32 surface_has_force(s16 surfaceType) {
     return hasForce;
 }
 
-static void engine_surface_from_lib_surface( struct Surface *surface, const struct SM64Surface *libSurf, struct SurfaceObjectTransform *transform )
+static void engine_surface_from_lib_surface( struct SM64SurfaceCollisionData *surface, const struct SM64Surface *libSurf, struct SM64SurfaceObjectTransform *transform )
 {
     int16_t type = libSurf->type;
     int16_t force = libSurf->force;
@@ -221,7 +221,7 @@ uint32_t loaded_surface_iter_group_size( uint32_t groupIndex )
     return s_surface_object_list[ groupIndex - 1 ].surfaceCount;
 }
 
-struct Surface *loaded_surface_iter_get_at_index( uint32_t groupIndex, uint32_t surfaceIndex )
+struct SM64SurfaceCollisionData *loaded_surface_iter_get_at_index( uint32_t groupIndex, uint32_t surfaceIndex )
 {
     if( groupIndex == 0 )
         return &s_static_surface_list[ surfaceIndex ];
@@ -235,7 +235,7 @@ void surfaces_load_static( const struct SM64Surface *surfaceArray, uint32_t numS
         free( s_static_surface_list );
 
     s_static_surface_count = numSurfaces;
-    s_static_surface_list = malloc( sizeof( struct Surface ) * numSurfaces );
+    s_static_surface_list = malloc( sizeof( struct SM64SurfaceCollisionData ) * numSurfaces );
 
     for( int i = 0; i < numSurfaces; ++i )
         engine_surface_from_lib_surface( &s_static_surface_list[i], &surfaceArray[i], NULL );
@@ -267,13 +267,13 @@ uint32_t surfaces_load_object( const struct SM64SurfaceObject *surfaceObject )
 
     obj->surfaceCount = surfaceObject->surfaceCount;
 
-    obj->transform = malloc( sizeof( struct SurfaceObjectTransform ));
+    obj->transform = malloc( sizeof( struct SM64SurfaceObjectTransform ));
     init_transform( obj->transform, &surfaceObject->transform );
 
     obj->libSurfaces = malloc( obj->surfaceCount * sizeof( struct SM64Surface ));
     memcpy( obj->libSurfaces, surfaceObject->surfaces, obj->surfaceCount * sizeof( struct SM64Surface ));
 
-    obj->engineSurfaces = malloc( obj->surfaceCount * sizeof( struct Surface ));
+    obj->engineSurfaces = malloc( obj->surfaceCount * sizeof( struct SM64SurfaceCollisionData ));
     for( int i = 0; i < obj->surfaceCount; ++i )
         engine_surface_from_lib_surface( &obj->engineSurfaces[i], &obj->libSurfaces[i], obj->transform );
 
@@ -314,7 +314,7 @@ void surface_object_update_transform( uint32_t objId, const struct SM64ObjectTra
     }
 }
 
-struct SurfaceObjectTransform *surfaces_object_get_transform_ptr( uint32_t objId )
+struct SM64SurfaceObjectTransform *surfaces_object_get_transform_ptr( uint32_t objId )
 {
     if( objId >= s_surface_object_count || s_surface_object_list[objId].surfaceCount == 0 )
         return NULL;

@@ -527,9 +527,9 @@ u32 mario_get_terrain_sound_addend(struct MarioState *m) {
 /**
  * Collides with walls and returns the most recent wall.
  */
-struct Surface *resolve_and_return_wall_collisions(Vec3f pos, f32 offset, f32 radius) {
-    struct WallCollisionData collisionData;
-    struct Surface *wall = NULL;
+struct SM64SurfaceCollisionData *resolve_and_return_wall_collisions(Vec3f pos, f32 offset, f32 radius) {
+    struct SM64WallCollisionData collisionData;
+    struct SM64SurfaceCollisionData *wall = NULL;
 
     collisionData.x = pos[0];
     collisionData.y = pos[1];
@@ -553,7 +553,7 @@ struct Surface *resolve_and_return_wall_collisions(Vec3f pos, f32 offset, f32 ra
 /**
  * Finds the ceiling from a vec3f horizontally and a height (with 80 vertical buffer).
  */
-f32 vec3f_find_ceil(Vec3f pos, f32 height, struct Surface **ceil) {
+f32 vec3f_find_ceil(Vec3f pos, f32 height, struct SM64SurfaceCollisionData **ceil) {
     UNUSED f32 unused;
 
     return find_ceil(pos[0], height + 80.0f, pos[2], ceil);
@@ -681,7 +681,7 @@ s32 mario_floor_is_steep(struct MarioState *m) {
  * Finds the floor height relative from Mario given polar displacement.
  */
 f32 find_floor_height_relative_polar(struct MarioState *m, s16 angleFromMario, f32 distFromMario) {
-    struct Surface *floor;
+    struct SM64SurfaceCollisionData *floor;
     f32 floorY;
 
     f32 y = sins(m->faceAngle[1] + angleFromMario) * distFromMario;
@@ -696,7 +696,7 @@ f32 find_floor_height_relative_polar(struct MarioState *m, s16 angleFromMario, f
  * Returns the slope of the floor based off points around Mario.
  */
 s16 find_floor_slope(struct MarioState *m, s16 yawOffset) {
-    struct Surface *floor;
+    struct SM64SurfaceCollisionData *floor;
     f32 forwardFloorY, backwardFloorY;
     f32 forwardYDelta, backwardYDelta;
     s16 result;
