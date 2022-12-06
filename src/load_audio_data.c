@@ -4,6 +4,8 @@
 #include "decomp/audio/load.h"
 #include "decomp/audio/load_dat.h"
 
+bool is_audio_initialized = false;
+
 extern void load_audio_banks( uint8_t *rom ) {
     uint8_t *rom2 = malloc( 0x800000 );
 
@@ -20,4 +22,6 @@ extern void load_audio_banks( uint8_t *rom ) {
     audio_init();  
     sound_init();
     sound_reset( 0 );
+    
+    is_audio_initialized = true;
 }
