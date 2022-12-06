@@ -144,15 +144,15 @@ SM64_LIB_FN void sm64_audio_init( uint8_t *rom ) {
 #define SAMPLES_LOW 528
 
 extern SM64_LIB_FN uint32_t sm64_audio_tick( uint32_t numQueuedSamples, uint32_t numDesiredSamples, int16_t *audio_buffer ) {
-	update_game_sound();
+    update_game_sound();
 	
     u32 num_audio_samples = numQueuedSamples < numDesiredSamples ? SAMPLES_HIGH : SAMPLES_LOW;
     for (int i = 0; i < 2; i++)
-	{
-        create_next_audio_buffer(audio_buffer + i * (2 * num_audio_samples), num_audio_samples);
+    {
+        create_next_audio_buffer( audio_buffer + i * ( 2 * num_audio_samples ), num_audio_samples );
     }
-	
-	return num_audio_samples;
+
+    return num_audio_samples;
 }
 
 SM64_LIB_FN void sm64_static_surfaces_load( const struct SM64Surface *surfaceArray, uint32_t numSurfaces )

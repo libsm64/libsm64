@@ -6,12 +6,12 @@
 SM64PlaySoundFunctionPtr g_play_sound_func = NULL;
 
 extern void play_sound( uint32_t soundBits, f32 *pos ) {
-	DEBUG_PRINT("$ play_sound(%d) request %d; pos %f %f %f\n", soundBits,sSoundRequestCount,pos[0],pos[1],pos[2]);
-	sSoundRequests[sSoundRequestCount].soundBits = soundBits;
-	sSoundRequests[sSoundRequestCount].position = pos;
-	sSoundRequestCount++;
-	
-  if ( g_play_sound_func ) {
-    g_play_sound_func(soundBits, pos);
-  }
+    DEBUG_PRINT("$ play_sound(%d) request %d; pos %f %f %f\n", soundBits,sSoundRequestCount,pos[0],pos[1],pos[2]);
+    sSoundRequests[sSoundRequestCount].soundBits = soundBits;
+    sSoundRequests[sSoundRequestCount].position = pos;
+    sSoundRequestCount++;
+
+    if ( g_play_sound_func ) {
+        g_play_sound_func(soundBits, pos);
+    }
 }
