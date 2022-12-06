@@ -1,0 +1,61 @@
+name: Build libsm64
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install SDL2 and GLEW
+        if: runner.os == 'Linux'
+        run: |
+          sudo add-apt-repository -y "deb http://archive.ubuntu.com/ubuntu `lsb_release -sc` main universe restricted multiverse"
+          sudo apt-get update -y -qq
+          sudo apt-get install libsdl2-dev libglew-dev
+
+      - name: Linux - Build Base Binary
+        if: runner.os == 'Linux'
+        run: |
+          make lib
+          make test
+
+      - name: Linux - Upload Build
+        uses: actions/upload-artifact@v3
+        if: runner.os == 'Linux'
+        with:
+          name: libsm64_linux
+          path: |
+            ./README.md
+            ./dist
+            ./build
+
+  #Release:
+  #  name: "Snapshot Release"
+  #  runs-on: "ubuntu-latest"
+  #  needs: Build
+
+  #  steps:
+  #    - name: Download artifacts
+  #      uses: actions/download-artifact@v3
+
+  #    - name: Create a Release
+  #      uses: "marvinpinto/action-automatic-releases@latest"
+  #      with:
+  #        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+  #        automatic_release_tag: "latest"
+  #        prerelease: true
+  #        title: "Snapshot Build"
+  #        files: |
+  #         ./README.md
+  #         ./dist
+  #         ./build

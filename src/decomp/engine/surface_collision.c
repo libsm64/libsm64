@@ -6,10 +6,10 @@
 /**
  * Iterate through the list of ceilings and find the first ceiling over a given point.
  */
-static struct Surface *find_ceil_from_list( s32 x, s32 y, s32 z, f32 *pheight) {
-    register struct Surface *surf;
+static struct SM64SurfaceCollisionData *find_ceil_from_list( s32 x, s32 y, s32 z, f32 *pheight) {
+    register struct SM64SurfaceCollisionData *surf;
     register s32 x1, z1, x2, z2, x3, z3;
-    struct Surface *ceil = NULL;
+    struct SM64SurfaceCollisionData *ceil = NULL;
 
     ceil = NULL;
 
@@ -81,13 +81,13 @@ static struct Surface *find_ceil_from_list( s32 x, s32 y, s32 z, f32 *pheight) {
 /**
  * Iterate through the list of floors and find the first floor under a given point.
  */
-static struct Surface *find_floor_from_list( s32 x, s32 y, s32 z, f32 *pheight) {
-    register struct Surface *surf;
+static struct SM64SurfaceCollisionData *find_floor_from_list( s32 x, s32 y, s32 z, f32 *pheight) {
+    register struct SM64SurfaceCollisionData *surf;
     register s32 x1, z1, x2, z2, x3, z3;
     f32 nx, ny, nz;
     f32 oo;
     f32 height;
-    struct Surface *floor = NULL;
+    struct SM64SurfaceCollisionData *floor = NULL;
 
     uint32_t groupCount = loaded_surface_iter_group_count();
     for( int i = 0; i < groupCount; ++i ) {
@@ -148,8 +148,8 @@ static struct Surface *find_floor_from_list( s32 x, s32 y, s32 z, f32 *pheight) 
     return floor;
 }
 
-static s32 find_wall_collisions_from_list( struct WallCollisionData *data) {
-    register struct Surface *surf;
+static s32 find_wall_collisions_from_list( struct SM64WallCollisionData *data) {
+    register struct SM64SurfaceCollisionData *surf;
     register f32 offset;
     register f32 radius = data->radius;
     register f32 x = data->x;
@@ -270,7 +270,7 @@ static s32 find_wall_collisions_from_list( struct WallCollisionData *data) {
 
 s32 f32_find_wall_collision(f32 *xPtr, f32 *yPtr, f32 *zPtr, f32 offsetY, f32 radius)
 {
-    struct WallCollisionData collision;
+    struct SM64WallCollisionData collision;
     s32 numCollisions = 0;
 
     collision.offsetY = offsetY;
@@ -291,7 +291,7 @@ s32 f32_find_wall_collision(f32 *xPtr, f32 *yPtr, f32 *zPtr, f32 offsetY, f32 ra
     return numCollisions;
 }
 
-s32 find_wall_collisions(struct WallCollisionData *colData)
+s32 find_wall_collisions(struct SM64WallCollisionData *colData)
 {
     s32 numCollisions = 0;
     colData->numWalls = 0;
@@ -310,18 +310,18 @@ s32 find_wall_collisions(struct WallCollisionData *colData)
     return numCollisions;
 }
 
-f32 find_ceil(f32 posX, f32 posY, f32 posZ, struct Surface **pceil)
+f32 find_ceil(f32 posX, f32 posY, f32 posZ, struct SM64SurfaceCollisionData **pceil)
 {
     f32 height = CELL_HEIGHT_LIMIT;
 	*pceil = find_ceil_from_list( posX, posY, posZ, &height );
 	return height;
 }
 
-struct FloorGeometry sFloorGeo;
+struct SM64FloorCollisionData sFloorGeo;
 
-f32 find_floor_height_and_data(f32 xPos, f32 yPos, f32 zPos, struct FloorGeometry **floorGeo)
+f32 find_floor_height_and_data(f32 xPos, f32 yPos, f32 zPos, struct SM64FloorCollisionData **floorGeo)
 {
-    struct Surface *floor;
+    struct SM64SurfaceCollisionData *floor;
     f32 floorHeight = find_floor(xPos, yPos, zPos, &floor);
 
     *floorGeo = NULL;
@@ -344,7 +344,7 @@ f32 find_floor_height(f32 x, f32 y, f32 z)
 	return height;
 }
 
-f32 find_floor(f32 xPos, f32 yPos, f32 zPos, struct Surface **pfloor)
+f32 find_floor(f32 xPos, f32 yPos, f32 zPos, struct SM64SurfaceCollisionData **pfloor)
 {
     f32 height = FLOOR_LOWER_LIMIT;
 	*pfloor = find_floor_from_list( xPos, yPos, zPos, &height );

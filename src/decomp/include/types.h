@@ -85,21 +85,6 @@ struct VblankHandler
 #define ANIM_FLAG_6          (1 << 6) // 0x40
 #define ANIM_FLAG_7          (1 << 7) // 0x80
 
-// Added by libsm64
-struct SurfaceObjectTransform
-{
-    float aPosX, aPosY, aPosZ;
-    float aVelX, aVelY, aVelZ;
-
-    s16 aFaceAnglePitch;
-    s16 aFaceAngleYaw;
-    s16 aFaceAngleRoll;
-
-    s16 aAngleVelPitch;
-    s16 aAngleVelYaw;
-    s16 aAngleVelRoll;
-};
-
 struct Animation {
     /*0x00*/ s16 flags;
     /*0x02*/ s16 animYTransDivisor;
@@ -183,7 +168,7 @@ struct Object
         struct Waypoint *asWaypoint[0x50];
         struct ChainSegment *asChainSegment[0x50];
         struct Object *asObject[0x50];
-        struct Surface *asSurface[0x50];
+        struct SM64SurfaceCollisionData *asSurface[0x50];
         void *asVoidPtr[0x50];
         const void *asConstVoidPtr[0x50];
 #endif
@@ -196,7 +181,7 @@ struct Object
         struct Waypoint *asWaypoint[0x50];
         struct ChainSegment *asChainSegment[0x50];
         struct Object *asObject[0x50];
-        struct Surface *asSurface[0x50];
+        struct SM64SurfaceCollisionData *asSurface[0x50];
         void *asVoidPtr[0x50];
         const void *asConstVoidPtr[0x50];
     } ptrData;
@@ -214,7 +199,7 @@ struct Object
     /*0x208*/ f32 hitboxDownOffset;
     /*0x20C*/ const BehaviorScript *behavior;
     /*0x210*/ u32 unused2;
-    /*0x214*/ struct SurfaceObjectTransform *platform; // libsm64: type change from Object*
+    /*0x214*/ struct SM64SurfaceObjectTransform *platform; // libsm64: type change from Object*
     /*0x218*/ void *collisionData;
     /*0x21C*/ Mat4 transform;
     /*0x25C*/ void *respawnInfo;
@@ -237,30 +222,6 @@ struct Waypoint
 {
     s16 flags;
     Vec3s pos;
-};
-
-struct Surface
-{
-    s16 type;
-    s16 force;
-    s8 flags;
-    s8 room;
-    s32 lowerY; // libsm64: 32 bit
-    s32 upperY; // libsm64: 32 bit
-    Vec3i vertex1; // libsm64: 32 bit
-    Vec3i vertex2; // libsm64: 32 bit
-    Vec3i vertex3; // libsm64: 32 bit
-    struct {
-        f32 x;
-        f32 y;
-        f32 z;
-    } normal;
-    f32 originOffset;
-    //struct Object *object;
-    
-    u8 isValid; // libsm64: added field
-    struct SurfaceObjectTransform *transform; // libsm64: added field
-    u16 terrain; // libsm64: added field
 };
 
 struct MarioBodyState
@@ -328,9 +289,9 @@ struct MarioState
     /*0x54*/ f32 forwardVel;
     /*0x58*/ f32 slideVelX;
     /*0x5C*/ f32 slideVelZ;
-    /*0x60*/ struct Surface *wall;
-    /*0x64*/ struct Surface *ceil;
-    /*0x68*/ struct Surface *floor;
+    /*0x60*/ struct SM64SurfaceCollisionData *wall;
+    /*0x64*/ struct SM64SurfaceCollisionData *ceil;
+    /*0x68*/ struct SM64SurfaceCollisionData *floor;
     /*0x6C*/ f32 ceilHeight;
     /*0x70*/ f32 floorHeight;
     /*0x74*/ s16 floorAngle;
