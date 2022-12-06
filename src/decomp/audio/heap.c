@@ -1,6 +1,5 @@
 #include <ultra64.h>
 
-#include "../../debug_print.h"
 #include "heap.h"
 #include "data.h"
 #include "load.h"
@@ -253,7 +252,6 @@ void discard_sequence(s32 seqId) {
 }
 
 void *soundAlloc(struct SoundAllocPool *pool, u32 size) {
-	DEBUG_PRINT("soundAlloc()");
     u8 *start;
     s32 last;
     s32 i;

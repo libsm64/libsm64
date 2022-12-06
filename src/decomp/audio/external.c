@@ -658,11 +658,7 @@ extern void func_sh_802F64C8(void);
  * Called from threads: thread5_game_loop
  */
 void maybe_tick_game_sound(void) {
-	DEBUG_PRINT("maybe_tick_game_sound()");
-	
-	DEBUG_PRINT("- if game loop ticked is false...");
     if (sGameLoopTicked != 0) {
-		DEBUG_PRINT("- updating game sound");
         update_game_sound();
         sGameLoopTicked = 0;
     }
@@ -793,17 +789,14 @@ struct SPTask *create_next_audio_frame_task(void) {
     return NULL;
 }
 void create_next_audio_buffer(s16 *samples, u32 num_samples) {
-	DEBUG_PRINT("create_next_audio_buffer()");
     gAudioFrameCount++;
     if (sGameLoopTicked != 0) {
         update_game_sound();
         sGameLoopTicked = 0;
     }
     s32 writtenCmds;
-	DEBUG_PRINT("- synthesis execute");
     synthesis_execute(gAudioCmdBuffers[0], &writtenCmds, samples, num_samples);
     gAudioRandom = ((gAudioRandom + gAudioFrameCount) * gAudioFrameCount);
-	DEBUG_PRINT("- decrease sample dma ttls");
     decrease_sample_dma_ttls();
 }
 #endif
@@ -813,7 +806,6 @@ void create_next_audio_buffer(s16 *samples, u32 num_samples) {
  * Called from threads: thread4_sound, thread5_game_loop (EU only)
  */
 static void process_sound_request(u32 bits, f32 *pos) {
-	DEBUG_PRINT("# process_sound_request %d\n", bits);
     u8 bank;
     u8 soundIndex;
     u8 counter = 0;
@@ -2630,7 +2622,6 @@ void play_toads_jingle(void) {
  * Called from threads: thread5_game_loop
  */
 void sound_reset(u8 presetId) {
-	DEBUG_PRINT("sound_reset()");
 #ifndef VERSION_JP
     if (presetId >= 8) {
         presetId = 0;
@@ -2638,35 +2629,26 @@ void sound_reset(u8 presetId) {
     }
 #endif
     sGameLoopTicked = 0;
-	DEBUG_PRINT("- disable all sequence players");
     disable_all_sequence_players();
-	DEBUG_PRINT("- sound init");
     sound_init();
 #ifdef VERSION_SH
     func_802ad74c(0xF2000000, 0);
 #endif
 #if defined(VERSION_JP) || defined(VERSION_US)
-	DEBUG_PRINT("- audio reset session");
     audio_reset_session(&gAudioSessionPresets[presetId]);
 #else
     audio_reset_session_eu(presetId);
 #endif
-	DEBUG_PRINT("- os write back dcache all");
     osWritebackDCacheAll();
     if (presetId != 7) {
-		DEBUG_PRINT("- preloading solve puzzle sequence");
         preload_sequence(SEQ_EVENT_SOLVE_PUZZLE, PRELOAD_BANKS | PRELOAD_SEQUENCE);
-		DEBUG_PRINT("- preloading peach message");
         preload_sequence(SEQ_EVENT_PEACH_MESSAGE, PRELOAD_BANKS | PRELOAD_SEQUENCE);
-		DEBUG_PRINT("- preloading star spawn");
         preload_sequence(SEQ_EVENT_CUTSCENE_STAR_SPAWN, PRELOAD_BANKS | PRELOAD_SEQUENCE);
     }
-	DEBUG_PRINT("- playing sfx sequence");
     seq_player_play_sequence(SEQ_PLAYER_SFX, SEQ_SOUND_PLAYER, 0);
     D_80332108 = (D_80332108 & 0xf0) + presetId;
     gSoundMode = D_80332108 >> 4;
     sHasStartedFadeOut = FALSE;
-	DEBUG_PRINT("- done resetting sound");
 }
 
 /**

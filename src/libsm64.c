@@ -144,12 +144,8 @@ SM64_LIB_FN void sm64_audio_init( uint8_t *rom ) {
 #define SAMPLES_LOW 528
 
 extern SM64_LIB_FN uint32_t sm64_audio_tick( uint32_t numQueuedSamples, uint32_t numDesiredSamples, int16_t *audio_buffer ) {
-	DEBUG_PRINT("sm64_tick_audio()");
-	
-	DEBUG_PRINT("- update game sound");
 	update_game_sound();
 	
-	DEBUG_PRINT("- create next audio buffer");
     u32 num_audio_samples = numQueuedSamples < numDesiredSamples ? SAMPLES_HIGH : SAMPLES_LOW;
     for (int i = 0; i < 2; i++)
 	{
