@@ -1,4 +1,7 @@
 #pragma once
+
+#include <stdint.h>
+
 #include "../pc/libaudio_internal.h"
 
 #define read_u16_le(p) ((uint8_t*)p)[1] * 0x100u + ((uint8_t*)p)[0]
