@@ -7,9 +7,9 @@ else
   CC      := cc
   LDFLAGS := -lm -shared
 endif
-CFLAGS := -g -Wall -fPIC -DSM64_LIB_EXPORT -DGBI_FLOATS
+CFLAGS := -g -Wall -fPIC -DSM64_LIB_EXPORT -DGBI_FLOATS -DVERSION_US -DNO_SEGMENTED_MEMORY
 
-SRC_DIRS  := src src/decomp src/decomp/engine src/decomp/game src/decomp/mario src/decomp/tools
+SRC_DIRS  := src src/decomp src/decomp/engine src/decomp/include/PR src/decomp/game src/decomp/pc src/decomp/pc/audio src/decomp/mario src/decomp/tools src/decomp/audio
 BUILD_DIR := build
 DIST_DIR  := dist
 ALL_DIRS  := $(addprefix $(BUILD_DIR)/,$(SRC_DIRS))
@@ -42,7 +42,7 @@ src/decomp/mario/geo.inc.c: ./import-mario-geo.py
 
 $(BUILD_DIR)/%.o: %.c $(IMPORTED)
 	@$(CC) $(CFLAGS) -MM -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
-	$(CC) -c $(CFLAGS) -o $@ $<
+	$(CC) -c $(CFLAGS) -I src/decomp/include -o $@ $<
 
 $(LIB_FILE): $(O_FILES)
 	$(CC) $(LDFLAGS) -o $@ $^

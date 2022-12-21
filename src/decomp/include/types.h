@@ -4,7 +4,7 @@
 // This file contains various data types used in Super Mario 64 that don't yet
 // have an appropriate header.
 
-// #include <ultra64.h>
+#include "ultra64.h"
 #include "macros.h"
 #include "PR/ultratypes.h"
 
@@ -62,19 +62,19 @@ enum SpTaskState {
     SPTASK_STATE_FINISHED_DP
 };
 
-// struct SPTask
-// {
-//     /*0x00*/ OSTask task;
-//     /*0x40*/ OSMesgQueue *msgqueue;
-//     /*0x44*/ OSMesg msg;
-//     /*0x48*/ enum SpTaskState state;
-// }; // size = 0x4C, align = 0x8
-// 
-// struct VblankHandler
-// {
-//     OSMesgQueue *queue;
-//     OSMesg msg;
-// };
+struct SPTask
+{
+    /*0x00*/ OSTask task;
+    /*0x40*/ OSMesgQueue *msgqueue;
+    /*0x44*/ OSMesg msg;
+    /*0x48*/ enum SpTaskState state;
+}; // size = 0x4C, align = 0x8
+
+struct VblankHandler
+{
+    OSMesgQueue *queue;
+    OSMesg msg;
+};
 
 #define ANIM_FLAG_NOLOOP     (1 << 0) // 0x01
 #define ANIM_FLAG_FORWARD    (1 << 1) // 0x02

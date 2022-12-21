@@ -10,6 +10,6 @@
 #define IS_BIG_ENDIAN (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
 #endif
 
-#define DOUBLE_SIZE_ON_64_BIT(size) ((size) * (sizeof(void *) / 4))
+#define DOUBLE_SIZE_ON_64_BIT(size) ((size) * 2)
 
 #endif // PLATFORM_INFO_H
