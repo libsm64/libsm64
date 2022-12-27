@@ -228,6 +228,10 @@ SM64_LIB_FN void sm64_mario_tick( int32_t marioId, const struct SM64MarioInputs 
     update_button( inputs->buttonB, B_BUTTON );
     update_button( inputs->buttonZ, Z_TRIG );
 
+    gMarioState->marioObj->header.gfx.cameraToObject[0] = 0;
+    gMarioState->marioObj->header.gfx.cameraToObject[1] = 0;
+    gMarioState->marioObj->header.gfx.cameraToObject[2] = 0;
+
     gMarioState->area->camera->yaw = atan2s( inputs->camLookZ, inputs->camLookX );
 
     gController.stickX = -64.0f * inputs->stickX;
