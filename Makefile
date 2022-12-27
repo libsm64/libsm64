@@ -31,6 +31,7 @@ TEST_OBJS := $(foreach file,$(TEST_SRCS),$(BUILD_DIR)/$(file:.c=.o))
 
 ifeq ($(OS),Windows_NT)
   LIB_FILE := $(DIST_DIR)/sm64.dll
+  TEST_FILE := $(DIST_DIR)/run-test.exe
 endif
 
 DUMMY != mkdir -p $(ALL_DIRS) build/test src/decomp/mario $(DIST_DIR)/include
@@ -61,8 +62,11 @@ $(BUILD_DIR)/test/%.o: test/%.c
 	$(CC) -c $(CFLAGS) -o $@ $<
 
 $(TEST_FILE): $(LIB_FILE) $(TEST_OBJS)
+ifeq ($(OS),Windows_NT)
+	$(CC) -o $@ $(TEST_OBJS) $(LIB_FILE) -lglew32 -lopengl32 -lSDL2 -lSDL2main -lm
+else
 	$(CC) -o $@ $(TEST_OBJS) $(LIB_FILE) -lGLEW -lGL -lSDL2 -lSDL2main -lm
-
+endif
 
 lib: $(LIB_FILE) $(LIB_H_FILE)
 
