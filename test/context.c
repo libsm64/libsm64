@@ -8,16 +8,15 @@ static SDL_GameController *s_controller;
 static int s_windowWidth;
 static int s_windowHeight;
 
-void context_init( const char *title, int width, int height )
+void context_init( const char *title, int width, int height, int major, int minor )
 {
-    if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_JOYSTICK ) < 0 ) goto err;
+    if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_AUDIO ) < 0 ) goto err;
 
-    SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1 );
-    SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, 4 );
-    SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 4 );
-    SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 1 );
-    SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE );
-    SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
+    int profile = (major < 3) ? SDL_GL_CONTEXT_PROFILE_COMPATIBILITY : SDL_GL_CONTEXT_PROFILE_CORE;
+
+    SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, major );
+    SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, minor );
+    SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK, profile );
     SDL_GL_SetSwapInterval( 1 );
 
     s_windowWidth = width;
