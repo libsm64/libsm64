@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <sys/time.h>
 
+#include "../src/libsm64.h"
 #include "context.h"
 
 static SDL_AudioDeviceID dev;
