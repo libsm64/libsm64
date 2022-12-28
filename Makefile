@@ -7,7 +7,7 @@ else
   CC      := cc
   LDFLAGS := -lm -shared
 endif
-CFLAGS := -g -Wall -fPIC -DSM64_LIB_EXPORT -DGBI_FLOATS -DVERSION_US -DNO_SEGMENTED_MEMORY
+CFLAGS := -g -Wall -Wno-unused-function -fPIC -DSM64_LIB_EXPORT -DGBI_FLOATS -DVERSION_US -DNO_SEGMENTED_MEMORY
 
 SRC_DIRS  := src src/decomp src/decomp/engine src/decomp/include/PR src/decomp/game src/decomp/pc src/decomp/pc/audio src/decomp/mario src/decomp/tools src/decomp/audio
 BUILD_DIR := build
@@ -26,7 +26,7 @@ C_FILES   := $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.c)) $(C_IMPORTED)
 O_FILES   := $(foreach file,$(C_FILES),$(BUILD_DIR)/$(file:.c=.o))
 DEP_FILES := $(O_FILES:.o=.d)
 
-TEST_SRCS := test/main.c test/context.c test/level.c
+TEST_SRCS := test/main.c test/context.c test/level.c test/audio.c test/gl33core/gl33core_renderer.c test/gl20/gl20_renderer.c
 TEST_OBJS := $(foreach file,$(TEST_SRCS),$(BUILD_DIR)/$(file:.c=.o))
 
 ifeq ($(OS),Windows_NT)
@@ -34,7 +34,7 @@ ifeq ($(OS),Windows_NT)
   TEST_FILE := $(DIST_DIR)/run-test.exe
 endif
 
-DUMMY != mkdir -p $(ALL_DIRS) build/test src/decomp/mario $(DIST_DIR)/include
+DUMMY != mkdir -p $(ALL_DIRS) build/test build/test/gl33core build/test/gl20 src/decomp/mario $(DIST_DIR)/include
 
 
 $(filter-out src/decomp/mario/geo.inc.c,$(IMPORTED)): src/decomp/mario/geo.inc.c
@@ -73,7 +73,11 @@ lib: $(LIB_FILE) $(LIB_H_FILE)
 test: $(TEST_FILE) $(LIB_H_FILE)
 
 run: test
+ifeq ($(OS),Windows_NT)
+	cd dist && ./run-test
+else
 	./$(TEST_FILE)
+endif
 
 clean:
 	rm -rf $(BUILD_DIR) $(DIST_DIR) $(TEST_FILE)
