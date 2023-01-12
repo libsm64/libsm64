@@ -96,7 +96,7 @@ int main( void )
         major = 2; minor = 0;
         renderer = &gl20_renderer;
     }
-	else
+    else
     {
         printf("Launching with OpenGL 3.3 Core\n\n");
         major = 3; minor = 3;
@@ -108,9 +108,9 @@ int main( void )
     if (selection == 2)
     {
         printf("Launching in 800x600\n");
-		WINDOW_WIDTH = 800; WINDOW_HEIGHT = 600;
+        WINDOW_WIDTH = 800; WINDOW_HEIGHT = 600;
     }
-	else
+    else
         printf("Launching in 1280x600\n");
 
     context_init( "libsm64", WINDOW_WIDTH, WINDOW_HEIGHT, major, minor );
@@ -139,7 +139,7 @@ int main( void )
         uint64_t start = SDL_GetPerformanceCounter();
 
         SDL_GameController *controller = context_get_controller();
-		float x_axis, y_axis, x0_axis;
+        float x_axis, y_axis, x0_axis;
 
         if (!controller) // keyboard
         {
@@ -147,57 +147,57 @@ int main( void )
 
             float dir;
             float spd = 0;
-			if (state[SDL_SCANCODE_UP] && state[SDL_SCANCODE_RIGHT])
-			{
-				dir = -M_PI * 0.25f;
-				spd = 1;
-			}
-			else if (state[SDL_SCANCODE_UP] && state[SDL_SCANCODE_LEFT])
-			{
-				dir = -M_PI * 0.75f;
-				spd = 1;
-			}
-			else if (state[SDL_SCANCODE_DOWN] && state[SDL_SCANCODE_RIGHT])
-			{
-				dir = M_PI * 0.25f;
-				spd = 1;
-			}
-			else if (state[SDL_SCANCODE_DOWN] && state[SDL_SCANCODE_LEFT])
-			{
-				dir = M_PI * 0.75f;
-				spd = 1;
-			}
-			else if (state[SDL_SCANCODE_UP])
-			{
-				dir = -M_PI * 0.5f;
-				spd = 1;
-			}
-			else if (state[SDL_SCANCODE_DOWN])
-			{
-				dir = M_PI * 0.5f;
-				spd = 1;
-			}
-			else if (state[SDL_SCANCODE_LEFT])
-			{
-				dir = M_PI;
-				spd = 1;
-			}
-			else if (state[SDL_SCANCODE_RIGHT])
-			{
-				dir = 0;
-				spd = 1;
-			}
+            if (state[SDL_SCANCODE_UP] && state[SDL_SCANCODE_RIGHT])
+            {
+                dir = -M_PI * 0.25f;
+                spd = 1;
+            }
+            else if (state[SDL_SCANCODE_UP] && state[SDL_SCANCODE_LEFT])
+            {
+                dir = -M_PI * 0.75f;
+                spd = 1;
+            }
+            else if (state[SDL_SCANCODE_DOWN] && state[SDL_SCANCODE_RIGHT])
+            {
+                dir = M_PI * 0.25f;
+                spd = 1;
+            }
+            else if (state[SDL_SCANCODE_DOWN] && state[SDL_SCANCODE_LEFT])
+            {
+                dir = M_PI * 0.75f;
+                spd = 1;
+            }
+            else if (state[SDL_SCANCODE_UP])
+            {
+                dir = -M_PI * 0.5f;
+                spd = 1;
+            }
+            else if (state[SDL_SCANCODE_DOWN])
+            {
+                dir = M_PI * 0.5f;
+                spd = 1;
+            }
+            else if (state[SDL_SCANCODE_LEFT])
+            {
+                dir = M_PI;
+                spd = 1;
+            }
+            else if (state[SDL_SCANCODE_RIGHT])
+            {
+                dir = 0;
+                spd = 1;
+            }
 
-			x_axis = cosf(dir) * spd;
-			y_axis = sinf(dir) * spd;
+            x_axis = cosf(dir) * spd;
+            y_axis = sinf(dir) * spd;
             x0_axis = state[SDL_SCANCODE_LSHIFT] ? 1 : state[SDL_SCANCODE_RSHIFT] ? -1 : 0;
 
             marioInputs.buttonA = state[SDL_SCANCODE_X];
             marioInputs.buttonB = state[SDL_SCANCODE_C];
             marioInputs.buttonZ = state[SDL_SCANCODE_Z];
         }
-		else
-		{
+        else
+        {
             x_axis = read_axis( SDL_GameControllerGetAxis( controller, SDL_CONTROLLER_AXIS_LEFTX ));
             y_axis = read_axis( SDL_GameControllerGetAxis( controller, SDL_CONTROLLER_AXIS_LEFTY ));
             x0_axis = read_axis( SDL_GameControllerGetAxis( controller, SDL_CONTROLLER_AXIS_RIGHTX ));
@@ -205,7 +205,7 @@ int main( void )
             marioInputs.buttonA = SDL_GameControllerGetButton( controller, SDL_CONTROLLER_BUTTON_A );
             marioInputs.buttonB = SDL_GameControllerGetButton( controller, SDL_CONTROLLER_BUTTON_X );
             marioInputs.buttonZ = SDL_GameControllerGetButton( controller, SDL_CONTROLLER_BUTTON_LEFTSHOULDER );
-		}
+        }
 
         cameraRot += x0_axis * dt * 2;
         cameraPos[0] = marioState.position[0] + 1000.0f * cosf( cameraRot );
@@ -235,8 +235,8 @@ int main( void )
         renderer->draw( &renderState, cameraPos, &marioState, &marioGeometry );
 
         uint64_t end = SDL_GetPerformanceCounter();
-		dt = (float)(end-start) / (float)SDL_GetPerformanceFrequency();
-		tick += dt;
+        dt = (float)(end-start) / (float)SDL_GetPerformanceFrequency();
+        tick += dt;
     }
     while( context_flip_frame_poll_events() );
 
