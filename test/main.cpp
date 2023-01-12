@@ -9,15 +9,17 @@
 #include <unistd.h>
 #include <pthread.h>
 
+extern "C" {
 #include "../src/libsm64.h"
-
 #define SDL_MAIN_HANDLED
-#include "audio.h"
 #include "level.h"
 #include "context.h"
 #include "renderer.h"
 #include "gl33core/gl33core_renderer.h"
 #include "gl20/gl20_renderer.h"
+}
+
+#include "audio.h"
 
 int WINDOW_WIDTH = 1280;
 int WINDOW_HEIGHT = 800;
@@ -31,7 +33,7 @@ uint8_t *utils_read_file_alloc( const char *path, size_t *fileLength )
     fseek( f, 0, SEEK_END );
     size_t length = (size_t)ftell( f );
     rewind( f );
-    uint8_t *buffer = malloc( length + 1 );
+    uint8_t *buffer = (uint8_t*)malloc( length + 1 );
     fread( buffer, 1, length, f );
     buffer[length] = 0;
     fclose( f );
@@ -68,7 +70,7 @@ int main( void )
         return 1;
     }
 
-    uint8_t *texture = malloc( 4 * SM64_TEXTURE_WIDTH * SM64_TEXTURE_HEIGHT );
+    uint8_t *texture = (uint8_t*)malloc( 4 * SM64_TEXTURE_WIDTH * SM64_TEXTURE_HEIGHT );
 
     sm64_global_terminate();
     sm64_global_init( rom, texture );
@@ -122,10 +124,10 @@ int main( void )
     float lastPos[3], currPos[3];
     float lastGeoPos[9 * SM64_GEO_MAX_TRIANGLES], currGeoPos[9 * SM64_GEO_MAX_TRIANGLES];
 
-    marioGeometry.position = malloc( sizeof(float) * 9 * SM64_GEO_MAX_TRIANGLES );
-    marioGeometry.color    = malloc( sizeof(float) * 9 * SM64_GEO_MAX_TRIANGLES );
-    marioGeometry.normal   = malloc( sizeof(float) * 9 * SM64_GEO_MAX_TRIANGLES );
-    marioGeometry.uv       = malloc( sizeof(float) * 6 * SM64_GEO_MAX_TRIANGLES );
+    marioGeometry.position = (float*)malloc( sizeof(float) * 9 * SM64_GEO_MAX_TRIANGLES );
+    marioGeometry.color    = (float*)malloc( sizeof(float) * 9 * SM64_GEO_MAX_TRIANGLES );
+    marioGeometry.normal   = (float*)malloc( sizeof(float) * 9 * SM64_GEO_MAX_TRIANGLES );
+    marioGeometry.uv       = (float*)malloc( sizeof(float) * 6 * SM64_GEO_MAX_TRIANGLES );
     marioGeometry.numTrianglesUsed = 0;
 
     float tick = 0, dt = 0;
@@ -200,9 +202,9 @@ int main( void )
             y_axis = read_axis( SDL_GameControllerGetAxis( controller, SDL_CONTROLLER_AXIS_LEFTY ));
             x0_axis = read_axis( SDL_GameControllerGetAxis( controller, SDL_CONTROLLER_AXIS_RIGHTX ));
 
-            marioInputs.buttonA = SDL_GameControllerGetButton( controller, 0 );
-            marioInputs.buttonB = SDL_GameControllerGetButton( controller, 2 );
-            marioInputs.buttonZ = SDL_GameControllerGetButton( controller, 9 );
+            marioInputs.buttonA = SDL_GameControllerGetButton( controller, (SDL_GameControllerButton)0 );
+            marioInputs.buttonB = SDL_GameControllerGetButton( controller, (SDL_GameControllerButton)2 );
+            marioInputs.buttonZ = SDL_GameControllerGetButton( controller, (SDL_GameControllerButton)9 );
 		}
 
         cameraRot += x0_axis * dt * 2;

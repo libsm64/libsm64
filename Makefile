@@ -2,9 +2,11 @@ default: lib
 
 ifdef LIBSM64_MUSL
   CC      := musl-gcc
+  CXX     := musl-g++
   LDFLAGS := -lm -static -shared
 else
   CC      := cc
+  CXX     := c++
   LDFLAGS := -lm -shared
 endif
 CFLAGS := -g -Wall -Wno-unused-function -fPIC -DSM64_LIB_EXPORT -DGBI_FLOATS -DVERSION_US -DNO_SEGMENTED_MEMORY
@@ -26,8 +28,9 @@ C_FILES   := $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.c)) $(C_IMPORTED)
 O_FILES   := $(foreach file,$(C_FILES),$(BUILD_DIR)/$(file:.c=.o))
 DEP_FILES := $(O_FILES:.o=.d)
 
-TEST_SRCS := test/main.c test/context.c test/level.c test/audio.c test/gl33core/gl33core_renderer.c test/gl20/gl20_renderer.c
-TEST_OBJS := $(foreach file,$(TEST_SRCS),$(BUILD_DIR)/$(file:.c=.o))
+TEST_SRCS_C   := test/context.c test/level.c test/gl33core/gl33core_renderer.c test/gl20/gl20_renderer.c
+TEST_SRCS_CPP := test/main.cpp test/audio.cpp
+TEST_OBJS     := $(foreach file,$(TEST_SRCS_C),$(BUILD_DIR)/$(file:.c=.o)) $(foreach file,$(TEST_SRCS_CPP),$(BUILD_DIR)/$(file:.cpp=.o))
 
 ifeq ($(OS),Windows_NT)
   LIB_FILE := $(DIST_DIR)/sm64.dll
@@ -45,6 +48,10 @@ $(BUILD_DIR)/%.o: %.c $(IMPORTED)
 	@$(CC) $(CFLAGS) -MM -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
 	$(CC) -c $(CFLAGS) -I src/decomp/include -o $@ $<
 
+$(BUILD_DIR)/%.o: %.cpp $(IMPORTED)
+	@$(CXX) $(CFLAGS) -MM -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
+	$(CXX) -c $(CFLAGS) -I src/decomp/include -o $@ $<
+
 $(LIB_FILE): $(O_FILES)
 	$(CC) $(LDFLAGS) -o $@ $^
 
@@ -55,7 +62,7 @@ $(LIB_H_FILE): src/libsm64.h
 test/level.c test/level.h: ./import-test-collision.py
 	./import-test-collision.py
 
-test/main.c: test/level.h
+test/main.cpp: test/level.h
 
 $(BUILD_DIR)/test/%.o: test/%.c
 	@$(CC) $(CFLAGS) -MM -MP -MT $@ -MF $(BUILD_DIR)/test/$*.d $<
@@ -65,7 +72,7 @@ $(TEST_FILE): $(LIB_FILE) $(TEST_OBJS)
 ifeq ($(OS),Windows_NT)
 	$(CC) -o $@ $(TEST_OBJS) $(LIB_FILE) -lglew32 -lopengl32 -lSDL2 -lSDL2main -lm
 else
-	$(CC) -o $@ $(TEST_OBJS) $(LIB_FILE) -lGLEW -lGL -lSDL2 -lSDL2main -lm
+	$(CC) -o $@ $(TEST_OBJS) $(LIB_FILE) -lGLEW -lGL -lSDL2 -lSDL2main -lm -lpthread
 endif
 
 lib: $(LIB_FILE) $(LIB_H_FILE)

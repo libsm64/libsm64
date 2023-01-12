@@ -5,7 +5,15 @@
 #include <stdint.h>
 #include <stddef.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "../src/libsm64.h"
+
+#ifdef __cplusplus
+}
+#endif
 
 #include "context.h"
 #include "cglm.h"

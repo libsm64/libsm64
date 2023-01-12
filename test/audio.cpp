@@ -5,8 +5,10 @@
 #include <unistd.h>
 #include <sys/time.h>
 
+extern "C" {
 #include "../src/libsm64.h"
 #include "context.h"
+}
 
 static SDL_AudioDeviceID dev;
 
@@ -24,7 +26,7 @@ void* audio_thread(void* keepAlive)
 	// from https://github.com/ckosmic/libsm64/blob/audio/src/libsm64.c#L535-L555
 	// except keepAlive is a null pointer here, so don't use it
 
-	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE,NULL); 
+	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE,NULL);
 	pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED,NULL);
 
 	long long currentTime = timeInMilliseconds();
@@ -50,6 +52,11 @@ void* audio_thread(void* keepAlive)
 
 void audio_init()
 {
+	if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
+		fprintf(stderr, "SDL_InitSubSystem(SDL_INIT_AUDIO) failed: %s\n", SDL_GetError());
+		return;
+	}
+
 	SDL_AudioSpec want, have;
 	SDL_zero(want);
 	want.freq = 32000;
@@ -65,6 +72,6 @@ void audio_init()
 	SDL_PauseAudioDevice(dev, 0);
 
 	// it's best to run audio in a separate thread
-    pthread_create(&gSoundThread, NULL, audio_thread, NULL);
+	pthread_create(&gSoundThread, NULL, audio_thread, NULL);
 }
 
