@@ -202,9 +202,9 @@ int main( void )
             y_axis = read_axis( SDL_GameControllerGetAxis( controller, SDL_CONTROLLER_AXIS_LEFTY ));
             x0_axis = read_axis( SDL_GameControllerGetAxis( controller, SDL_CONTROLLER_AXIS_RIGHTX ));
 
-            marioInputs.buttonA = SDL_GameControllerGetButton( controller, (SDL_GameControllerButton)0 );
-            marioInputs.buttonB = SDL_GameControllerGetButton( controller, (SDL_GameControllerButton)2 );
-            marioInputs.buttonZ = SDL_GameControllerGetButton( controller, (SDL_GameControllerButton)9 );
+            marioInputs.buttonA = SDL_GameControllerGetButton( controller, SDL_CONTROLLER_BUTTON_A );
+            marioInputs.buttonB = SDL_GameControllerGetButton( controller, SDL_CONTROLLER_BUTTON_X );
+            marioInputs.buttonZ = SDL_GameControllerGetButton( controller, SDL_CONTROLLER_BUTTON_LEFTSHOULDER );
 		}
 
         cameraRot += x0_axis * dt * 2;
