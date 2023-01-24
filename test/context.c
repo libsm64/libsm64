@@ -5,8 +5,8 @@
 static SDL_Window *s_sdlWindow;
 static SDL_GLContext s_sdlGlContext;
 static SDL_GameController *s_controller;
-static int s_windowWidth;
-static int s_windowHeight;
+int WINDOW_WIDTH;
+int WINDOW_HEIGHT;
 
 void context_init( const char *title, int width, int height, int major, int minor )
 {
@@ -18,8 +18,8 @@ void context_init( const char *title, int width, int height, int major, int mino
     SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, minor );
     SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK, profile );
 
-    s_windowWidth = width;
-    s_windowHeight = height;
+    WINDOW_WIDTH = width;
+    WINDOW_HEIGHT = height;
 
     s_sdlWindow = SDL_CreateWindow( 
         title,
@@ -87,9 +87,9 @@ bool context_flip_frame_poll_events( void )
         case SDL_WINDOWEVENT:
             if( event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED )
             {
-                s_windowWidth = event.window.data1;
-                s_windowHeight = event.window.data2;
-                glViewport( 0, 0, s_windowWidth, s_windowHeight );
+                WINDOW_WIDTH = event.window.data1;
+                WINDOW_HEIGHT = event.window.data2;
+                glViewport( 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT );
             }
             break;
         }

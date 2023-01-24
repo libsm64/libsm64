@@ -6,7 +6,6 @@
 #include "../renderer.h"
 #include "../context.h"
 #include "../level.h"
-#include <GL/glu.h>
 
 static void load_collision_mesh( CollisionMesh *mesh )
 {

@@ -21,9 +21,6 @@ extern "C" {
 
 #include "audio.h"
 
-int WINDOW_WIDTH = 1280;
-int WINDOW_HEIGHT = 800;
-
 uint8_t *utils_read_file_alloc( const char *path, size_t *fileLength )
 {
     FILE *f = fopen( path, "rb" );
@@ -88,6 +85,7 @@ int main( void )
     struct Renderer *renderer;
 
     int major, minor, selection = 0;
+    int w = 1280, h = 800;
     printf("Select OpenGL version\n1. OpenGL 3.3 Core\n2. OpenGL 2.0\n> ");
     scanf("%d", &selection);
     if (selection == 2)
@@ -108,12 +106,12 @@ int main( void )
     if (selection == 2)
     {
         printf("Launching in 800x600\n");
-        WINDOW_WIDTH = 800; WINDOW_HEIGHT = 600;
+        w = 800; h = 600;
     }
     else
         printf("Launching in 1280x600\n");
 
-    context_init( "libsm64", WINDOW_WIDTH, WINDOW_HEIGHT, major, minor );
+    context_init( "libsm64", w, h, major, minor );
     renderer->init( &renderState, texture );
 
     struct SM64MarioInputs marioInputs;
