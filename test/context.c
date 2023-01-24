@@ -17,7 +17,6 @@ void context_init( const char *title, int width, int height, int major, int mino
     SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, major );
     SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, minor );
     SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK, profile );
-    SDL_GL_SetSwapInterval( 1 );
 
     s_windowWidth = width;
     s_windowHeight = height;
@@ -32,6 +31,7 @@ void context_init( const char *title, int width, int height, int major, int mino
     if( !s_sdlWindow ) goto err;
 
     s_sdlGlContext = SDL_GL_CreateContext( s_sdlWindow );
+    SDL_GL_SetSwapInterval( 1 );
 
     if( !s_sdlGlContext ) goto err;
 
