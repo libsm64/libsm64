@@ -131,7 +131,7 @@ int main( void )
     marioGeometry.numTrianglesUsed = 0;
 
     float tick = 0;
-    uint32_t lastTicks = 0;
+    uint32_t lastTicks = SDL_GetTicks();
 
     audio_init();
 
