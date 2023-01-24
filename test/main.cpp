@@ -130,13 +130,16 @@ int main( void )
     marioGeometry.uv       = (float*)malloc( sizeof(float) * 6 * SM64_GEO_MAX_TRIANGLES );
     marioGeometry.numTrianglesUsed = 0;
 
-    float tick = 0, dt = 0;
+    float tick = 0;
+    uint32_t lastTicks = 0;
 
     audio_init();
 
     do
     {
-        uint64_t start = SDL_GetPerformanceCounter();
+        float dt = (SDL_GetTicks() - lastTicks) / 1000.f;
+        lastTicks = SDL_GetTicks();
+        tick += dt;
 
         SDL_GameController *controller = context_get_controller();
         float x_axis, y_axis, x0_axis;
@@ -233,10 +236,6 @@ int main( void )
         for (int i=0; i<marioGeometry.numTrianglesUsed*9; i++) marioGeometry.position[i] = lerp(lastGeoPos[i], currGeoPos[i], tick / (1.f/30));
 
         renderer->draw( &renderState, cameraPos, &marioState, &marioGeometry );
-
-        uint64_t end = SDL_GetPerformanceCounter();
-        dt = (float)(end-start) / (float)SDL_GetPerformanceFrequency();
-        tick += dt;
     }
     while( context_flip_frame_poll_events() );
 
