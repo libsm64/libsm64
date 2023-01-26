@@ -20,7 +20,7 @@
 #define gSpecialTripleJump   (g_state->mgSpecialTripleJump)
 #define gCurrLevelNum        (g_state->mgCurrLevelNum)
 #define gCameraMovementFlags (g_state->mgCameraMovementFlags)
-#define gAudioRandom         (g_state->mgAudioRandom)
+//#define gAudioRandom         (g_state->mgAudioRandom)
 #define gShowDebugText       (g_state->mgShowDebugText)
 #define gDebugLevelSelect    (g_state->mgDebugLevelSelect)
 #define gCurrSaveFileNum     (g_state->mgCurrSaveFileNum)

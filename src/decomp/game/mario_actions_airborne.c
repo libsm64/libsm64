@@ -5,7 +5,7 @@
 
 #include "../include/sm64.h"
 #include "area.h"
-//#include "audio/external.h"
+#include "../audio/external.h"
 #include "camera.h"
 #include "../engine/graph_node.h"
 #include "../engine/math_util.h"
