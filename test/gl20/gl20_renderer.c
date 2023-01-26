@@ -7,12 +7,18 @@
 #include "../context.h"
 #include "../level.h"
 
+GLuint worldTexture;
+uint8_t *worldTextureRaw;
+int worldTextureSize[2] = {256, 256};
+float *worldUv;
+
 static void load_collision_mesh( CollisionMesh *mesh )
 {
 	mesh->num_vertices = 3 * surfaces_count;
 	mesh->position = malloc( sizeof( float ) * surfaces_count * 9 );
 	mesh->normal = malloc( sizeof( float ) * surfaces_count * 9 );
 	mesh->color = malloc( sizeof( float ) * surfaces_count * 9 );
+	worldUv = malloc(sizeof(float) * surfaces_count * 6);
 	mesh->index = malloc( sizeof( uint16_t ) * surfaces_count * 3 );
 
 	for( size_t i = 0; i < surfaces_count; ++i )
@@ -53,6 +59,23 @@ static void load_collision_mesh( CollisionMesh *mesh )
 		mesh->index[3*i+0] = 3*i+0;
 		mesh->index[3*i+1] = 3*i+1;
 		mesh->index[3*i+2] = 3*i+2;
+	}
+
+	for( size_t i = 0; i < surfaces_count/2; i++ )
+	{
+		worldUv[12*i+0] = 0.f;
+		worldUv[12*i+1] = 0.f;
+		worldUv[12*i+2] = 4.f;
+		worldUv[12*i+3] = 0.f;
+		worldUv[12*i+4] = 0.f;
+		worldUv[12*i+5] = 4.f;
+
+		worldUv[12*i+6] = 0.f;
+		worldUv[12*i+7] = 4.f;
+		worldUv[12*i+8] = 4.f;
+		worldUv[12*i+9] = 0.f;
+		worldUv[12*i+10] = 0.f;
+		worldUv[12*i+11] = 0.f;
 	}
 }
 
@@ -104,6 +127,33 @@ static void gl20_init(RenderState *renderState, uint8_t *marioTexture)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, SM64_TEXTURE_WIDTH, SM64_TEXTURE_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, marioTexture);
+
+	// make a custom world texture programatically
+	worldTextureRaw = (uint8_t*)malloc(worldTextureSize[0] * worldTextureSize[1] * 4);
+	memset(worldTextureRaw, 255, worldTextureSize[0] * worldTextureSize[1] * 4);
+
+	for (int y=0; y<worldTextureSize[1]/2; y++)
+	{
+		for (int x = worldTextureSize[1]/2 - (y+1); x<worldTextureSize[1]/2 + (y+1); x++)
+		{
+			int i1 = y * worldTextureSize[0] + x;
+			int i2 = (worldTextureSize[1]-1-y) * worldTextureSize[0] + x;
+			worldTextureRaw[i1*4+0] = 192;
+			worldTextureRaw[i1*4+1] = 192;
+			worldTextureRaw[i1*4+2] = 192;
+			worldTextureRaw[i2*4+0] = 192;
+			worldTextureRaw[i2*4+1] = 192;
+			worldTextureRaw[i2*4+2] = 192;
+		}
+	}
+
+	glGenTextures(1, &worldTexture );
+	glBindTexture(GL_TEXTURE_2D, worldTexture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, worldTextureSize[0], worldTextureSize[1], 0, GL_RGBA, GL_UNSIGNED_BYTE, worldTextureRaw);
 }
 
 static void gl20_draw(RenderState *renderState, const vec3 camPos, const struct SM64MarioState *marioState, struct SM64MarioGeometryBuffers *marioGeo)
@@ -120,16 +170,23 @@ static void gl20_draw(RenderState *renderState, const vec3 camPos, const struct 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf((GLfloat*)view);
 
+	glEnable(GL_TEXTURE_2D);
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
     // draw world
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
 	glVertexPointer(3, GL_FLOAT, 0, renderState->collision.position);
 	glNormalPointer(GL_FLOAT, 0, renderState->collision.normal);
 	glColorPointer(3, GL_FLOAT, 0, renderState->collision.color);
+	glTexCoordPointer(2, GL_FLOAT, 0, worldUv);
+
+	glBindTexture(GL_TEXTURE_2D, worldTexture);
+	glMatrixMode(GL_TEXTURE);
+	glLoadIdentity();
 	glDrawElements(GL_TRIANGLES, renderState->collision.num_vertices, GL_UNSIGNED_SHORT, renderState->collision.index);
 
 	// create lighting on the scene
@@ -145,6 +202,7 @@ static void gl20_draw(RenderState *renderState, const vec3 camPos, const struct 
 	glEnable(GL_LIGHT0);
 
 	// first, draw geometry without Mario's texture.
+	glBindTexture(GL_TEXTURE_2D, 0);
 	update_mario_mesh( &renderState->mario, marioGeo );
 	uint32_t triangleSize = renderState->mario.num_vertices;
 
@@ -153,7 +211,6 @@ static void gl20_draw(RenderState *renderState, const vec3 camPos, const struct 
 	// now disable the color array and enable the texture.
 	glDisableClientState(GL_COLOR_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, renderState->mario_texture);
 	glMatrixMode(GL_TEXTURE);
 	glLoadIdentity();
