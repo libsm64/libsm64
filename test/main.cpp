@@ -84,34 +84,16 @@ int main( void )
 
     struct Renderer *renderer;
 
-    int major, minor, selection = 0;
-    int w = 1280, h = 800;
-    printf("Select OpenGL version\n1. OpenGL 3.3 Core\n2. OpenGL 2.0\n> ");
-    scanf("%d", &selection);
-    if (selection == 2)
-    {
-        printf("Launching with OpenGL 2.0\n\n");
-        major = 2; minor = 0;
-        renderer = &gl20_renderer;
-    }
-    else
-    {
-        printf("Launching with OpenGL 3.3 Core\n\n");
-        major = 3; minor = 3;
-        renderer = &gl33core_renderer;
-    }
+    int major, minor;
+#ifdef GL33_CORE
+    major = 3; minor = 3;
+    renderer = &gl33core_renderer;
+#else
+    major = 2; minor = 0;
+    renderer = &gl20_renderer;
+#endif
 
-    printf("Select window resolution\n1. 1280x800\n2. 800x600\n> ");
-    scanf("%d", &selection);
-    if (selection == 2)
-    {
-        printf("Launching in 800x600\n");
-        w = 800; h = 600;
-    }
-    else
-        printf("Launching in 1280x600\n");
-
-    context_init( "libsm64", w, h, major, minor );
+    context_init( "libsm64", 800, 600, major, minor );
     renderer->init( &renderState, texture );
 
     struct SM64MarioInputs marioInputs;
