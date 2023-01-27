@@ -325,6 +325,7 @@ struct MarioState
     /*0xC4*/ f32 unkC4;
 
     u16 curTerrain; // libsm64: added field
+    s32 gasLevel; // libsm64: added field
 };
 
 #endif // TYPES_H
