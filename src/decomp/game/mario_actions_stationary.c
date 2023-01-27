@@ -331,14 +331,14 @@ s32 act_sleeping(struct MarioState *m) {
 }
 
 s32 act_waking_up(struct MarioState *m) {
-//    if (!m->actionTimer) {
-//        func_803205E8(SOUND_MARIO_SNORING1, m->marioObj->header.gfx.cameraToObject);
-//        func_803205E8(SOUND_MARIO_SNORING2, m->marioObj->header.gfx.cameraToObject);
-//#ifndef VERSION_JP
-//        func_803205E8(SOUND_MARIO_SNORING3, m->marioObj->header.gfx.cameraToObject);
-//#endif
-//        raise_background_noise(2);
-//    }
+    if (!m->actionTimer) {
+        stop_sound(SOUND_MARIO_SNORING1, m->marioObj->header.gfx.cameraToObject);
+        stop_sound(SOUND_MARIO_SNORING2, m->marioObj->header.gfx.cameraToObject);
+#ifndef VERSION_JP
+        stop_sound(SOUND_MARIO_SNORING3, m->marioObj->header.gfx.cameraToObject);
+#endif
+        raise_background_noise(2);
+    }
 
     if (m->input & INPUT_UNKNOWN_10) {
         return set_mario_action(m, ACT_SHOCKWAVE_BOUNCE, 0);
