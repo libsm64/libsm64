@@ -24,7 +24,7 @@ project under the `test` directory as well, demonstrating usage of the library.
 - Run `make` to build. If you want to link musl libc instead of glibc run `LIBSM64_MUSL=1 make` instead.
 - To run the test program you'll need a SM64 US ROM in the root of the repository with the name `baserom.us.z64`.
 
-## Building on Windows (test program not supported)
+## Building on Windows
 - [Follow steps 1-4 for setting up MSYS2 MinGW 64 here](https://github.com/sm64-port/sm64-port#windows), but replace the repository URL with `https://github.com/libsm64/libsm64.git`
 - Run `make` to build
 
