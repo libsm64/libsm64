@@ -73,7 +73,7 @@ int main( void )
     sm64_global_init( rom, texture );
     sm64_audio_init(rom);
     sm64_static_surfaces_load( surfaces, surfaces_count );
-    uint32_t marioId = sm64_mario_create( 0, 1000, 0 );
+    int32_t marioId = sm64_mario_create( 0, 1000, 0 );
 
     free( rom );
 
