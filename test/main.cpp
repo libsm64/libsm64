@@ -115,6 +115,8 @@ int main( void )
 
     audio_init();
 
+    sm64_play_music(0, SEQ_LEVEL_WATER | SEQ_VARIATION, 0);
+
     do
     {
         float dt = (SDL_GetTicks() - lastTicks) / 1000.f;
@@ -219,6 +221,7 @@ int main( void )
     }
     while( context_flip_frame_poll_events() );
 
+    sm64_stop_background_music(sm64_get_current_background_music());
     sm64_global_terminate();
     context_terminate();
 

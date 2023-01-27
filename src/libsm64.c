@@ -339,3 +339,38 @@ SM64_LIB_FN float sm64_surface_find_poison_gas_level( float x, float z )
 {
     return find_poison_gas_level( x, z );
 }
+
+SM64_LIB_FN void sm64_seq_player_play_sequence(uint8_t player, uint8_t seqId, uint16_t arg2)
+{
+    seq_player_play_sequence(player,seqId,arg2);
+}
+
+SM64_LIB_FN void sm64_play_music(uint8_t player, uint16_t seqArgs, uint16_t fadeTimer)
+{
+    play_music(player,seqArgs,fadeTimer);
+}
+
+SM64_LIB_FN void sm64_stop_background_music(uint16_t seqId)
+{
+    stop_background_music(seqId);
+}
+
+SM64_LIB_FN void sm64_fadeout_background_music(uint16_t arg0, uint16_t fadeOut)
+{
+    fadeout_background_music(arg0,fadeOut);
+}
+
+SM64_LIB_FN uint16_t sm64_get_current_background_music()
+{
+    return get_current_background_music();
+}
+
+SM64_LIB_FN void sm64_play_sound(int32_t soundBits, float *pos)
+{
+    play_sound(soundBits,pos);
+}
+
+SM64_LIB_FN void sm64_play_sound_global(int32_t soundBits)
+{
+    play_sound(soundBits,gGlobalSoundSource);
+}
