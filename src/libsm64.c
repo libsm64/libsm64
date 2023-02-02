@@ -14,6 +14,7 @@
 #include "decomp/include/PR/os_cont.h"
 #include "decomp/engine/math_util.h"
 #include "decomp/include/sm64.h"
+#include "decomp/include/seq_ids.h"
 #include "decomp/shim.h"
 #include "decomp/memory.h"
 #include "decomp/global_state.h"

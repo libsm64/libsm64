@@ -115,7 +115,7 @@ int main( void )
 
     audio_init();
 
-    sm64_play_music(0, SEQ_LEVEL_WATER | SEQ_VARIATION, 0);
+    sm64_play_music(0, 0x05 | 0x80, 0); // from decomp/include/seq_ids.h: SEQ_LEVEL_WATER | SEQ_VARIATION
 
     do
     {

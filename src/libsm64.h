@@ -5,10 +5,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "decomp/include/mario_animation_ids.h"
-#include "decomp/include/audio_defines.h"
-#include "decomp/include/seq_ids.h"
-
 #ifdef _WIN32
     #ifdef SM64_LIB_EXPORT
         #define SM64_LIB_FN __declspec(dllexport)
