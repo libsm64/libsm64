@@ -666,3 +666,8 @@ SM64_LIB_FN void sm64_play_sound_global(int32_t soundBits)
 {
     play_sound(soundBits,gGlobalSoundSource);
 }
+
+SM64_LIB_FN void sm64_set_sound_volume(float vol)
+{
+    gAudioVolume = vol;
+}

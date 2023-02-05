@@ -184,5 +184,6 @@ extern SM64_LIB_FN void sm64_fadeout_background_music(uint16_t arg0, uint16_t fa
 extern SM64_LIB_FN uint16_t sm64_get_current_background_music();
 extern SM64_LIB_FN void sm64_play_sound(int32_t soundBits, float *pos);
 extern SM64_LIB_FN void sm64_play_sound_global(int32_t soundBits);
+extern SM64_LIB_FN void sm64_set_sound_volume(float vol);
 
 #endif//LIB_SM64_H
