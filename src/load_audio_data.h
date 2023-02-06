@@ -5,4 +5,4 @@
 
 extern bool is_audio_initialized;
 
-extern void load_audio_banks( uint8_t *rom );
+extern void load_audio_banks( const uint8_t *rom );

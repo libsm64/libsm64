@@ -96,7 +96,7 @@ SM64_LIB_FN void sm64_register_play_sound_function( SM64PlaySoundFunctionPtr pla
 }
 
 
-SM64_LIB_FN void sm64_global_init( uint8_t *rom, uint8_t *outTexture )
+SM64_LIB_FN void sm64_global_init( const uint8_t *rom, uint8_t *outTexture )
 {
     if( s_init_global )
         sm64_global_terminate();
@@ -138,7 +138,7 @@ SM64_LIB_FN void sm64_global_terminate( void )
     memory_terminate();
 }
 
-SM64_LIB_FN void sm64_audio_init( uint8_t *rom ) {
+SM64_LIB_FN void sm64_audio_init( const uint8_t *rom ) {
     load_audio_banks( rom );
 }
 
@@ -150,9 +150,9 @@ extern SM64_LIB_FN uint32_t sm64_audio_tick( uint32_t numQueuedSamples, uint32_t
         DEBUG_PRINT("Attempted to tick audio, but sm64_audio_init() has not been called yet.");
         return 0;
     }
-    
+
     update_game_sound();
-	
+
     u32 num_audio_samples = numQueuedSamples < numDesiredSamples ? SAMPLES_HIGH : SAMPLES_LOW;
     for (int i = 0; i < 2; i++)
     {
@@ -592,7 +592,7 @@ SM64_LIB_FN void sm64_surface_object_delete( uint32_t objectId )
 }
 
 
-SM64_LIB_FN int32_t sm64_surface_find_wall_collision( float *xPtr, float *yPtr, float *zPtr, float offsetY, float radius ) 
+SM64_LIB_FN int32_t sm64_surface_find_wall_collision( float *xPtr, float *yPtr, float *zPtr, float offsetY, float radius )
 {
     return f32_find_wall_collision( xPtr, yPtr, zPtr, offsetY, radius );
 }

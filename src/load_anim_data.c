@@ -7,20 +7,20 @@ static struct Animation *s_libsm64_mario_animations = NULL;
 
 #define ANIM_DATA_ADDRESS 0x004EC000
 
-static uint16_t read_u16_be( uint8_t *p )
+static uint16_t read_u16_be( const uint8_t *p )
 {
-    return 
+    return
         (uint32_t)p[0] << 8 |
         (uint32_t)p[1];
 
 }
 
-static uint16_t read_s16_be( uint8_t *p )
+static uint16_t read_s16_be( const uint8_t *p )
 {
     return (int16_t)read_u16_be( p );
 }
 
-static uint32_t read_u32_be( uint8_t *p )
+static uint32_t read_u32_be( const uint8_t *p )
 {
     return
         (uint32_t)p[0] << 24 |
@@ -29,12 +29,12 @@ static uint32_t read_u32_be( uint8_t *p )
         (uint32_t)p[3];
 }
 
-void load_mario_anims_from_rom( uint8_t *rom )
+void load_mario_anims_from_rom( const uint8_t *rom )
 {
     #define GET_OFFSET( n ) (read_u32_be((uint8_t*)&((struct OffsetSizePair*)( rom + ANIM_DATA_ADDRESS + 8 + (n)*8 ))->offset))
     #define GET_SIZE(   n ) (read_u32_be((uint8_t*)&((struct OffsetSizePair*)( rom + ANIM_DATA_ADDRESS + 8 + (n)*8 ))->size  ))
 
-    uint8_t *read_ptr = rom + ANIM_DATA_ADDRESS;
+    const uint8_t *read_ptr = rom + ANIM_DATA_ADDRESS;
     s_num_entries = read_u32_be( read_ptr );
 
     s_libsm64_mario_animations = malloc( s_num_entries * sizeof( struct Animation ));
@@ -54,9 +54,9 @@ void load_mario_anims_from_rom( uint8_t *rom )
         uint32_t index_offset  = read_u32_be( read_ptr ); read_ptr += 4;
         uint32_t end_offset    = read_u32_be( read_ptr );
 
-        read_ptr            = rom + ANIM_DATA_ADDRESS + GET_OFFSET(i) + index_offset;
-        uint8_t *values_ptr = rom + ANIM_DATA_ADDRESS + GET_OFFSET(i) + values_offset;
-        uint8_t *end_ptr    = rom + ANIM_DATA_ADDRESS + GET_OFFSET(i) + end_offset;
+        read_ptr                  = rom + ANIM_DATA_ADDRESS + GET_OFFSET(i) + index_offset;
+        const uint8_t *values_ptr = rom + ANIM_DATA_ADDRESS + GET_OFFSET(i) + values_offset;
+        const uint8_t *end_ptr    = rom + ANIM_DATA_ADDRESS + GET_OFFSET(i) + end_offset;
 
         anims[i].index = malloc( values_offset - index_offset );
         anims[i].values = malloc( end_offset - values_offset );

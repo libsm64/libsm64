@@ -31,4 +31,4 @@ static const int mario_tex_offsets[NUM_USED_TEXTURES] = { 144, 4240, 6288, 8336,
 static const int mario_tex_widths [NUM_USED_TEXTURES] = { 64, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32 };
 static const int mario_tex_heights[NUM_USED_TEXTURES] = { 32, 32, 32, 32, 32, 32, 32, 32, 32, 64, 64 };
 
-extern void load_mario_textures_from_rom( uint8_t *rom, uint8_t *outTexture );
+extern void load_mario_textures_from_rom( const uint8_t *rom, uint8_t *outTexture );

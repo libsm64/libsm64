@@ -114,7 +114,7 @@ struct SM64SurfaceCollisionData
         float z;
     } normal;
     float originOffset;
-    
+
     uint8_t isValid; // libsm64: added field
     struct SM64SurfaceObjectTransform *transform; // libsm64: added field
     uint16_t terrain; // libsm64: added field
@@ -134,10 +134,10 @@ extern SM64_LIB_FN void sm64_register_debug_print_function( SM64DebugPrintFuncti
 typedef void (*SM64PlaySoundFunctionPtr)( uint32_t soundBits, float *pos );
 extern SM64_LIB_FN void sm64_register_play_sound_function( SM64PlaySoundFunctionPtr playSoundFunction );
 
-extern SM64_LIB_FN void sm64_global_init( uint8_t *rom, uint8_t *outTexture );
+extern SM64_LIB_FN void sm64_global_init( const uint8_t *rom, uint8_t *outTexture );
 extern SM64_LIB_FN void sm64_global_terminate( void );
 
-extern SM64_LIB_FN void sm64_audio_init( uint8_t *rom  );
+extern SM64_LIB_FN void sm64_audio_init( const uint8_t *rom );
 extern SM64_LIB_FN uint32_t sm64_audio_tick( uint32_t numQueuedSamples, uint32_t numDesiredSamples, int16_t *audio_buffer );
 
 extern SM64_LIB_FN void sm64_static_surfaces_load( const struct SM64Surface *surfaceArray, uint32_t numSurfaces );
