@@ -16,6 +16,7 @@ project under the `test` directory as well, demonstrating usage of the library.
 - [Rust bindings](https://github.com/nickmass/libsm64-rust)
 - [Unity plugin](https://github.com/libsm64/libsm64-unity)
 - [Blender add-on](https://github.com/libsm64/libsm64-blender)
+- [Godot add-on](https://github.com/Brawmario/libsm64-godot)
 
 ## Building on Linux
 
