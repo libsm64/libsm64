@@ -150,9 +150,9 @@ extern SM64_LIB_FN uint32_t sm64_audio_tick( uint32_t numQueuedSamples, uint32_t
         DEBUG_PRINT("Attempted to tick audio, but sm64_audio_init() has not been called yet.");
         return 0;
     }
-    
+
     update_game_sound();
-	
+
     u32 num_audio_samples = numQueuedSamples < numDesiredSamples ? SAMPLES_HIGH : SAMPLES_LOW;
     for (int i = 0; i < 2; i++)
     {
@@ -271,7 +271,9 @@ SM64_LIB_FN void sm64_mario_delete( int32_t marioId )
     struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState;
     global_state_bind( globalState );
 
-    stop_sound(SOUND_MARIO_SNORING3, gMarioState->marioObj->header.gfx.cameraToObject);
+    if ( is_audio_initialized ) {
+        stop_sound(SOUND_MARIO_SNORING3, gMarioState->marioObj->header.gfx.cameraToObject);
+    }
 
     free( gMarioObject );
     free_area( gCurrentArea );
@@ -592,7 +594,7 @@ SM64_LIB_FN void sm64_surface_object_delete( uint32_t objectId )
 }
 
 
-SM64_LIB_FN int32_t sm64_surface_find_wall_collision( float *xPtr, float *yPtr, float *zPtr, float offsetY, float radius ) 
+SM64_LIB_FN int32_t sm64_surface_find_wall_collision( float *xPtr, float *yPtr, float *zPtr, float offsetY, float radius )
 {
     return f32_find_wall_collision( xPtr, yPtr, zPtr, offsetY, radius );
 }
