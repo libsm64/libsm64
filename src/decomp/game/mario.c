@@ -1321,7 +1321,7 @@ void update_mario_joystick_inputs(struct MarioState *m) {
  * Resolves wall collisions, and updates a variety of inputs.
  */
 void update_mario_geometry_inputs(struct MarioState *m) {
-    f32 gasLevel;
+    //f32 gasLevel;
     f32 ceilToFloorDist;
 
     f32_find_wall_collision(&m->pos[0], &m->pos[1], &m->pos[2], 60.0f, 50.0f);
@@ -1343,8 +1343,8 @@ void update_mario_geometry_inputs(struct MarioState *m) {
     }
 
     m->ceilHeight = vec3f_find_ceil(&m->pos[0], m->floorHeight, &m->ceil);
-    gasLevel = find_poison_gas_level(m->pos[0], m->pos[2]);
-    m->waterLevel = find_water_level(m->pos[0], m->pos[2]);
+    //gasLevel = find_poison_gas_level(m->pos[0], m->pos[2]);
+    //m->waterLevel = find_water_level(m->pos[0], m->pos[2]);
 
     if (m->floor != NULL) {
         m->floorAngle = atan2s(m->floor->normal.z, m->floor->normal.x);
@@ -1371,7 +1371,7 @@ void update_mario_geometry_inputs(struct MarioState *m) {
             m->input |= INPUT_IN_WATER;
         }
 
-        if (m->pos[1] < (gasLevel - 100.0f)) {
+        if (m->pos[1] < (m->gasLevel - 100.0f)) {
             m->input |= INPUT_IN_POISON_GAS;
         }
 
@@ -1831,6 +1831,8 @@ int init_mario(void) {
 
     gMarioState->waterLevel =
         find_water_level(gMarioSpawnInfo->startPos[0], gMarioSpawnInfo->startPos[2]);
+    gMarioState->gasLevel =
+        find_poison_gas_level(gMarioSpawnInfo->startPos[0], gMarioSpawnInfo->startPos[2]);
 
     gMarioState->area = gCurrentArea;
     gMarioState->marioObj = gMarioObject;

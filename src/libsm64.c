@@ -14,6 +14,7 @@
 #include "decomp/include/PR/os_cont.h"
 #include "decomp/engine/math_util.h"
 #include "decomp/include/sm64.h"
+#include "decomp/include/seq_ids.h"
 #include "decomp/shim.h"
 #include "decomp/memory.h"
 #include "decomp/global_state.h"
@@ -33,6 +34,7 @@
 #include "load_audio_data.h"
 #include "load_tex_data.h"
 #include "obj_pool.h"
+#include "fake_interaction.h"
 
 static struct AllocOnlyPool *s_mario_geo_pool = NULL;
 static struct GraphNode *s_mario_graph_node = NULL;
@@ -252,6 +254,10 @@ SM64_LIB_FN void sm64_mario_tick( int32_t marioId, const struct SM64MarioInputs 
     vec3f_copy( outState->position, gMarioState->pos );
     vec3f_copy( outState->velocity, gMarioState->vel );
     outState->faceAngle = (float)gMarioState->faceAngle[1] / 32768.0f * 3.14159f;
+    outState->action = gMarioState->action;
+    outState->flags = gMarioState->flags;
+    outState->particleFlags = gMarioState->particleFlags;
+    outState->invincTimer = gMarioState->invincTimer;
 }
 
 SM64_LIB_FN void sm64_mario_delete( int32_t marioId )
@@ -265,11 +271,297 @@ SM64_LIB_FN void sm64_mario_delete( int32_t marioId )
     struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState;
     global_state_bind( globalState );
 
+    stop_sound(SOUND_MARIO_SNORING3, gMarioState->marioObj->header.gfx.cameraToObject);
+
     free( gMarioObject );
     free_area( gCurrentArea );
 
     global_state_delete( globalState );
     obj_pool_free_index( &s_mario_instance_pool, marioId );
+}
+
+SM64_LIB_FN void sm64_set_mario_action(int32_t marioId, uint32_t action)
+{
+    if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
+    {
+        DEBUG_PRINT("Tried to use non-existant Mario with ID: %d", marioId);
+        return;
+    }
+
+    struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState;
+    global_state_bind( globalState );
+
+    set_mario_action(gMarioState, action, 0);
+}
+
+SM64_LIB_FN void sm64_set_mario_action_arg(int32_t marioId, uint32_t action, uint32_t actionArg)
+{
+    if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
+    {
+        DEBUG_PRINT("Tried to use non-existant Mario with ID: %d", marioId);
+        return;
+    }
+
+    struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState;
+    global_state_bind( globalState );
+
+    set_mario_action(gMarioState, action, actionArg);
+}
+
+SM64_LIB_FN void sm64_set_mario_animation(int32_t marioId, int32_t animID)
+{
+    if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
+    {
+        DEBUG_PRINT("Tried to use non-existant Mario with ID: %d", marioId);
+        return;
+    }
+
+    struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState;
+    global_state_bind( globalState );
+
+    set_mario_animation(gMarioState, animID);
+}
+
+SM64_LIB_FN void sm64_set_mario_anim_frame(int32_t marioId, int16_t animFrame)
+{
+    if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
+    {
+        DEBUG_PRINT("Tried to use non-existant Mario with ID: %d", marioId);
+        return;
+    }
+
+    struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState;
+    global_state_bind( globalState );
+
+    gMarioState->marioObj->header.gfx.animInfo.animFrame = animFrame;
+}
+
+SM64_LIB_FN void sm64_set_mario_state(int32_t marioId, uint32_t flags)
+{
+    if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
+    {
+        DEBUG_PRINT("Tried to use non-existant Mario with ID: %d", marioId);
+        return;
+    }
+
+    struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState;
+    global_state_bind( globalState );
+
+    gMarioState->flags = flags;
+}
+
+SM64_LIB_FN void sm64_set_mario_position(int32_t marioId, float x, float y, float z)
+{
+    if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
+    {
+        DEBUG_PRINT("Tried to use non-existant Mario with ID: %d", marioId);
+        return;
+    }
+
+    struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState;
+    global_state_bind( globalState );
+
+    gMarioState->pos[0] = x;
+    gMarioState->pos[1] = y;
+    gMarioState->pos[2] = z;
+    vec3f_copy(gMarioState->marioObj->header.gfx.pos, gMarioState->pos);
+}
+
+SM64_LIB_FN void sm64_set_mario_angle(int32_t marioId, float x, float y, float z)
+{
+    if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
+    {
+        DEBUG_PRINT("Tried to use non-existant Mario with ID: %d", marioId);
+        return;
+    }
+
+    struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState;
+    global_state_bind( globalState );
+
+    vec3s_set(gMarioState->faceAngle, (int16_t)(x / 3.14159f * 32768.f), (int16_t)(y / 3.14159f * 32768.f), (int16_t)(z / 3.14159f * 32768.f));
+    vec3s_copy(gMarioState->marioObj->header.gfx.angle, gMarioState->faceAngle);
+}
+
+SM64_LIB_FN void sm64_set_mario_faceangle(int32_t marioId, float y)
+{
+    if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
+    {
+        DEBUG_PRINT("Tried to use non-existant Mario with ID: %d", marioId);
+        return;
+    }
+
+    struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState;
+    global_state_bind( globalState );
+
+    gMarioState->faceAngle[1] = (int16_t)(y / 3.14159f * 32768.f);
+    vec3s_set(gMarioState->marioObj->header.gfx.angle, 0, gMarioState->faceAngle[1], 0);
+}
+
+SM64_LIB_FN void sm64_set_mario_velocity(int32_t marioId, float x, float y, float z)
+{
+    if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
+    {
+        DEBUG_PRINT("Tried to use non-existant Mario with ID: %d", marioId);
+        return;
+    }
+
+    struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState;
+    global_state_bind( globalState );
+
+    gMarioState->vel[0] = x;
+    gMarioState->vel[1] = y;
+    gMarioState->vel[2] = z;
+}
+
+SM64_LIB_FN void sm64_set_mario_forward_velocity(int32_t marioId, float vel)
+{
+    if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
+    {
+        DEBUG_PRINT("Tried to use non-existant Mario with ID: %d", marioId);
+        return;
+    }
+
+    struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState;
+    global_state_bind( globalState );
+
+    gMarioState->forwardVel = vel;
+}
+
+SM64_LIB_FN void sm64_set_mario_water_level(int32_t marioId, signed int level)
+{
+    if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
+    {
+        DEBUG_PRINT("Tried to use non-existant Mario with ID: %d", marioId);
+        return;
+    }
+
+    struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState;
+    global_state_bind( globalState );
+
+    gMarioState->waterLevel = level;
+}
+
+SM64_LIB_FN void sm64_set_mario_gas_level(int32_t marioId, signed int level)
+{
+    if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
+    {
+        DEBUG_PRINT("Tried to use non-existant Mario with ID: %d", marioId);
+        return;
+    }
+
+    struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState;
+    global_state_bind( globalState );
+
+    gMarioState->gasLevel = level;
+}
+
+SM64_LIB_FN void sm64_mario_take_damage(int32_t marioId, uint32_t damage, uint32_t subtype, float x, float y, float z)
+{
+    if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
+    {
+        DEBUG_PRINT("Tried to use non-existant Mario with ID: %d", marioId);
+        return;
+    }
+
+    struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState;
+    global_state_bind( globalState );
+
+    fake_damage_knock_back(gMarioState, damage, subtype, x, y, z);
+}
+
+SM64_LIB_FN void sm64_mario_heal(int32_t marioId, uint8_t healCounter)
+{
+    if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
+    {
+        DEBUG_PRINT("Tried to use non-existant Mario with ID: %d", marioId);
+        return;
+    }
+
+    struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState;
+    global_state_bind( globalState );
+
+    gMarioState->healCounter += healCounter;
+}
+
+SM64_LIB_FN void sm64_mario_kill(int32_t marioId)
+{
+    if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
+    {
+        DEBUG_PRINT("Tried to use non-existant Mario with ID: %d", marioId);
+        return;
+    }
+
+    struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState;
+    global_state_bind( globalState );
+
+    gMarioState->health = 0xff;
+}
+
+SM64_LIB_FN void sm64_mario_interact_cap(int32_t marioId, uint32_t capFlag, uint16_t capTime, uint8_t playMusic)
+{
+    if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
+    {
+        DEBUG_PRINT("Tried to use non-existant Mario with ID: %d", marioId);
+        return;
+    }
+
+    struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState;
+    global_state_bind( globalState );
+
+    uint16_t capMusic = 0;
+    if(gMarioState->action != ACT_GETTING_BLOWN && capFlag != 0)
+    {
+        gMarioState->flags &= ~MARIO_CAP_ON_HEAD & ~MARIO_CAP_IN_HAND;
+        gMarioState->flags |= capFlag;
+
+        switch(capFlag)
+        {
+            case MARIO_VANISH_CAP:
+                if(capTime == 0) capTime = 600;
+                capMusic = SEQUENCE_ARGS(4, SEQ_EVENT_POWERUP);
+                break;
+            case MARIO_METAL_CAP:
+                if(capTime == 0) capTime = 600;
+                capMusic = SEQUENCE_ARGS(4, SEQ_EVENT_METAL_CAP);
+                break;
+            case MARIO_WING_CAP:
+                if(capTime == 0) capTime = 1800;
+                capMusic = SEQUENCE_ARGS(4, SEQ_EVENT_POWERUP);
+                break;
+        }
+
+        if (capTime > gMarioState->capTimer) {
+            gMarioState->capTimer = capTime;
+        }
+
+        if ((gMarioState->action & ACT_FLAG_IDLE) || gMarioState->action == ACT_WALKING) {
+            gMarioState->flags |= MARIO_CAP_IN_HAND;
+            set_mario_action(gMarioState, ACT_PUTTING_ON_CAP, 0);
+        } else {
+            gMarioState->flags |= MARIO_CAP_ON_HEAD;
+        }
+
+        play_sound(SOUND_MENU_STAR_SOUND, gMarioState->marioObj->header.gfx.cameraToObject);
+        play_sound(SOUND_MARIO_HERE_WE_GO, gMarioState->marioObj->header.gfx.cameraToObject);
+
+        if (playMusic != 0 && capMusic != 0) {
+            play_cap_music(capMusic);
+        }
+    }
+}
+
+SM64_LIB_FN bool sm64_mario_attack(int32_t marioId, float x, float y, float z, float hitboxHeight)
+{
+    if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
+    {
+        DEBUG_PRINT("Tried to use non-existant Mario with ID: %d", marioId);
+        return false;
+    }
+
+    struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState;
+    global_state_bind( globalState );
+
+    return fake_interact_bounce_top(gMarioState, x, y, z, hitboxHeight);
 }
 
 SM64_LIB_FN uint32_t sm64_surface_object_create( const struct SM64SurfaceObject *surfaceObject )
@@ -338,4 +630,44 @@ SM64_LIB_FN float sm64_surface_find_water_level( float x, float z )
 SM64_LIB_FN float sm64_surface_find_poison_gas_level( float x, float z )
 {
     return find_poison_gas_level( x, z );
+}
+
+SM64_LIB_FN void sm64_seq_player_play_sequence(uint8_t player, uint8_t seqId, uint16_t arg2)
+{
+    seq_player_play_sequence(player,seqId,arg2);
+}
+
+SM64_LIB_FN void sm64_play_music(uint8_t player, uint16_t seqArgs, uint16_t fadeTimer)
+{
+    play_music(player,seqArgs,fadeTimer);
+}
+
+SM64_LIB_FN void sm64_stop_background_music(uint16_t seqId)
+{
+    stop_background_music(seqId);
+}
+
+SM64_LIB_FN void sm64_fadeout_background_music(uint16_t arg0, uint16_t fadeOut)
+{
+    fadeout_background_music(arg0,fadeOut);
+}
+
+SM64_LIB_FN uint16_t sm64_get_current_background_music()
+{
+    return get_current_background_music();
+}
+
+SM64_LIB_FN void sm64_play_sound(int32_t soundBits, float *pos)
+{
+    play_sound(soundBits,pos);
+}
+
+SM64_LIB_FN void sm64_play_sound_global(int32_t soundBits)
+{
+    play_sound(soundBits,gGlobalSoundSource);
+}
+
+SM64_LIB_FN void sm64_set_sound_volume(float vol)
+{
+    gAudioVolume = vol;
 }
