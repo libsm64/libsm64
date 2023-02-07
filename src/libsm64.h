@@ -15,6 +15,10 @@
     #define SM64_LIB_FN
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct SM64Surface
 {
     int16_t type;
@@ -105,16 +109,16 @@ struct SM64SurfaceCollisionData
     int8_t room;
     int32_t lowerY; // libsm64: 32 bit
     int32_t upperY; // libsm64: 32 bit
-	int32_t vertex1[3]; // libsm64: 32 bit
-	int32_t vertex2[3]; // libsm64: 32 bit
-	int32_t vertex3[3]; // libsm64: 32 bit
+    int32_t vertex1[3]; // libsm64: 32 bit
+    int32_t vertex2[3]; // libsm64: 32 bit
+    int32_t vertex3[3]; // libsm64: 32 bit
     struct {
         float x;
         float y;
         float z;
     } normal;
     float originOffset;
-    
+
     uint8_t isValid; // libsm64: added field
     struct SM64SurfaceObjectTransform *transform; // libsm64: added field
     uint16_t terrain; // libsm64: added field
@@ -185,5 +189,9 @@ extern SM64_LIB_FN uint16_t sm64_get_current_background_music();
 extern SM64_LIB_FN void sm64_play_sound(int32_t soundBits, float *pos);
 extern SM64_LIB_FN void sm64_play_sound_global(int32_t soundBits);
 extern SM64_LIB_FN void sm64_set_sound_volume(float vol);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif//LIB_SM64_H
