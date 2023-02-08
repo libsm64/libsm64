@@ -4,7 +4,7 @@
 #include "decomp/audio/load.h"
 #include "decomp/audio/load_dat.h"
 
-bool is_audio_initialized = false;
+bool g_is_audio_initialized = false;
 
 extern void load_audio_banks( const uint8_t *rom ) {
     // FIXME: rom_copy purposfully leaks here
@@ -24,5 +24,5 @@ extern void load_audio_banks( const uint8_t *rom ) {
     sound_init();
     sound_reset( 0 );
 
-    is_audio_initialized = true;
+    g_is_audio_initialized = true;
 }
