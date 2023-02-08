@@ -96,7 +96,7 @@ SM64_LIB_FN void sm64_register_play_sound_function( SM64PlaySoundFunctionPtr pla
 }
 
 
-SM64_LIB_FN void sm64_global_init( uint8_t *rom, uint8_t *outTexture )
+SM64_LIB_FN void sm64_global_init( const uint8_t *rom, uint8_t *outTexture )
 {
     if( s_init_global )
         sm64_global_terminate();
@@ -138,7 +138,7 @@ SM64_LIB_FN void sm64_global_terminate( void )
     memory_terminate();
 }
 
-SM64_LIB_FN void sm64_audio_init( uint8_t *rom ) {
+SM64_LIB_FN void sm64_audio_init( const uint8_t *rom ) {
     load_audio_banks( rom );
 }
 

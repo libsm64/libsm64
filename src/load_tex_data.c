@@ -26,12 +26,12 @@ static void blt_image_to_atlas( rgba *img, int i, int w, int h, uint8_t *outText
     }
 }
 
-void load_mario_textures_from_rom( uint8_t *rom, uint8_t *outTexture )
+void load_mario_textures_from_rom( const uint8_t *rom, uint8_t *outTexture )
 {
     memset( outTexture, 0, 4 * ATLAS_WIDTH * ATLAS_HEIGHT );
 
     mio0_header_t head;
-    uint8_t *in_buf = rom + MARIO_TEX_ROM_OFFSET;
+    const uint8_t *in_buf = rom + MARIO_TEX_ROM_OFFSET;
 
     mio0_decode_header( in_buf, &head );
     uint8_t *out_buf = malloc( head.dest_size );
