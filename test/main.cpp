@@ -9,8 +9,9 @@
 #include <unistd.h>
 #include <pthread.h>
 
-extern "C" {
 #include "../src/libsm64.h"
+
+extern "C" {
 #define SDL_MAIN_HANDLED
 #include "level.h"
 #include "context.h"
