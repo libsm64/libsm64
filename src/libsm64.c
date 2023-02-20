@@ -26,6 +26,7 @@
 #include "decomp/game/rendering_graph_node.h"
 #include "decomp/mario/geo.inc.h"
 #include "decomp/game/platform_displacement.h"
+#include "decomp/game/sound_init.h"
 
 #include "debug_print.h"
 #include "load_surfaces.h"
@@ -145,7 +146,7 @@ SM64_LIB_FN void sm64_audio_init( const uint8_t *rom ) {
 #define SAMPLES_HIGH 544
 #define SAMPLES_LOW 528
 
-extern SM64_LIB_FN uint32_t sm64_audio_tick( uint32_t numQueuedSamples, uint32_t numDesiredSamples, int16_t *audio_buffer ) {
+SM64_LIB_FN uint32_t sm64_audio_tick( uint32_t numQueuedSamples, uint32_t numDesiredSamples, int16_t *audio_buffer ) {
     if ( !g_is_audio_initialized ) {
         DEBUG_PRINT("Attempted to tick audio, but sm64_audio_init() has not been called yet.");
         return 0;

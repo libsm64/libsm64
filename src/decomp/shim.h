@@ -47,9 +47,9 @@ static void lower_background_noise(s32 a) {}
 static void set_camera_mode(struct Camera *c, s16 mode, s16 frames) {}
 static void print_text_fmt_int(s32 x, s32 y, const char *str, s32 n) {}
 static s16 level_trigger_warp(struct MarioState *m, s32 warpOp) { return 0; }
-static void play_cap_music(u16 seqArgs) {}
-static void fadeout_cap_music(void) {}
-static void stop_cap_music(void) {}
+//static void play_cap_music(u16 seqArgs) {}
+//static void fadeout_cap_music(void) {}
+//static void stop_cap_music(void) {}
 static void play_infinite_stairs_music(void) {}
 static s32 save_file_get_total_star_count(s32 fileIndex, s32 minCourse, s32 maxCourse) { return 0; }
 static u32 save_file_get_flags(void) { return 0; }
