@@ -430,6 +430,20 @@ SM64_LIB_FN void sm64_set_mario_forward_velocity(int32_t marioId, float vel)
     gMarioState->forwardVel = vel;
 }
 
+SM64_LIB_FN void sm64_set_mario_invincibility(int32_t marioId, int16_t timer)
+{
+    if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
+    {
+        DEBUG_PRINT("Tried to use non-existant Mario with ID: %d", marioId);
+        return;
+    }
+
+    struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState;
+    global_state_bind( globalState );
+
+    gMarioState->invincTimer = timer;
+}
+
 SM64_LIB_FN void sm64_set_mario_water_level(int32_t marioId, signed int level)
 {
     if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
@@ -456,6 +470,22 @@ SM64_LIB_FN void sm64_set_mario_gas_level(int32_t marioId, signed int level)
     global_state_bind( globalState );
 
     gMarioState->gasLevel = level;
+}
+
+SM64_LIB_FN void sm64_set_mario_health(int32_t marioId, uint16_t health)
+{
+    if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
+    {
+        DEBUG_PRINT("Tried to use non-existant Mario with ID: %d", marioId);
+        return;
+    }
+
+    struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState;
+    global_state_bind( globalState );
+
+    gMarioState->health = health;
+    gMarioState->hurtCounter = 0;
+    gMarioState->healCounter = 0;
 }
 
 SM64_LIB_FN void sm64_mario_take_damage(int32_t marioId, uint32_t damage, uint32_t subtype, float x, float y, float z)
@@ -551,6 +581,20 @@ SM64_LIB_FN void sm64_mario_interact_cap(int32_t marioId, uint32_t capFlag, uint
             play_cap_music(capMusic);
         }
     }
+}
+
+SM64_LIB_FN void sm64_mario_extend_cap(int32_t marioId, uint16_t capTime)
+{
+    if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
+    {
+        DEBUG_PRINT("Tried to use non-existant Mario with ID: %d", marioId);
+        return;
+    }
+
+    struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState;
+    global_state_bind( globalState );
+
+    gMarioState->capTimer += capTime;
 }
 
 SM64_LIB_FN bool sm64_mario_attack(int32_t marioId, float x, float y, float z, float hitboxHeight)
