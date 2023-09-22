@@ -17,6 +17,7 @@ project under the `test` directory as well, demonstrating usage of the library.
 - [Unity plugin](https://github.com/libsm64/libsm64-unity)
 - [Blender add-on](https://github.com/libsm64/libsm64-blender)
 - [Godot add-on](https://github.com/Brawmario/libsm64-godot)
+- [Game Maker 8 extension](https://github.com/headshot2017/libsm64-gm8)
 
 ## Building on Linux
 
