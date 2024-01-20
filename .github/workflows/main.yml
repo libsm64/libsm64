@@ -7,37 +7,57 @@ on:
 
 jobs:
   Build:
+    name: Build libsm64 for ${{ matrix.identifier }}
     runs-on: ubuntu-latest
-
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - identifier: linux
+          - identifier: windows
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout project
+        uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      - name: Install SDL2 and GLEW
-        if: runner.os == 'Linux'
+      - name: (Windows) Set up MinGW
+        if: ${{ startsWith(matrix.identifier, 'windows') }}
+        uses: egor-tensin/setup-mingw@v2
+
+      - name: (Windows) Prepare cross compilation
+        if: ${{ startsWith(matrix.identifier, 'windows') }}
+        shell: sh
+        run: |
+          echo "OS=Windows_NT" >> $GITHUB_ENV
+
+      - name: (Linux) Install SDL2 and GLEW
+        if: ${{ startsWith(matrix.identifier, 'linux') }}
         run: |
           sudo add-apt-repository -y "deb http://archive.ubuntu.com/ubuntu `lsb_release -sc` main universe restricted multiverse"
           sudo apt-get update -y -qq
           sudo apt-get install libsdl2-dev libglew-dev
 
-      - name: Linux - Build Base Binary
-        if: runner.os == 'Linux'
+      - name: Build shared library
         run: |
-          make lib
-          make test
+          make lib -j`nproc`
 
-      - name: Linux - Upload Build
+      - name: (Linux) Build test executable
+        if: ${{ startsWith(matrix.identifier, 'linux') }}
+        run: |
+          make test -j`nproc`
+
+      - name: Upload build
         uses: actions/upload-artifact@v3
-        if: runner.os == 'Linux'
         with:
-          name: libsm64_linux
+          name: libsm64_${{ matrix.identifier }}
           path: |
             ./README.md
             ./dist
-            ./build
+            ./run-test
 
   #Release:
   #  name: "Snapshot Release"
@@ -58,4 +78,3 @@ jobs:
   #        files: |
   #         ./README.md
   #         ./dist
-  #         ./build
