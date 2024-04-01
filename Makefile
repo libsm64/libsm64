@@ -58,11 +58,10 @@ $(LIB_FILE): $(O_FILES)
 $(LIB_H_FILE): src/libsm64.h
 	cp -f $< $@
 
-
-test/level.c test/level.h: ./import-test-collision.py
+test/level.c: ./import-test-collision.py
 	./import-test-collision.py
 
-test/main.cpp: test/level.h
+test/main.cpp test/gl20/gl20_renderer.c test/gl33core/gl33core_renderer.c: test/level.c
 
 $(BUILD_DIR)/test/%.o: test/%.c
 	@$(CC) $(CFLAGS) -MM -MP -MT $@ -MF $(BUILD_DIR)/test/$*.d $<
