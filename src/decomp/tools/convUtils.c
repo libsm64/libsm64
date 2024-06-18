@@ -42,18 +42,18 @@ struct seqFile* parse_seqfile(unsigned char* seq){ /* Read SeqFile data */
         for (int i = 0; i < bankCount; i++){
             uintptr_t start = pos;
             struct CTL* ptr = parse_ctl_data(seq+(seqFile->seqArray[i].offset), &pos);
-            seqFile->seqArray[i].offset = ptr;
+            seqFile->seqArray[i].offset = (uintptr_t)ptr;
             seqFile->seqArray[i].len = (unsigned int)(pos - start);
         }
     }else if (revision == TYPE_TBL){
         // TBL file, contains raw audio data
         for (int i = 0; i < bankCount; i++){
-            seqFile->seqArray[i].offset = seq+(seqFile->seqArray[i].offset);
+            seqFile->seqArray[i].offset = (uintptr_t)(seq+(seqFile->seqArray[i].offset));
         }
     }else if (revision == TYPE_SEQ){
         // SEQ file, contains music files (*.m64)
         for (int i = 0; i < bankCount; i++){
-            seqFile->seqArray[i].offset = seq+(seqFile->seqArray[i].offset);
+            seqFile->seqArray[i].offset = (uintptr_t)(seq+(seqFile->seqArray[i].offset));
         }
     }
 
@@ -157,8 +157,8 @@ struct CSample* parse_sample(unsigned char* sample,unsigned char* ctl, uintptr_t
     *pos = ALIGN16(*pos);
     samp->zero=read_u32_be(sample);
     samp->addr=read_u32_be(sample+4);
-    samp->loop=read_u32_be(sample+8);// loop address
-    samp->book=read_u32_be(sample+12);// book address
+    samp->loop=(struct CLoop*)read_u32_be(sample+8);// loop address
+    samp->book=(struct CBook*)read_u32_be(sample+12);// book address
     samp->sample_size=read_u32_be(sample+16);
 
     samp->book=parse_book(ctl+((uintptr_t)samp->book), pos);
@@ -168,7 +168,7 @@ struct CSample* parse_sample(unsigned char* sample,unsigned char* ctl, uintptr_t
 
 struct CSound* parse_sound(unsigned char* sound,unsigned char* ctl, uintptr_t* pos, uintptr_t sndPos, struct SampleList* samples){
     struct CSound* snd = (struct CSound*)(sndPos);
-    snd->sample_addr=read_u32_be(sound);
+    snd->sample_addr=(struct CSample*)read_u32_be(sound);
     snd->tuning = (float)read_f32_be(sound+4);
     // if sample_addr is 0 then the sound is null
     if (snd->sample_addr!=0){
@@ -197,8 +197,8 @@ struct CDrum* parse_drum(unsigned char* drum,unsigned char* ctl, uintptr_t* pos,
     drumData->pan = drum[1];
     drumData->loaded = drum[2];
     drumData->pad = drum[3];
-    drumData->snd=*parse_sound(drum+4,ctl, pos, &drumData->snd, samples);
-    drumData->env_addr=read_u32_be(drum+12);
+    drumData->snd=*parse_sound(drum+4,ctl, pos, (uintptr_t)&drumData->snd, samples);
+    drumData->env_addr=(struct CEnvelope*)read_u32_be(drum+12);
     return drumData;
 }
 
@@ -227,10 +227,10 @@ struct CInstrument* parse_instrument(unsigned char* instrument,unsigned char* ct
     inst->normal_range_lo = instrument[1];
     inst->normal_range_hi = instrument[2];
     inst->release_rate = instrument[3];
-    inst->env_addr=read_u32_be(instrument+4);
-    inst->sound_lo=*parse_sound(instrument+8,ctl, pos, &(inst->sound_lo), samples);
-    inst->sound_med=*parse_sound(instrument+16,ctl, pos, &(inst->sound_med), samples);
-    inst->sound_hi=*parse_sound(instrument+24,ctl, pos, &(inst->sound_hi), samples);
+    inst->env_addr=(struct CEnvelope*)read_u32_be(instrument+4);
+    inst->sound_lo=*parse_sound(instrument+8,ctl, pos, (uintptr_t)&(inst->sound_lo), samples);
+    inst->sound_med=*parse_sound(instrument+16,ctl, pos, (uintptr_t)&(inst->sound_med), samples);
+    inst->sound_hi=*parse_sound(instrument+24,ctl, pos, (uintptr_t)&(inst->sound_hi), samples);
 
     return inst;
 }
