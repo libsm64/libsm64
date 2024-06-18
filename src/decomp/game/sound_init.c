@@ -14,6 +14,7 @@
 #include <seq_ids.h>
 #include <sm64.h>
 #include "sound_init.h"
+#include "../../play_sound.h"
 //#include "rumble_init.h"
 
 #define MUSIC_NONE 0xFFFF

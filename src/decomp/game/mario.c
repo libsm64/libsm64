@@ -35,7 +35,7 @@
 // #include "object_list_processor.h"
 // #include "print.h"
 #include "save_file.h"
-// #include "sound_init.h"
+#include "sound_init.h"
 // #include "thread6.h"
 #include "../../load_anim_data.h"
 

@@ -1,8 +1,11 @@
 #include "load_audio_data.h"
 
 #include "decomp/tools/convUtils.h"
+#include "decomp/audio/external.h"
 #include "decomp/audio/load.h"
 #include "decomp/audio/load_dat.h"
+
+#include <string.h>
 
 bool g_is_audio_initialized = false;
 
