@@ -37,7 +37,7 @@ ifeq ($(OS),Windows_NT)
   TEST_FILE := $(DIST_DIR)/run-test.exe
 endif
 
-DUMMY != mkdir -p $(ALL_DIRS) build/test build/test/gl33core build/test/gl20 src/decomp/mario $(DIST_DIR)/include
+DUMMY := $(shell mkdir -p $(ALL_DIRS) build/test build/test/gl33core build/test/gl20 src/decomp/mario $(DIST_DIR)/include)
 
 
 $(filter-out src/decomp/mario/geo.inc.c,$(IMPORTED)): src/decomp/mario/geo.inc.c
