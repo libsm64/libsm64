@@ -1,6 +1,9 @@
 #include "gl20_renderer.h"
 
+#ifdef __APPLE__
 #include <OpenGL/gl.h>
+#endif
+
 #include <stdio.h>
 
 #include "../../src/libsm64.h"
