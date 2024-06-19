@@ -34,6 +34,17 @@ project under the `test` directory as well, demonstrating usage of the library.
 - Run `make` to build
 - To run the test program you'll need a SM64 US ROM in the root of the repository with the name `baserom.us.z64`.
 
+## Building for Emscripten (Web) (WIP)
+
+Run `emmake make CC=emcc`.
+
+If you want libsm64 standalone to call from JS (may not be that
+useful?), then run `emcc dist/libsm64.so -o libsm64.js` afterward to
+emit `libsm64.wasm` and `libsm64.js`.
+
+Otherwise, `dist/libsm64.so` should be a compiled WebAssembly object
+that you can link into your own C project.
+
 ## Make targets (all platforms)
 
 - `make lib`: (Default) Build the `dist` directory, containing the shared object or DLL and public-facing header.
