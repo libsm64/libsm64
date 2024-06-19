@@ -70,6 +70,8 @@ $(BUILD_DIR)/test/%.o: test/%.c
 $(TEST_FILE): $(LIB_FILE) $(TEST_OBJS)
 ifeq ($(OS),Windows_NT)
 	$(CC) -o $@ $(TEST_OBJS) $(LIB_FILE) -lglew32 -lopengl32 -lSDL2 -lSDL2main -lm
+else ifeq ($(shell uname -s),Darwin)
+	$(CC) -o $@ $(TEST_OBJS) $(LIB_FILE) -framework OpenGL -lGLEW -lSDL2 -lSDL2main -lm -lpthread
 else
 	$(CC) -o $@ $(TEST_OBJS) $(LIB_FILE) -lGLEW -lGL -lSDL2 -lSDL2main -lm -lpthread
 endif

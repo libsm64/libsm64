@@ -19,7 +19,7 @@ project under the `test` directory as well, demonstrating usage of the library.
 - [Godot add-on](https://github.com/Brawmario/libsm64-godot)
 - [Game Maker 8 extension](https://github.com/headshot2017/libsm64-gm8)
 
-## Building on Linux
+## Building on Mac and Linux
 
 - Ensure python3 is installed.
 - Ensure the SDL2 and GLEW libraries are installed if you're building the test program (on Ubuntu: libsdl2-dev, libglew-dev).

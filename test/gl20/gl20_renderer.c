@@ -1,5 +1,6 @@
 #include "gl20_renderer.h"
 
+#include <OpenGL/gl.h>
 #include <stdio.h>
 
 #include "../../src/libsm64.h"
