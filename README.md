@@ -19,7 +19,7 @@ project under the `test` directory as well, demonstrating usage of the library.
 - [Godot add-on](https://github.com/Brawmario/libsm64-godot)
 - [Game Maker 8 extension](https://github.com/headshot2017/libsm64-gm8)
 
-## Building on Linux
+## Building on Mac and Linux
 
 - Ensure python3 is installed.
 - Ensure the SDL2 and GLEW libraries are installed if you're building the test program (on Ubuntu: libsdl2-dev, libglew-dev).
@@ -33,6 +33,17 @@ project under the `test` directory as well, demonstrating usage of the library.
   - 32 bits: `pacman -S mingw-w64-i686-SDL2 mingw-w64-i686-glew`.
 - Run `make` to build
 - To run the test program you'll need a SM64 US ROM in the root of the repository with the name `baserom.us.z64`.
+
+## Building for Emscripten (Web) (WIP)
+
+Run `emmake make CC=emcc`.
+
+If you want libsm64 standalone to call from JS (may not be that
+useful?), then run `emcc dist/libsm64.so -o libsm64.js` afterward to
+emit `libsm64.wasm` and `libsm64.js`.
+
+Otherwise, `dist/libsm64.so` should be a compiled WebAssembly object
+that you can link into your own C project.
 
 ## Make targets (all platforms)
 

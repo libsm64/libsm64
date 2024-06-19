@@ -37,7 +37,7 @@ ifeq ($(OS),Windows_NT)
   TEST_FILE := $(DIST_DIR)/run-test.exe
 endif
 
-DUMMY != mkdir -p $(ALL_DIRS) build/test build/test/gl33core build/test/gl20 src/decomp/mario $(DIST_DIR)/include
+DUMMY := $(shell mkdir -p $(ALL_DIRS) build/test build/test/gl33core build/test/gl20 src/decomp/mario $(DIST_DIR)/include)
 
 
 $(filter-out src/decomp/mario/geo.inc.c,$(IMPORTED)): src/decomp/mario/geo.inc.c
@@ -45,11 +45,11 @@ src/decomp/mario/geo.inc.c: ./import-mario-geo.py
 	./import-mario-geo.py
 
 $(BUILD_DIR)/%.o: %.c $(IMPORTED)
-	@$(CC) $(CFLAGS) -MM -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
+	@$(CC) $(CFLAGS) -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
 	$(CC) -c $(CFLAGS) -I src/decomp/include -o $@ $<
 
 $(BUILD_DIR)/%.o: %.cpp $(IMPORTED)
-	@$(CXX) $(CFLAGS) -MM -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
+	@$(CXX) $(CFLAGS) -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
 	$(CXX) -c $(CFLAGS) -I src/decomp/include -o $@ $<
 
 $(LIB_FILE): $(O_FILES)
@@ -70,6 +70,8 @@ $(BUILD_DIR)/test/%.o: test/%.c
 $(TEST_FILE): $(LIB_FILE) $(TEST_OBJS)
 ifeq ($(OS),Windows_NT)
 	$(CC) -o $@ $(TEST_OBJS) $(LIB_FILE) -lglew32 -lopengl32 -lSDL2 -lSDL2main -lm
+else ifeq ($(shell uname -s),Darwin)
+	$(CC) -o $@ $(TEST_OBJS) $(LIB_FILE) -framework OpenGL -lGLEW -lSDL2 -lSDL2main -lm -lpthread
 else
 	$(CC) -o $@ $(TEST_OBJS) $(LIB_FILE) -lGLEW -lGL -lSDL2 -lSDL2main -lm -lpthread
 endif
