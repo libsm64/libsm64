@@ -16,6 +16,11 @@ BUILD_DIR := build
 DIST_DIR  := dist
 ALL_DIRS  := $(addprefix $(BUILD_DIR)/,$(SRC_DIRS))
 
+INCLUDES := src/decomp/include
+ifeq ($(shell uname -s),Darwin)
+  INCLUDES += /opt/homebrew/include
+endif
+
 LIB_FILE   := $(DIST_DIR)/libsm64.so
 LIB_H_FILE := $(DIST_DIR)/include/libsm64.h
 TEST_FILE  := run-test
@@ -45,12 +50,12 @@ src/decomp/mario/geo.inc.c: ./import-mario-geo.py
 	./import-mario-geo.py
 
 $(BUILD_DIR)/%.o: %.c $(IMPORTED)
-	@$(CC) $(CFLAGS) -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
-	$(CC) -c $(CFLAGS) -I src/decomp/include -o $@ $<
+	@$(CC) $(CFLAGS) -I $(INCLUDES) -MM -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
+	$(CC) -c $(CFLAGS) -I $(INCLUDES) -o $@ $<
 
 $(BUILD_DIR)/%.o: %.cpp $(IMPORTED)
-	@$(CXX) $(CFLAGS) -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
-	$(CXX) -c $(CFLAGS) -I src/decomp/include -o $@ $<
+	@$(CXX) $(CFLAGS) -I $(INCLUDES) -MM -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
+	$(CXX) -c $(CFLAGS) -I $(INCLUDES) -o $@ $<
 
 $(LIB_FILE): $(O_FILES)
 	$(CC) $(LDFLAGS) -o $@ $^
@@ -71,7 +76,7 @@ $(TEST_FILE): $(LIB_FILE) $(TEST_OBJS)
 ifeq ($(OS),Windows_NT)
 	$(CC) -o $@ $(TEST_OBJS) $(LIB_FILE) -lglew32 -lopengl32 -lSDL2 -lSDL2main -lm
 else ifeq ($(shell uname -s),Darwin)
-	$(CC) -o $@ $(TEST_OBJS) $(LIB_FILE) -framework OpenGL -lGLEW -lSDL2 -lSDL2main -lm -lpthread
+	$(CC) -o $@ $(TEST_OBJS) $(LIB_FILE) -L/opt/homebrew/lib -framework OpenGL -lGLEW -lSDL2 -lSDL2main -lm -lpthread
 else
 	$(CC) -o $@ $(TEST_OBJS) $(LIB_FILE) -lGLEW -lGL -lSDL2 -lSDL2main -lm -lpthread
 endif
