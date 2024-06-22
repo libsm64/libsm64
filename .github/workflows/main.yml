@@ -1,20 +1,21 @@
 name: Build libsm64
 
-on:
-  pull_request:
-  push:
-    branches: [master]
+on: [push, pull_request]
 
 jobs:
   Build:
     name: Build libsm64 for ${{ matrix.identifier }}
-    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         include:
           - identifier: linux
+            os: ubuntu-latest
           - identifier: windows
+            os: ubuntu-latest
+          - identifier: macos
+            os: macos-latest
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout project
         uses: actions/checkout@v3
@@ -41,12 +42,17 @@ jobs:
           sudo apt-get update -y -qq
           sudo apt-get install libsdl2-dev libglew-dev
 
+      - name: (Macos) Install SDL2 and GLEW
+        if: ${{ startsWith(matrix.identifier, 'macos') }}
+        run: |
+          brew install sdl2 glew
+
       - name: Build shared library
         run: |
           make lib -j`nproc`
 
-      - name: (Linux) Build test executable
-        if: ${{ startsWith(matrix.identifier, 'linux') }}
+      - name: (Linux/Macos) Build test executable
+        if: ${{ startsWith(matrix.identifier, 'linux') || startsWith(matrix.identifier, 'macos') }}
         run: |
           make test -j`nproc`
 
