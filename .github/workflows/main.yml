@@ -42,17 +42,12 @@ jobs:
           sudo apt-get update -y -qq
           sudo apt-get install libsdl2-dev libglew-dev
 
-      - name: (Macos) Install dependencies
-        if: ${{ startsWith(matrix.identifier, 'macos') }}
-        run: |
-          brew install coreutils sdl2 glew
-
       - name: Build shared library
         run: |
           make lib -j`nproc`
 
-      - name: (Linux/Macos) Build test executable
-        if: ${{ startsWith(matrix.identifier, 'linux') || startsWith(matrix.identifier, 'macos') }}
+      - name: (Linux) Build test executable
+        if: ${{ startsWith(matrix.identifier, 'linux') }}
         run: |
           make test -j`nproc`
 
