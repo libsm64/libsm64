@@ -58,19 +58,19 @@ src/decomp/mario/geo.inc.c: ./import-mario-geo.py
 
 ifeq ($(shell uname -s),Darwin)
 $(BUILD_DIR)/%_x86_64.o: %.c $(IMPORTED)
-	@$(CC) $(CFLAGS) -arch x86_64 -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*_x86_64.d $<
+#	@$(CC) $(CFLAGS) -arch x86_64 -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*_x86_64.d $<
 	$(CC) -c $(CFLAGS) -arch x86_64 -I src/decomp/include -o $@ $<
 
 $(BUILD_DIR)/%_arm64.o: %.c $(IMPORTED)
-	@$(CC) $(CFLAGS) -arch arm64 -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*_arm64.d $<
+#	@$(CC) $(CFLAGS) -arch arm64 -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*_arm64.d $<
 	$(CC) -c $(CFLAGS) -arch arm64 -I src/decomp/include -o $@ $<
 
 $(BUILD_DIR)/%_x86_64.o: %.cpp $(IMPORTED)
-	@$(CC) $(CFLAGS) -arch x86_64 -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*_x86_64.d $<
+#	@$(CC) $(CFLAGS) -arch x86_64 -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*_x86_64.d $<
 	$(CC) -c $(CFLAGS) -arch x86_64 -I src/decomp/include -o $@ $<
 
 $(BUILD_DIR)/%_arm64.o: %.cpp $(IMPORTED)
-	@$(CXX) $(CFLAGS) -arch arm64 -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*_arm64.d $<
+#	@$(CXX) $(CFLAGS) -arch arm64 -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*_arm64.d $<
 	$(CXX) -c $(CFLAGS) -arch arm64 -I src/decomp/include -o $@ $<
 
 $(LIB_FILE): $(OBJS_x86_64) $(OBJS_arm64)
@@ -81,11 +81,11 @@ $(LIB_FILE): $(OBJS_x86_64) $(OBJS_arm64)
 else
 
 $(BUILD_DIR)/%.o: %.c $(IMPORTED)
-	@$(CC) $(CFLAGS) -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
+#	@$(CC) $(CFLAGS) -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
 	$(CC) -c $(CFLAGS) -I src/decomp/include -o $@ $<
 
 $(BUILD_DIR)/%.o: %.cpp $(IMPORTED)
-	@$(CXX) $(CFLAGS) -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
+#	@$(CXX) $(CFLAGS) -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
 	$(CXX) -c $(CFLAGS) -I src/decomp/include -o $@ $<
 
 $(LIB_FILE): $(O_FILES)
@@ -127,4 +127,4 @@ endif
 clean:
 	rm -rf $(BUILD_DIR) $(DIST_DIR) $(TEST_FILE)
 
--include $(DEP_FILES)
+#-include $(DEP_FILES)
