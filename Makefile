@@ -71,7 +71,7 @@ $(BUILD_DIR)/%_arm64.o: %.cpp $(IMPORTED)
 
 $(LIB_FILE): $(OBJS_x86_64) $(OBJS_arm64)
 	$(CC) $(LDFLAGS) -arch arm64 -o $@.arm64 $(OBJS_arm64)
-	$(CC) $(LDFLAGS) -arch arm64 -o $@.x86_64 $(OBJS_x86_64)
+	$(CC) $(LDFLAGS) -arch x86_64 -o $@.x86_64 $(OBJS_x86_64)
 	lipo -create -output $@ arm64$@ x86_64$@
 
 else
