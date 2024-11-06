@@ -10,6 +10,10 @@ else
   LDFLAGS := -lm -shared
 endif
 CFLAGS := -fno-strict-aliasing -g -Wall -Wno-unused-function -fPIC -fvisibility=hidden -DSM64_LIB_EXPORT -DGBI_FLOATS -DVERSION_US -DNO_SEGMENTED_MEMORY
+ifeq ($(shell uname -s),Darwin)
+  CFLAGS += -arch x86_64 -arch arm64
+  LDFLAGS += -arch x86_64 -arch arm64
+endif
 
 SRC_DIRS  := src src/decomp src/decomp/engine src/decomp/include/PR src/decomp/game src/decomp/pc src/decomp/pc/audio src/decomp/mario src/decomp/tools src/decomp/audio
 BUILD_DIR := build
