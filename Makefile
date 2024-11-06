@@ -11,7 +11,6 @@ else
 endif
 CFLAGS := -fno-strict-aliasing -g -Wall -Wno-unused-function -fPIC -fvisibility=hidden -DSM64_LIB_EXPORT -DGBI_FLOATS -DVERSION_US -DNO_SEGMENTED_MEMORY
 ifeq ($(shell uname -s),Darwin)
-  CFLAGS += -arch x86_64 -arch arm64
   LDFLAGS += -arch x86_64 -arch arm64
 endif
 
@@ -49,11 +48,21 @@ src/decomp/mario/geo.inc.c: ./import-mario-geo.py
 	./import-mario-geo.py
 
 $(BUILD_DIR)/%.o: %.c $(IMPORTED)
-	@$(CC) $(CFLAGS) -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
+	ifeq ($(shell uname -s),Darwin)
+		@$(CC) $(CFLAGS) -arch arm64 -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*_arm64.d $<
+		@$(CC) $(CFLAGS) -arch x86_64 -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*_x86_64.d $<
+	else
+		@$(CC) $(CFLAGS) -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
+	endif
 	$(CC) -c $(CFLAGS) -I src/decomp/include -o $@ $<
 
 $(BUILD_DIR)/%.o: %.cpp $(IMPORTED)
-	@$(CXX) $(CFLAGS) -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
+	ifeq ($(shell uname -s),Darwin)
+		@$(CXX) $(CFLAGS) -arch arm64 -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*_arm64.d $<
+		@$(CXX) $(CFLAGS) -arch x86_64 -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*_x86_64.d $<
+	else
+		@$(CXX) $(CFLAGS) -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
+	endif
 	$(CXX) -c $(CFLAGS) -I src/decomp/include -o $@ $<
 
 $(LIB_FILE): $(O_FILES)
