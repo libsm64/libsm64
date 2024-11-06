@@ -1,5 +1,9 @@
 default: lib
 
+ifeq ($(shell uname -s),Darwin)
+  MACOS_BUILD = 1
+endif
+
 ifdef LIBSM64_MUSL
   CC      := musl-gcc
   CXX     := musl-g++
@@ -25,7 +29,7 @@ H_IMPORTED := $(C_IMPORTED:.c=.h)
 IMPORTED   := $(C_IMPORTED) $(H_IMPORTED)
 
 C_FILES   := $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.c)) $(C_IMPORTED)
-ifeq ($(shell uname -s),Darwin)
+ifdef MACOS_BUILD
   OBJS_x86_64 := $(foreach file,$(C_FILES),$(BUILD_DIR)/$(file:.c=_x86_64.o))
   OBJS_arm64 := $(foreach file,$(C_FILES),$(BUILD_DIR)/$(file:.c=_arm64.o))
   DEP_FILES := $(OBJS_x86_64:.o=.d) $(OBJS_arm64:.o=.d)
@@ -41,7 +45,7 @@ TEST_OBJS     := $(foreach file,$(TEST_SRCS_C),$(BUILD_DIR)/$(file:.c=.o)) $(for
 ifeq ($(OS),Windows_NT)
   LIB_FILE := $(DIST_DIR)/sm64.dll
   TEST_FILE := $(DIST_DIR)/run-test.exe
-else ifeq ($(shell uname -s),Darwin)
+else ifdef MACOS_BUILD
   LIB_FILE := $(DIST_DIR)/libsm64.dylib
 endif
 
@@ -52,7 +56,7 @@ $(filter-out src/decomp/mario/geo.inc.c,$(IMPORTED)): src/decomp/mario/geo.inc.c
 src/decomp/mario/geo.inc.c: ./import-mario-geo.py
 	./import-mario-geo.py
 
-ifeq ($(shell uname -s),Darwin)
+ifdef MACOS_BUILD
 $(BUILD_DIR)/%_x86_64.o: %.c $(IMPORTED)
 	@$(CC) $(CFLAGS) -arch x86_64 -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*_x86_64.d $<
 	$(CC) -c $(CFLAGS) -arch x86_64 -I src/decomp/include -o $@ $<
@@ -73,6 +77,7 @@ $(LIB_FILE): $(OBJS_x86_64) $(OBJS_arm64)
 	$(CC) $(LDFLAGS) -arch arm64 -o $@.arm64 $(OBJS_arm64)
 	$(CC) $(LDFLAGS) -arch x86_64 -o $@.x86_64 $(OBJS_x86_64)
 	lipo -create -output $@ $@.arm64 $@.x86_64
+	rm $@.arm64 $@.x86_64
 
 else
 
@@ -103,7 +108,7 @@ $(BUILD_DIR)/test/%.o: test/%.c
 $(TEST_FILE): $(LIB_FILE) $(TEST_OBJS)
 ifeq ($(OS),Windows_NT)
 	$(CC) -o $@ $(TEST_OBJS) $(LIB_FILE) -lglew32 -lopengl32 -lSDL2 -lSDL2main -lm
-else ifeq ($(shell uname -s),Darwin)
+else ifdef MACOS_BUILD
 	$(CC) -o $@ $(TEST_OBJS) $(LIB_FILE) -framework OpenGL -lGLEW -lSDL2 -lSDL2main -lm -lpthread
 else
 	$(CC) -o $@ $(TEST_OBJS) $(LIB_FILE) -lGLEW -lGL -lSDL2 -lSDL2main -lm -lpthread
