@@ -66,14 +66,6 @@ $(BUILD_DIR)/%_arm64.o: %.c $(IMPORTED)
 	@$(CC) $(CFLAGS) -arch arm64 -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*_arm64.d $<
 	$(CC) -c $(CFLAGS) -arch arm64 -I src/decomp/include -o $@ $<
 
-$(BUILD_DIR)/%_x86_64.o: %.cpp $(IMPORTED)
-	@$(CXX) $(CFLAGS) -arch x86_64 -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*_x86_64.d $<
-	$(CXX) -c $(CFLAGS) -arch x86_64 -I src/decomp/include -o $@ $<
-
-$(BUILD_DIR)/%_arm64.o: %.cpp $(IMPORTED)
-	@$(CXX) $(CFLAGS) -arch arm64 -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*_arm64.d $<
-	$(CXX) -c $(CFLAGS) -arch arm64 -I src/decomp/include -o $@ $<
-
 $(LIB_FILE): $(O_FILES_x86_64) $(O_FILES_arm64)
 	$(CC) $(LDFLAGS) -arch arm64 -o $@.arm64 $(O_FILES_arm64)
 	$(CC) $(LDFLAGS) -arch x86_64 -o $@.x86_64 $(O_FILES_x86_64)
@@ -83,10 +75,6 @@ else
 $(BUILD_DIR)/%.o: %.c $(IMPORTED)
 	@$(CC) $(CFLAGS) -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
 	$(CC) -c $(CFLAGS) -I src/decomp/include -o $@ $<
-
-$(BUILD_DIR)/%.o: %.cpp $(IMPORTED)
-	@$(CXX) $(CFLAGS) -I src/decomp/include -MM -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
-	$(CXX) -c $(CFLAGS) -I src/decomp/include -o $@ $<
 
 $(LIB_FILE): $(O_FILES)
 	$(CC) $(LDFLAGS) -o $@ $^
@@ -103,6 +91,10 @@ test/main.cpp test/gl20/gl20_renderer.c test/gl33core/gl33core_renderer.c: test/
 $(BUILD_DIR)/test/%.o: test/%.c
 	@$(CC) $(CFLAGS) -MM -MP -MT $@ -MF $(BUILD_DIR)/test/$*.d $<
 	$(CC) -c $(CFLAGS) -o $@ $<
+
+$(BUILD_DIR)/test/%.o: test/%.cpp
+	@$(CXX) $(CFLAGS) -MM -MP -MT $@ -MF $(BUILD_DIR)/test/$*.d $<
+	$(CXX) -c $(CFLAGS) -o $@ $<
 
 $(TEST_FILE): $(LIB_FILE) $(TEST_OBJS)
 ifdef WINDOWS_BUILD
