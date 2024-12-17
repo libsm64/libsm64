@@ -44,7 +44,7 @@ jobs:
 
       - name: Build shared library
         run: |
-          make lib -j`nproc`
+          make lib -j $(nproc 2>/dev/null || sysctl -n hw.ncpu)
 
       - name: (Linux) Build test executable
         if: ${{ startsWith(matrix.identifier, 'linux') }}
