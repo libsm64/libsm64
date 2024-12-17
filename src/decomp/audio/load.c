@@ -1046,7 +1046,7 @@ void audio_init() {
 	DEBUG_PRINT("- tbl alloc at %x", gAlTbl);
 	DEBUG_PRINT("- gSoundDataRaw at %x", gSoundDataRaw);
     audio_dma_copy_immediate((uintptr_t) gSoundDataRaw, gAlTbl, size);
-    alSeqFileNew(gAlTbl, gSoundDataRaw);
+    alSeqFileNew(gAlTbl, (u8 *)gSoundDataRaw);
 
     // Load bank sets for each sequence
     gAlBankSets = soundAlloc(&gAudioInitPool, 0x100);
