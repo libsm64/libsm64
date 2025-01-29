@@ -15,6 +15,8 @@ jobs:
             os: ubuntu-latest
           - identifier: macos
             os: macos-latest
+          - identifier: web
+            os: ubuntu-latest
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout project
@@ -26,25 +28,33 @@ jobs:
           python-version: '3.10'
 
       - name: (Windows) Set up MinGW
-        if: ${{ startsWith(matrix.identifier, 'windows') }}
+        if: ${{ matrix.identifier }} == 'windows'
         uses: egor-tensin/setup-mingw@v2
 
       - name: (Windows) Prepare cross compilation
-        if: ${{ startsWith(matrix.identifier, 'windows') }}
+        if: ${{ matrix.identifier }} == 'windows'
         shell: sh
         run: |
           echo "OS=Windows_NT" >> $GITHUB_ENV
 
       - name: (Linux) Install dependencies
-        if: ${{ startsWith(matrix.identifier, 'linux') }}
+        if: ${{ matrix.identifier }} == 'linux'
         run: |
           sudo add-apt-repository -y "deb http://archive.ubuntu.com/ubuntu `lsb_release -sc` main universe restricted multiverse"
           sudo apt-get update -y -qq
           sudo apt-get install libsdl2-dev libglew-dev
 
+      - name: (Web) Set up Emscripten
+        if: ${{ matrix.identifier }} == 'web'
+        uses: mymindstorm/setup-emsdk@v14
+
       - name: Build shared library
         run: |
-          make lib -j $(nproc 2>/dev/null || sysctl -n hw.ncpu)
+          if [[ "${{ matrix.identifier }}" == "web" ]]; then
+              emmake make lib -j $(nproc) CC=emcc
+          else
+              make lib -j $(nproc 2>/dev/null || sysctl -n hw.ncpu)
+          fi
 
       - name: (Linux) Build test executable
         if: ${{ startsWith(matrix.identifier, 'linux') }}
