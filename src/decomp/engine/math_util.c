@@ -2185,9 +2185,10 @@ s16 atan2s(f32 y, f32 x) {
 /**
  * Compute the atan2 in radians by calling atan2s and converting the result.
  */
-f32 atan2f(f32 y, f32 x) {
-    return (f32) atan2s(y, x) * M_PI / 0x8000;
-}
+// libsm64: `atan2f()` is not used anywhere and collides with `math.h`'s definition of the function, better to remove it entirely.
+// f32 atan2f(f32 y, f32 x) {
+//     return (f32) atan2s(y, x) * M_PI / 0x8000;
+// }
 
 #define CURVE_BEGIN_1 1
 #define CURVE_BEGIN_2 2
