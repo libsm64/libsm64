@@ -14,6 +14,7 @@ project under the `test` directory as well, demonstrating usage of the library.
 ## Bindings and plugins
 
 - [Rust bindings](https://github.com/nickmass/libsm64-rust)
+- [Odin bindings](https://github.com/lammmab/libsm64-odin)
 - [Unity plugin](https://github.com/libsm64/libsm64-unity)
 - [Blender add-on](https://github.com/libsm64/libsm64-blender)
 - [Godot add-on](https://github.com/Brawmario/libsm64-godot)
