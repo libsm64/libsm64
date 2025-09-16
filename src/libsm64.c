@@ -15,6 +15,7 @@
 #include "decomp/engine/math_util.h"
 #include "decomp/include/sm64.h"
 #include "decomp/include/seq_ids.h"
+#include "decomp/include/types.h"
 #include "decomp/shim.h"
 #include "decomp/memory.h"
 #include "decomp/global_state.h"
@@ -255,7 +256,13 @@ SM64_LIB_FN void sm64_mario_tick( int32_t marioId, const struct SM64MarioInputs 
     vec3f_copy( outState->position, gMarioState->pos );
     vec3f_copy( outState->velocity, gMarioState->vel );
     outState->faceAngle = (float)gMarioState->faceAngle[1] / 32768.0f * 3.14159f;
+    outState->forwardVelocity = gMarioState->forwardVel;
     outState->action = gMarioState->action;
+
+    struct AnimInfo animInfo = gMarioState->marioObj->header.gfx.animInfo;
+    outState->animID = animInfo.animID;
+    outState->animID = animInfo.animFrame;
+
     outState->flags = gMarioState->flags;
     outState->particleFlags = gMarioState->particleFlags;
     outState->invincTimer = gMarioState->invincTimer;
