@@ -21,6 +21,7 @@ project under the `test` directory as well, demonstrating usage of the library.
 - [Game Maker 8 extension](https://github.com/headshot2017/libsm64-gm8)
 - [Unity MelonLoader mod](https://github.com/headshot2017/libsm64-unity-melonloader)
 - [Unity BepInEx plugin](https://github.com/sashaantipov2012/libsm64-unity-bepinex)
+- [C# bindings](https://github.com/MeltyPlayer/libsm64-sharp)
 
 ## Building on Mac and Linux
 
