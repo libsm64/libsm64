@@ -261,7 +261,7 @@ SM64_LIB_FN void sm64_mario_tick( int32_t marioId, const struct SM64MarioInputs 
 
     struct AnimInfo animInfo = gMarioState->marioObj->header.gfx.animInfo;
     outState->animID = animInfo.animID;
-    outState->animID = animInfo.animFrame;
+    outState->animFrame = animInfo.animFrame;
 
     outState->flags = gMarioState->flags;
     outState->particleFlags = gMarioState->particleFlags;
