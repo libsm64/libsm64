@@ -37,6 +37,7 @@
 #include "load_tex_data.h"
 #include "obj_pool.h"
 #include "fake_interaction.h"
+#include "pole.h"
 
 static struct AllocOnlyPool *s_mario_geo_pool = NULL;
 static struct GraphNode *s_mario_graph_node = NULL;
@@ -109,6 +110,7 @@ SM64_LIB_FN void sm64_global_init( const uint8_t *rom, uint8_t *outTexture )
     load_mario_anims_from_rom( rom );
 
     memory_init();
+    pole_pool_init();
 }
 
 SM64_LIB_FN void sm64_global_terminate( void )
@@ -724,4 +726,56 @@ SM64_LIB_FN void sm64_play_sound_global(int32_t soundBits)
 SM64_LIB_FN void sm64_set_sound_volume(float vol)
 {
     gAudioVolume = vol;
+}
+
+SM64_LIB_FN int32_t sm64_pole_create(float x, float y, float z, float height, float downOffset, int16_t pitch, int16_t roll)
+{
+    return pole_pool_create(x, y, z, height, downOffset, pitch, roll);
+}
+ 
+SM64_LIB_FN void sm64_pole_destroy(int32_t poleHandle)
+{
+    struct Object *dying = pole_pool_get(poleHandle);
+    if (dying == NULL) {
+        return;
+    }
+ 
+    for (int i = 0; i < s_mario_instance_pool.size; ++i)
+    {
+        if (s_mario_instance_pool.objects[i] == NULL)
+            continue;
+ 
+        struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[i])->globalState;
+        global_state_bind(globalState);
+ 
+        if (gMarioState->usedObj == dying)
+        {
+            gMarioState->usedObj = NULL;
+            set_mario_action(gMarioState, ACT_FREEFALL, 0);
+        }
+    }
+ 
+    pole_pool_release(poleHandle);
+}
+ 
+SM64_LIB_FN void sm64_mario_attach_to_pole(int32_t marioId, int32_t poleHandle, int32_t grabFast)
+{
+    if( marioId >= s_mario_instance_pool.size || s_mario_instance_pool.objects[marioId] == NULL )
+    {
+        DEBUG_PRINT("Tried to use non-existant Mario with ID: %d", marioId);
+        return;
+    }
+ 
+    struct Object *pole = pole_pool_get(poleHandle);
+    if (pole == NULL)
+    {
+        DEBUG_PRINT("Tried to attach Mario to non-existant pole handle: %d", poleHandle);
+        return;
+    }
+ 
+    struct GlobalState *globalState = ((struct MarioInstance *)s_mario_instance_pool.objects[ marioId ])->globalState;
+    global_state_bind( globalState );
+ 
+    gMarioState->usedObj = pole;
+    set_mario_action(gMarioState, grabFast ? ACT_GRAB_POLE_FAST : ACT_GRAB_POLE_SLOW, 0);
 }
