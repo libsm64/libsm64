@@ -202,6 +202,11 @@ extern SM64_LIB_FN void sm64_play_sound(int32_t soundBits, float *pos);
 extern SM64_LIB_FN void sm64_play_sound_global(int32_t soundBits);
 extern SM64_LIB_FN void sm64_set_sound_volume(float vol);
 
+extern SM64_LIB_FN int32_t sm64_pole_create(float x, float y, float z, float height, float downOffset, int16_t pitch, int16_t roll);
+extern SM64_LIB_FN void sm64_pole_destroy(int32_t poleHandle);
+extern SM64_LIB_FN void sm64_mario_attach_to_pole(int32_t marioId, int32_t poleHandle, int32_t grabFast);
+extern SM64_LIB_FN int32_t sm64_mario_get_action(int32_t marioId);
+
 #ifdef __cplusplus
 }
 #endif
